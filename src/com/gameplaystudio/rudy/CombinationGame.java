@@ -1,37 +1,51 @@
 package com.gameplaystudio.rudy;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class CombinationGame {
-    private boolean play = true;
-    private int nbTry = 5;
+    private boolean play;
     private Scanner sc = new Scanner(System.in);
+    private HashMap<String, Mode> modes = new HashMap<>();
 
+
+    public void init(){
+        play = true;
+        modes.clear();
+        modes.put("Challenger", new ModeChallenger());
+        modes.put("Defense", new ModeDefense());
+        modes.put("Duel", new ModeDuel());
+    }
 
     public void start(){
+        init();
         while(play){
-            this.displayMenu();
-            int choice = this.sc.nextByte();
-            if(choice == 1){
-                modeChallenger();
-                Combination combinaison = new Combination();
-                combinaison.generateCombination();
-                System.out.println(combinaison.getCombination());
-            }else if(choice == 2){
-                modeDefenseur();
-                Combination combinaison = new Combination();
-                combinaison.generateCombination();
-                System.out.println(combinaison.getCombination());
-            }else if(choice == 3){
-                modeDuel();
-                Combination combinaison = new Combination();
-                combinaison.generateCombination();
-                System.out.println(combinaison.getCombination());
-            }else if(choice == 4){
-                quit();
-            }else{
-                System.out.println("Votre séléction n'est pas valide");
-            }
+            displayMenu();
+            chooseMode();
+        }
+    }
+
+    private void chooseMode() {
+        int choice = this.sc.nextByte();
+        if(choice == 1){
+            modeChallenger();
+            Combination combinaison = new Combination();
+            combinaison.generateCombination();
+            System.out.println(combinaison.getCombination());
+        }else if(choice == 2){
+            modeDefenseur();
+            Combination combinaison = new Combination();
+            combinaison.generateCombination();
+            System.out.println(combinaison.getCombination());
+        }else if(choice == 3){
+            modeDuel();
+            Combination combinaison = new Combination();
+            combinaison.generateCombination();
+            System.out.println(combinaison.getCombination());
+        }else if(choice == 4){
+            quit();
+        }else{
+            System.out.println("Votre séléction n'est pas valide");
         }
     }
 
