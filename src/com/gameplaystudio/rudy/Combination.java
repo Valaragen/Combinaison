@@ -12,10 +12,6 @@ public class Combination {
         return length;
     }
 
-    private void setLength(int length) {
-        this.length = length;
-    }
-
     public void generateCombination(){
         combination.delete(0, combination.length());
         for (int i = 0; i < this.length; i++) {

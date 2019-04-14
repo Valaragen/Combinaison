@@ -1,7 +1,7 @@
 package com.gameplaystudio.rudy;
 
 public interface Mode {
-    Combination combination = new Combination();
+    String getName();
     void init();
     void start();
     void logic();
