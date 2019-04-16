@@ -1,6 +1,7 @@
 package com.gameplaystudio.rudy.combination.util;
 
 public class Combination {
+
     private StringBuilder combination = new StringBuilder();
     private int length = 4;
 

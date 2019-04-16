@@ -8,21 +8,8 @@ public class ModeDuel extends GameMode {
     }
 
     @Override
-    protected void init(){
-        run = true;
-    }
-
-    @Override
-    public void start(){
-        init();
-        logic();
-    }
-
-    @Override
     protected void logic(){
 
     }
 
-    @Override
-    protected void stop(){ run = false; }
 }

@@ -8,6 +8,7 @@ import com.gameplaystudio.rudy.combination.gameModes.ModeDuel;
 import java.util.*;
 
 public class CombinationGame{
+
     private boolean run;
     private Scanner sc = new Scanner(System.in);
     private List<GameMode> gameModes = new ArrayList<>();
@@ -22,14 +23,14 @@ public class CombinationGame{
 
     public void start(){
         init();
-        logic();
+        while(run) {
+            logic();
+        }
     }
 
     private void logic(){
-        while(run){
-            displayMenu();
-            chooseMode();
-        }
+        displayMenu();
+        chooseMode();
     }
 
     private void displayMenu() {
