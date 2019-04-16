@@ -19,9 +19,10 @@ public abstract class GameMode {
         leaveApp = false;
     }
 
-    public void start(){
+    public boolean start(){
         init();
         logic();
+        return leaveApp;
     }
 
     protected void logic(){

@@ -23,7 +23,18 @@ public class Combination {
         combination = combinationBuilder.toString();
     }
 
-    public void check(String combination){
-
+    public String showHint(String toCompare){
+        StringBuilder indicatorBuilder= new StringBuilder();
+        for (int i = 0; i < combination.length(); i++) {
+            int difference = combination.charAt(i) - toCompare.charAt(i);
+            if(difference == 0){
+                indicatorBuilder.append("=");
+            }else if(difference < 0){
+                indicatorBuilder.append("-");
+            }else{
+                indicatorBuilder.append("+");
+            }
+        }
+        return indicatorBuilder.toString();
     }
 }

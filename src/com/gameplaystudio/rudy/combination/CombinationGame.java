@@ -50,7 +50,7 @@ public class CombinationGame{
     private void chooseMode() {
         int choice = sc.nextByte();
         if(choice > 0 && choice <= gameModes.size()){
-            gameModes.get(choice-1).start();
+            run = !gameModes.get(choice-1).start();
         }else if(choice == gameModes.size()+1){
             quit();
         }else{
