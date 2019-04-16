@@ -1,4 +1,4 @@
-package com.gameplaystudio.rudy;
+package com.gameplaystudio.rudy.util;
 
 public class Combination {
     private StringBuilder combination = new StringBuilder();
