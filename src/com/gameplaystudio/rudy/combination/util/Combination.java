@@ -2,11 +2,11 @@ package com.gameplaystudio.rudy.combination.util;
 
 public class Combination {
 
-    private StringBuilder combination = new StringBuilder();
+    private String combination;
     private int length = 4;
 
     public String getCombination() {
-        return combination.toString();
+        return combination;
     }
 
     public int getLength() {
@@ -14,12 +14,16 @@ public class Combination {
     }
 
     public void generateCombination(){
-        combination.delete(0, combination.length());
+        StringBuilder combinationBuilder = new StringBuilder();
+
         for (int i = 0; i < this.length; i++) {
-            combination.append((int)(Math.random() * 10));
+            combinationBuilder.append((int)(Math.random() * 10));
         }
+
+        combination = combinationBuilder.toString();
     }
-    public void check(){
+
+    public void check(String combination){
 
     }
 }

@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public abstract class GameMode {
     protected boolean run;
-    protected int nbTry;
     protected boolean leaveApp;
     protected Combination combination = new Combination();
     protected Scanner sc = new Scanner(System.in);
@@ -17,7 +16,6 @@ public abstract class GameMode {
 
     protected void init(){
         run = true;
-        nbTry = 4;
         leaveApp = false;
     }
 

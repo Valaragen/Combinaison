@@ -23,14 +23,15 @@ public class CombinationGame{
 
     public void start(){
         init();
-        while(run) {
-            logic();
-        }
+        logic();
+
     }
 
     private void logic(){
-        displayMenu();
-        chooseMode();
+        while(run) {
+            displayMenu();
+            chooseMode();
+        }
     }
 
     private void displayMenu() {
@@ -49,7 +50,7 @@ public class CombinationGame{
     private void chooseMode() {
         int choice = sc.nextByte();
         if(choice > 0 && choice <= gameModes.size()){
-            System.out.println(gameModes.get(choice-1).getNameInMenu());
+            gameModes.get(choice-1).start();
         }else if(choice == gameModes.size()+1){
             quit();
         }else{
