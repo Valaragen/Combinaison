@@ -1,12 +1,11 @@
 package com.gameplaystudio.rudy;
 
-import com.gameplaystudio.rudy.gameModes.GameMode;
-import com.gameplaystudio.rudy.game.CombinationGame;
+import com.gameplaystudio.rudy.combination.CombinationGame;
 
 public class Main {
 
     public static void main(String[] args) {
-        GameMode combinationGame = new CombinationGame();
-
+        CombinationGame combinationGame = new CombinationGame();
+        combinationGame.start();
     }
 }
