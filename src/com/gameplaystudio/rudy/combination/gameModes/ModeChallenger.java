@@ -1,8 +1,11 @@
 package com.gameplaystudio.rudy.combination.gameModes;
 
+import com.gameplaystudio.rudy.combination.util.Combination;
+
 import java.util.regex.Pattern;
 
 public class ModeChallenger extends GameMode {
+    private Combination combination = new Combination();
 
     @Override
     public String getNameInMenu(){
@@ -22,9 +25,9 @@ public class ModeChallenger extends GameMode {
             String playerCombination;
             int nbTry = 0;
             int nbAllowedTry = 10;
+            displayIndication();
 
             while (play){
-                displayIndication();
                 playerCombination = sc.nextLine();
 
                 if (Pattern.matches("[0-9]+", playerCombination) && playerCombination.length() == combination.getLength()){
@@ -33,7 +36,7 @@ public class ModeChallenger extends GameMode {
                         play = false;
                         win = true;
                     }else{
-                        System.out.println("Proposition : " + playerCombination + " -> Réponse : " + combination.showHint(playerCombination));
+                        System.out.println("Proposition : " + playerCombination + " -> Réponse : " + showHint(combination.getCombination(), playerCombination));
 
 
 
@@ -74,32 +77,20 @@ public class ModeChallenger extends GameMode {
         System.out.println("------------------------------------------------------------------");
     }
 
-    private void showReplayMenu(){
-        boolean validChoice = false;
-        while (!validChoice){
-            System.out.println("Souhaitez vous rejouer ?");
-            System.out.println("1.Rejouer");
-            System.out.println("2.Retourner au menu");
-            System.out.println("3.Quitter l'application");
-            int choice = sc.nextByte();//TODO handle typing error
-            switch (choice){
-                case 1:
-                    validChoice = true;
-                    break;
-                case 2:
-                    validChoice = true;
-                    stop();
-                    break;
-                case 3:
-                    validChoice = true;
-                    leaveApp();
-                    break;
-                    default:
-                        System.out.println("Votre séléction n'est pas valide");
+
+    private String showHint(String str, String strToCompare){
+        StringBuilder hintBuilder = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            int difference = str.charAt(i) - strToCompare.charAt(i);
+            if(difference == 0){
+                hintBuilder.append("=");
+            }else if(difference < 0){
+                hintBuilder.append("-");
+            }else{
+                hintBuilder.append("+");
             }
         }
-        sc.nextLine();
-
+        return hintBuilder.toString();
     }
 
 }

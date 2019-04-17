@@ -35,6 +35,7 @@ public class CombinationGame{
     }
 
     private void displayMenu() {
+        System.out.println("------------------------------------------------------------------");
         System.out.println("\nBienvenue sur le jeu combinaison");
         System.out.println("Veuillez selectionner le mode de jeu souhaité\n");
 
@@ -48,7 +49,7 @@ public class CombinationGame{
     }
 
     private void chooseMode() {
-        int choice = sc.nextByte();
+        int choice = sc.nextByte();//TODO Handle exception
         if(choice > 0 && choice <= gameModes.size()){
             run = !gameModes.get(choice-1).start();
         }else if(choice == gameModes.size()+1){
