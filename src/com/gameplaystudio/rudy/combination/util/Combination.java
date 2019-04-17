@@ -13,7 +13,7 @@ public class Combination {
         return length;
     }
 
-    public Combination generateCombination(){
+    public Combination generateCombination(){//TODO delete this class and migrate the method in GameMode
         StringBuilder combinationBuilder = new StringBuilder();
 
         for (int i = 0; i < this.length; i++) {

@@ -7,13 +7,13 @@ import com.gameplaystudio.rudy.combination.gameModes.ModeDuel;
 
 import java.util.*;
 
-public class CombinationGame{
+public class CombinationGame {
 
     private boolean run;
     private Scanner sc = new Scanner(System.in);
     private List<GameMode> gameModes = new ArrayList<>();
 
-    private void init(){
+    private void init() {
         run = true;
         gameModes.clear();
         gameModes.add(new ModeChallenger());
@@ -21,17 +21,17 @@ public class CombinationGame{
         gameModes.add(new ModeDuel());
     }
 
-    public void start(){
+    public void start() {
         init();
-        logic();
+        while (run) {
+            logic();
+        }
 
     }
 
-    private void logic(){
-        while(run) {
-            displayMenu();
-            chooseMode();
-        }
+    private void logic() {
+        displayMenu();
+        chooseMode();
     }
 
     private void displayMenu() {
@@ -40,7 +40,7 @@ public class CombinationGame{
         System.out.println("Veuillez selectionner le mode de jeu souhaité\n");
 
         int selectionNumber = 1;
-        for(GameMode gameMode : gameModes){
+        for (GameMode gameMode : gameModes) {
             System.out.println(selectionNumber + ". " + gameMode.getNameInMenu());
             selectionNumber++;
         }
@@ -50,11 +50,11 @@ public class CombinationGame{
 
     private void chooseMode() {
         int choice = sc.nextByte();//TODO Handle exception
-        if(choice > 0 && choice <= gameModes.size()){
-            run = !gameModes.get(choice-1).start();
-        }else if(choice == gameModes.size()+1){
+        if (choice > 0 && choice <= gameModes.size()) {
+            run = !gameModes.get(choice - 1).start();
+        } else if (choice == gameModes.size() + 1) {
             quit();
-        }else{
+        } else {
             System.out.println("Votre séléction n'est pas valide");
         }
     }

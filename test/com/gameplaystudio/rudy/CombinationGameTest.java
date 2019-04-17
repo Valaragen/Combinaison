@@ -8,7 +8,7 @@ public class CombinationGameTest {
 
 
     @Test
-    public void Given_CreateCombination_When_ChooseGameMode_Then_CreateCombinationWithLengthInConfigFile(){
+    public void Given_CreateCombination_When_ChooseGameMode_Then_CreateCombinationWithLengthInConfigFile() {
 
     }
 

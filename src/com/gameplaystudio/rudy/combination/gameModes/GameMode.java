@@ -2,6 +2,7 @@ package com.gameplaystudio.rudy.combination.gameModes;
 
 import com.gameplaystudio.rudy.combination.util.Combination;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class GameMode {
@@ -9,42 +10,51 @@ public abstract class GameMode {
     protected boolean leaveApp;
     protected Scanner sc = new Scanner(System.in);
 
-    public String getNameInMenu(){
+    public String getNameInMenu() {
         return "Default";
     }
 
-    protected void init(){
+    protected void init() {
         run = true;
-        leaveApp = false;
+        leaveApp = false;//TODO delete maybe ?
     }
 
-    public boolean start(){
+    public boolean start() {
         init();
-        while(run){
+        while (run) {
             logic();
         }
         return leaveApp;
     }
 
-    protected void logic(){
+    protected void logic() {
 
     }
 
-    protected void stop(){ run = false; }
+    protected void stop() {
+        run = false;
+    }
 
-    protected void leaveApp(){
+    protected void leaveApp() {
         run = false;
         leaveApp = true;
     }
-    protected void showReplayMenu(){
+
+    protected void showReplayMenu() {
         boolean validChoice = false;
-        while (!validChoice){
+        int choice = 0;
+        while (!validChoice) {
             System.out.println("Souhaitez vous rejouer ?");
             System.out.println("1.Rejouer");
             System.out.println("2.Retourner au menu");
             System.out.println("3.Quitter l'application");
-            int choice = sc.nextByte();//TODO handle typing error
-            switch (choice){
+            try{
+                choice = sc.nextByte();//TODO Optimise handle typing error
+            }catch(InputMismatchException e){
+                System.err.println("Votre sélection n'est pas valide");
+            }
+
+            switch (choice) {
                 case 1:
                     validChoice = true;
                     break;
@@ -59,8 +69,8 @@ public abstract class GameMode {
                 default:
                     System.out.println("Votre séléction n'est pas valide");
             }
+            sc.nextLine();
         }
-        sc.nextLine();
     }
 
 

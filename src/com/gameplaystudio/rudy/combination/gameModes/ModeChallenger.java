@@ -8,16 +8,16 @@ public class ModeChallenger extends GameMode {
     private Combination combination = new Combination();
 
     @Override
-    public String getNameInMenu(){
+    public String getNameInMenu() {
         return "Mode Challenger";
     }
 
     @Override
-    protected void logic(){
+    protected void logic() {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Bienvenue dans le mode challenger");
 
-        while (run){
+        while (run) {
             combination.generateCombination();
             System.out.println("(Combinaison secrète : " + combination.getCombination() + ")");
             boolean play = true;
@@ -27,36 +27,32 @@ public class ModeChallenger extends GameMode {
             int nbAllowedTry = 10;
             displayIndication();
 
-            while (play){
+            while (play) {
                 playerCombination = sc.nextLine();
 
-                if (Pattern.matches("[0-9]+", playerCombination) && playerCombination.length() == combination.getLength()){
+                if (Pattern.matches("[0-9]+", playerCombination) && playerCombination.length() == combination.getLength()) {
+                    System.out.println("Proposition : " + playerCombination + " -> Réponse : " + showHint(combination.getCombination(), playerCombination));
                     nbTry++;
-                    if (playerCombination.equals(combination.getCombination())){
+                    if (nbTry >= nbAllowedTry) {
+                        play = false;
+                    }
+                    if (playerCombination.equals(combination.getCombination())) {
                         play = false;
                         win = true;
-                    }else{
-                        System.out.println("Proposition : " + playerCombination + " -> Réponse : " + showHint(combination.getCombination(), playerCombination));
-
-
-
                     }
-                }else{
+                } else {
                     System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + combination.getLength() + " chiffres");
                 }
 
-                if ( nbTry >= nbAllowedTry ){
-                    play = false;
-                }
             }
 
-            if (win){
+            if (win) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("Bravo vous avez trouvé la combinaison !");
                 System.out.println("Vous avez mis " + nbTry + " éssais");
                 System.out.println("La combinaison était  | " + combination.getCombination() + " |");
                 System.out.println("------------------------------------------------------------------");
-            }else{
+            } else {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("Dommage vous avez dépassé les " + nbAllowedTry + " éssais autorisés !");
                 System.out.println("La combinaison était | " + combination.getCombination() + " |");
@@ -78,15 +74,15 @@ public class ModeChallenger extends GameMode {
     }
 
 
-    private String showHint(String str, String strToCompare){
+    private String showHint(String str, String strToCompare) {
         StringBuilder hintBuilder = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             int difference = str.charAt(i) - strToCompare.charAt(i);
-            if(difference == 0){
+            if (difference == 0) {
                 hintBuilder.append("=");
-            }else if(difference < 0){
+            } else if (difference < 0) {
                 hintBuilder.append("-");
-            }else{
+            } else {
                 hintBuilder.append("+");
             }
         }
