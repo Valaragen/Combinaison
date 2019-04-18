@@ -5,6 +5,7 @@ import com.gameplaystudio.rudy.combination.gameModes.ModeChallenger;
 import com.gameplaystudio.rudy.combination.gameModes.ModeDefense;
 import com.gameplaystudio.rudy.combination.gameModes.ModeDuel;
 
+import java.io.*;
 import java.util.*;
 
 public class CombinationGame {
@@ -13,7 +14,11 @@ public class CombinationGame {
     private Scanner sc = new Scanner(System.in);
     private List<GameMode> gameModes = new ArrayList<>();
 
+    static public int nbAllowedTry;
+    static public int combinationLength;
+
     private void init() {
+        updateSettingsVariable();
         run = true;
         gameModes.clear();
         gameModes.add(new ModeChallenger());
@@ -32,6 +37,58 @@ public class CombinationGame {
     private void logic() {
         displayMenu();
         chooseMode();
+    }
+
+    private void quit() {
+        run = false;
+    }
+
+    private void updateSettingsVariable() {
+        String path = "config.properties";
+
+        try {
+            InputStream input = new FileInputStream(path);
+            Properties prop = new Properties();
+
+
+            // load a properties file
+            prop.load(input);
+
+            // get the property value and print it out
+            nbAllowedTry = Integer.parseInt(prop.getProperty("nbAllowedTry"));
+            combinationLength = Integer.parseInt(prop.getProperty("combinationLength"));
+
+        } catch (NumberFormatException | FileNotFoundException e){
+            Properties prop = new Properties();
+            if(e instanceof FileNotFoundException){
+                System.err.println("Sorry, unable to find " + path);
+                System.err.println("Creating " + path + " with default values");
+            }
+
+            if(e instanceof NumberFormatException){
+                System.err.println("The config file " + path + " contains incorrect information");
+                System.err.println("Resetting settings attribute to default values");
+            }
+
+            try (OutputStream output = new FileOutputStream(path)) {
+                // set the properties value
+                prop.setProperty("nbAllowedTry", "5");
+                prop.setProperty("combinationLength", "4");
+
+                // save properties to project root folder
+                prop.store(output, null);
+
+                InputStream input = new FileInputStream(path);
+
+                prop.load(input);
+
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+
+        } catch (IOException io){
+            io.printStackTrace();
+        }
     }
 
     private void displayMenu() {
@@ -58,10 +115,5 @@ public class CombinationGame {
             System.out.println("Votre séléction n'est pas valide");
         }
     }
-
-    private void quit() {
-        run = false;
-    }
-
 
 }
