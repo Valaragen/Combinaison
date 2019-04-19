@@ -1,15 +1,19 @@
 package com.gameplaystudio.rudy.combination;
 
+import com.gameplaystudio.rudy.Main;
 import com.gameplaystudio.rudy.combination.gameModes.GameMode;
 import com.gameplaystudio.rudy.combination.gameModes.ModeChallenger;
 import com.gameplaystudio.rudy.combination.gameModes.ModeDefense;
 import com.gameplaystudio.rudy.combination.gameModes.ModeDuel;
+import org.apache.log4j.Logger;
 
 
 import java.io.*;
 import java.util.*;
 
 public class CombinationGame {
+
+    public final static Logger logger = Logger.getLogger(Main.class);
 
     private boolean run;
     private Scanner sc = new Scanner(System.in);
