@@ -1,5 +1,6 @@
 package com.gameplaystudio.rudy.combination.gameModes;
 
+import com.gameplaystudio.rudy.combination.CombinationGame;
 import com.gameplaystudio.rudy.combination.util.Combination;
 
 import java.util.regex.Pattern;
@@ -19,7 +20,7 @@ public class ModeChallenger extends GameMode {
 
         while (run) {
             combination.generateCombination();
-            System.out.println("(Combinaison secrète : " + combination.getCombination() + ")");
+            CombinationGame.logger.debug("(Combinaison secrète : " + combination.getCombination() + ")");
             boolean play = true;
             boolean win = false;
             String playerCombination;
@@ -49,7 +50,7 @@ public class ModeChallenger extends GameMode {
             if (win) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("Bravo vous avez trouvé la combinaison !");
-                System.out.println("Vous avez mis " + nbTry + " éssais");
+                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry>1?"s":""));
                 System.out.println("La combinaison était  | " + combination.getCombination() + " |");
                 System.out.println("------------------------------------------------------------------");
             } else {

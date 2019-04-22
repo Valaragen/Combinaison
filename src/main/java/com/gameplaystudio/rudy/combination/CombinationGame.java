@@ -49,7 +49,8 @@ public class CombinationGame {
     }
 
     private void updateSettingsVariable() {
-        String path = "config.properties";
+        String fileName = "config.properties";
+        String path = System.getProperty("user.dir") + "/" + fileName;
 
         try {
             InputStream input = new FileInputStream(path);
@@ -65,14 +66,13 @@ public class CombinationGame {
 
         } catch (NumberFormatException | FileNotFoundException e){
             Properties prop = new Properties();
-            if(e instanceof FileNotFoundException){
-                System.err.println("Sorry, unable to find " + path);
-                System.err.println("Creating " + path + " with default values");
-            }
 
-            if(e instanceof NumberFormatException){
-                System.err.println("The config file " + path + " contains incorrect information");
-                System.err.println("Resetting settings attribute to default values");
+            if (e instanceof FileNotFoundException){
+                logger.warn("Unable to find " + fileName);
+                logger.warn("Creating " + path + " with default values");
+            } else {
+                logger.warn("The config file " + fileName + " contains incorrect information");
+                logger.warn("Resetting settings attribute to default values");
             }
 
             try (OutputStream output = new FileOutputStream(path)) {
@@ -87,19 +87,23 @@ public class CombinationGame {
 
                 prop.load(input);
 
+
             } catch (IOException io) {
+                logger.fatal("Config file " + path + " can't be created");
                 io.printStackTrace();
             }
 
         } catch (IOException io){
+            logger.fatal("An unhandled exception has occured");
             io.printStackTrace();
         }
     }
 
     private void displayMenu() {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("\nBienvenue sur le jeu combinaison");
-        System.out.println("Veuillez selectionner le mode de jeu souhaité\n");
+        System.out.println("Bienvenue sur le jeu combinaison");
+        System.out.println("Veuillez selectionner le mode de jeu souhaité");
+        System.out.println("------------------------------------------------------------------\n");
 
         int selectionNumber = 1;
         for (GameMode gameMode : gameModes) {

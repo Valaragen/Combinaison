@@ -71,7 +71,7 @@ public class ModeDefense extends GameMode {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("L'ordinateur à réussi à trouver votre combinaison secrète!");
                 System.out.println("Vos indications ont été éfficaces");
-                System.out.println("L'ordinateur à mis " + nbTry + " éssais");
+                System.out.println("L'ordinateur à mis " + nbTry + " éssai" + (nbTry>1?"s":""));
                 System.out.println("La combinaison était  | " + playerCombination + " |");
                 System.out.println("------------------------------------------------------------------");
             } else {

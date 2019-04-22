@@ -1,5 +1,6 @@
 package com.gameplaystudio.rudy.combination.gameModes;
 
+import com.gameplaystudio.rudy.combination.CombinationGame;
 import com.gameplaystudio.rudy.combination.util.Combination;
 
 import java.util.regex.Pattern;
@@ -18,7 +19,7 @@ public class ModeDuel extends GameMode {
         System.out.println("Bienvenue dans le mode Duel");
         while (run) {
             String playerCombinationToFind = combination.generateCombination().getCombination();
-            System.out.println("(Combinaison secrète de l'ordinateur : " + playerCombinationToFind + ")");//TODO add a dev condition
+            CombinationGame.logger.debug("(Combinaison secrète de l'ordinateur : " + playerCombinationToFind + ")");//TODO add a dev condition
 
             String iaCombinationToFind = chooseCombination();
             System.out.println("------------------------------------------------------------------");
@@ -63,14 +64,14 @@ public class ModeDuel extends GameMode {
             if (win) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("Bravo vous avez trouvé la combinaison avant l'ordinateur !");
-                System.out.println("Vous avez mis " + nbTry + " éssais");
+                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry>1?"s":""));
                 System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
                 System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
                 System.out.println("------------------------------------------------------------------");
             } else if (iaCombinationGuess.equals(iaCombinationToFind)) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("Dommage l'ordinateur a trouvé la combinaison avant vous...");
-                System.out.println("L'ordinateur a mis " + nbTry + " éssais");
+                System.out.println("L'ordinateur a mis " + nbTry + " éssai" + (nbTry>1?"s":""));
                 System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
                 System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
                 System.out.println("------------------------------------------------------------------");
