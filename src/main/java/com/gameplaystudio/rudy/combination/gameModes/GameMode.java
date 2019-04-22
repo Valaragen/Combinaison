@@ -5,16 +5,19 @@ import java.util.Scanner;
 
 public abstract class GameMode {
     protected boolean run;
-    protected boolean leaveApp;
+    protected boolean leaveApp = false;
     protected Scanner sc = new Scanner(System.in);
 
     public String getNameInMenu() {
         return "Default";
     }
 
+    public boolean getLeaveApp(){
+        return leaveApp;
+    }
+
     protected void init() {
         run = true;
-        leaveApp = false;//TODO delete maybe ?
     }
 
     public boolean start() {
@@ -25,9 +28,7 @@ public abstract class GameMode {
         return leaveApp;
     }
 
-    protected void logic() {
-
-    }
+    protected abstract void logic();
 
     protected void stop() {
         run = false;

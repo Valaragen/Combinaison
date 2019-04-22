@@ -7,23 +7,86 @@ import com.gameplaystudio.rudy.combination.gameModes.ModeDefense;
 import com.gameplaystudio.rudy.combination.gameModes.ModeDuel;
 import org.apache.log4j.Logger;
 
-
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
+/**
+ * <p>Class that run all the processes in order to play a <i>GameMode</i></p>
+ *
+ * <p>To run the game you just need to initialise a CombinationGame object and use {@link #start()}</p>
+ *
+ * @see GameMode
+ *
+ * @author Valaragen
+ * @version 1.0
+ */
 public class CombinationGame {
 
+    /**
+     * Logger object from the log4j library
+     */
     public final static Logger logger = Logger.getLogger(Main.class);
 
-    private boolean run;
+    /**
+     * Scanner object used to get user inputs
+     */
     private Scanner sc = new Scanner(System.in);
+
+    /**
+     * Attribute used to set the number of try allowed in a game mode with limited tries<br>
+     * <i>This attribute is get from a file</i>
+     *
+     * @see #updateAttributesFromFile()
+     * @see #init()
+     */
+    private static int nbAllowedTry;
+    /**
+     * Attribute used to set the number of digit a combinations will have in all Game Modes<br>
+     * <i>This attribute is get from a file</i>
+     *
+     * @see #updateAttributesFromFile()
+     * @see #init()
+     */
+    private static int combinationLength;
+
+
+    /**
+     * <p>This attribute represent the running state of the application<br>
+     * It must be initialised to true at the start or the application will not start properly</p>
+     *
+     * <p>When it's set to false the program should stop running</p>
+     *
+     * @see #init()
+     * @see #start()
+     * @see #quit()
+     */
+    private boolean run;
+
+    /**
+     * List that contains all the playable {@link GameMode}<br>
+     * This list should be filled in {@link #init()} to perform easy reinitialisation
+     */
     private List<GameMode> gameModes = new ArrayList<>();
 
-    static public int nbAllowedTry;
-    static public int combinationLength;
 
+
+
+    /**
+     * <p>Initialise all the class attributes that could change while using the application<br>
+     * Some attributes are initialised from a file</p>
+     *
+     *
+     * <p><b>This method really need to contains an initialisation of ALL the attributes that could change during the game<br>
+     * in order to reinitialise the game just by using this method or at each game start</b></p>
+     *
+     * @see #updateAttributesFromFile()
+     * @see #run
+     * @see #gameModes
+     * @see #start()
+     */
     private void init() {
-        updateSettingsVariable();
+        updateAttributesFromFile();
         run = true;
         gameModes.clear();
         gameModes.add(new ModeChallenger());
@@ -31,24 +94,46 @@ public class CombinationGame {
         gameModes.add(new ModeDuel());
     }
 
+    /**
+     * Method used to start the program<br>
+     * It initialise the attributes attributes through {@link #init()} and run the logic of the game through {@link #logic()}
+     */
     public void start() {
         init();
         while (run) {
             logic();
         }
-
     }
 
+    /**
+     * This method contains the core of the game<br>
+     * It is executed while {@link #run} value is true
+     *
+     * @see #quit()
+     */
     private void logic() {
         displayMenu();
         chooseMode();
     }
 
+    /**
+     * Method that set {@link #run} to false in order to leave the game
+     */
     private void quit() {
         run = false;
     }
 
-    private void updateSettingsVariable() {
+    /**
+     * <p>Method that check for the file config.properties at the Root of the project</p>
+     * <p>If the file is found :<br>
+     * the method actualise the associated class attributes<br>
+     * If the file is not found :<br>
+     * The method create config.properties and write default values in it</p>
+     *
+     * @see #nbAllowedTry
+     * @see #combinationLength
+     */
+    private void updateAttributesFromFile() { //TODO Create a custom exception to limit the usage of the file. user can't set combination length > 10
         String fileName = "config.properties";
         String path = System.getProperty("user.dir") + "/" + fileName;
 
@@ -60,7 +145,7 @@ public class CombinationGame {
             // load a properties file
             prop.load(input);
 
-            // get the property value and print it out
+            // get the properties values and update the associated attributes
             nbAllowedTry = Integer.parseInt(prop.getProperty("nbAllowedTry"));
             combinationLength = Integer.parseInt(prop.getProperty("combinationLength"));
 
@@ -75,10 +160,14 @@ public class CombinationGame {
                 logger.warn("Resetting settings attribute to default values");
             }
 
-            try (OutputStream output = new FileOutputStream(path)) {
-                // set the properties value
-                prop.setProperty("nbAllowedTry", "5");
-                prop.setProperty("combinationLength", "4");
+            try {
+                OutputStream output = new FileOutputStream(path);
+
+                // set the class attributes and the properties default value
+                nbAllowedTry = 5;
+                combinationLength = 4;
+                prop.setProperty("nbAllowedTry", Integer.toString(nbAllowedTry));
+                prop.setProperty("combinationLength", Integer.toString(combinationLength));
 
                 // save properties to project root folder
                 prop.store(output, null);
@@ -86,6 +175,7 @@ public class CombinationGame {
                 InputStream input = new FileInputStream(path);
 
                 prop.load(input);
+
 
 
             } catch (IOException io) {
@@ -99,6 +189,11 @@ public class CombinationGame {
         }
     }
 
+    /**
+     * Display the menu by iterate through {@link #gameModes}
+     *
+     * @see java.util.List
+     */
     private void displayMenu() {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Bienvenue sur le jeu combinaison");
@@ -114,15 +209,41 @@ public class CombinationGame {
         System.out.println("\n" + selectionNumber + ". Quitter l'application");
     }
 
+    /**
+     * Get the choice of the user and apply it
+     * Start the according GameMode or leave the application
+     * Display indications when the selection is not valid
+     * It also set run to false if player want to leave the application from a GameMode
+     *
+     * @see GameMode#start() GameMode.start()
+     * @see GameMode#getLeaveApp()
+     * @see #quit()
+     */
     private void chooseMode() {
-        int choice = sc.nextByte();//TODO Handle exception
-        if (choice > 0 && choice <= gameModes.size()) {
-            run = !gameModes.get(choice - 1).start();
-        } else if (choice == gameModes.size() + 1) {
-            quit();
+        String choice = sc.nextLine();
+
+        if (Pattern.matches("[0-9]+", choice) && choice.length() < 2) {
+            int intChoice = Integer.parseInt(choice);
+
+            if (intChoice > 0 && intChoice <= gameModes.size()) {
+                GameMode selectedGameMode = gameModes.get(intChoice - 1);
+                selectedGameMode.start();
+
+                if(selectedGameMode.getLeaveApp()){
+                    quit();
+                }
+            } else if (intChoice == gameModes.size() + 1) {
+                quit();
+            } else {
+                System.out.println("Votre sélection n'est pas valide");
+                System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size()+1) + " inclus");
+            }
         } else {
-            System.out.println("Votre séléction n'est pas valide");
+            System.out.println("Votre sélection n'est pas valide");
+            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size()+1) + " inclus");
         }
+
+
     }
 
 }
