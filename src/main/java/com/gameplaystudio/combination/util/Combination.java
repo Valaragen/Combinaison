@@ -1,4 +1,4 @@
-package com.gameplaystudio.rudy.combination.util;
+package com.gameplaystudio.combination.util;
 
 public class Combination {
 

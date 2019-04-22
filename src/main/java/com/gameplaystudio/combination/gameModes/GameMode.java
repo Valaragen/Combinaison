@@ -1,4 +1,4 @@
-package com.gameplaystudio.rudy.combination.gameModes;
+package com.gameplaystudio.combination.gameModes;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

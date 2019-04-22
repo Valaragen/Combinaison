@@ -1,10 +1,10 @@
-package com.gameplaystudio.rudy.combination;
+package com.gameplaystudio.combination;
 
-import com.gameplaystudio.rudy.Main;
-import com.gameplaystudio.rudy.combination.gameModes.GameMode;
-import com.gameplaystudio.rudy.combination.gameModes.ModeChallenger;
-import com.gameplaystudio.rudy.combination.gameModes.ModeDefense;
-import com.gameplaystudio.rudy.combination.gameModes.ModeDuel;
+import com.gameplaystudio.Main;
+import com.gameplaystudio.combination.gameModes.GameMode;
+import com.gameplaystudio.combination.gameModes.ModeChallenger;
+import com.gameplaystudio.combination.gameModes.ModeDefense;
+import com.gameplaystudio.combination.gameModes.ModeDuel;
 import org.apache.log4j.Logger;
 
 import java.io.*;

@@ -1,6 +1,6 @@
-package com.gameplaystudio.rudy.combination.gameModes;
+package com.gameplaystudio.combination.gameModes;
 
-import com.gameplaystudio.rudy.combination.util.Combination;
+import com.gameplaystudio.combination.util.Combination;
 
 import java.util.regex.Pattern;
 
