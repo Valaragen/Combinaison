@@ -1,6 +1,7 @@
 package com.gameplaystudio.combination.gameModes;
 
 import com.gameplaystudio.combination.CombinationGame;
+import com.gameplaystudio.combination.util.Config;
 
 import java.util.regex.Pattern;
 
@@ -29,10 +30,10 @@ public class ModeChallenger extends GameMode {
             while (play) {
                 String combinationGuess = sc.nextLine();
 
-                if (Pattern.matches("^[0-9]+$", combinationGuess) && combinationGuess.length() == CombinationGame.combinationLength) {
+                if (Pattern.matches("^[0-9]+$", combinationGuess) && combinationGuess.length() == Config.combinationLength) {
                     System.out.println("Proposition : " + combinationGuess + " -> Réponse : " + showHint(combinationToFind, combinationGuess));
                     nbTry++;
-                    if (nbTry >= CombinationGame.nbAllowedTry) {
+                    if (nbTry >= Config.nbAllowedTry) {
                         play = false;
                     }
                     if (combinationGuess.equals(combinationToFind)) {
@@ -40,7 +41,7 @@ public class ModeChallenger extends GameMode {
                         win = true;
                     }
                 } else {
-                    System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + CombinationGame.combinationLength + " chiffres");
+                    System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres");
                 }
             }
 
@@ -52,7 +53,7 @@ public class ModeChallenger extends GameMode {
                 System.out.println("------------------------------------------------------------------");
             } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("Dommage vous avez dépassé les " + CombinationGame.nbAllowedTry + " éssais autorisés !");
+                System.out.println("Dommage vous avez dépassé les " + Config.nbAllowedTry + " éssais autorisés !");
                 System.out.println("La combinaison était | " + combinationToFind + " |");
                 System.out.println("------------------------------------------------------------------");
             }
@@ -64,7 +65,7 @@ public class ModeChallenger extends GameMode {
 
     private void displayIndication() {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Tappez une combinsaison à " + CombinationGame.combinationLength + " chiffres");
+        System.out.println("Tappez une combinsaison à " + Config.combinationLength + " chiffres");
         System.out.println("'=' -> le chiffre est bon");
         System.out.println("'+' -> le chiffre à trouver est plus grand");
         System.out.println("'-' -> le chiffre à trouver est plus petit");

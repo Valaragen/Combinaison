@@ -1,6 +1,7 @@
 package com.gameplaystudio.combination.gameModes;
 
 import com.gameplaystudio.combination.CombinationGame;
+import com.gameplaystudio.combination.util.Config;
 
 import java.util.regex.Pattern;
 
@@ -42,12 +43,12 @@ public class ModeDefense extends GameMode {
             while (play) {//TODO option pour quitter ? Option pour afficher les indications?
                 String playerHint = sc.nextLine();
 
-                if (Pattern.matches("[=+-]+", playerHint) && playerHint.length() == CombinationGame.combinationLength) {
+                if (Pattern.matches("[=+-]+", playerHint) && playerHint.length() == Config.combinationLength) {
                     iaCombinationGuess = iaGuessNewCombination(iaCombinationGuess, playerHint);
                     System.out.println("L'ordinateur propose la combinaison : " + iaCombinationGuess);
 
                     nbTry++;
-                    if (nbTry >= CombinationGame.nbAllowedTry) {
+                    if (nbTry >= Config.nbAllowedTry) {
                         play = false;
                     }
 
@@ -62,7 +63,7 @@ public class ModeDefense extends GameMode {
                     }
                 } else {
                     System.out.println("Votre indice n'est pas valide");
-                    System.out.println("Merci d'entrer un indice constitué de " + CombinationGame.combinationLength + " caractères (+ ou - ou =)");
+                    System.out.println("Merci d'entrer un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)");
                 }
 
             }
@@ -77,7 +78,7 @@ public class ModeDefense extends GameMode {
             } else {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("L'ordinateur n'a pas réussi à trouver votre combinaison secrète !");
-                System.out.println("L'ordinateur a dépassé les " + CombinationGame.nbAllowedTry + " éssais autorisés !");
+                System.out.println("L'ordinateur a dépassé les " + Config.nbAllowedTry + " éssais autorisés !");
                 System.out.println("La combinaison était | " + playerCombination + " |");
                 System.out.println("La dernière proposition de l'ordinateur était | " + iaCombinationGuess + " |");
                 System.out.println("------------------------------------------------------------------");
@@ -92,14 +93,14 @@ public class ModeDefense extends GameMode {
         boolean validChoice = false;
         String choice;
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Veuillez définir une combinaison de " + CombinationGame.combinationLength + " chiffres");
+        System.out.println("Veuillez définir une combinaison de " + Config.combinationLength + " chiffres");
         System.out.println("------------------------------------------------------------------");
         do {
             choice = sc.nextLine();
-            if (Pattern.matches("^[0-9]+$", choice) && choice.length() == CombinationGame.combinationLength) {
+            if (Pattern.matches("^[0-9]+$", choice) && choice.length() == Config.combinationLength) {
                 validChoice = true;
             } else {
-                System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + CombinationGame.combinationLength + " chiffres");
+                System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres");
             }
         } while (!validChoice);
         return choice;
@@ -108,7 +109,7 @@ public class ModeDefense extends GameMode {
     private void displayIndication(String combinationToShow) {
         System.out.println("------------------------------------------------------------------");
         System.out.println("L'ordinateur doit trouver votre combinaison : " + combinationToShow);
-        System.out.println("Pour l'aider il va falloir lui donner un indice constitué de " + CombinationGame.combinationLength + " caractères (+ ou - ou =)");
+        System.out.println("Pour l'aider il va falloir lui donner un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)");
         System.out.println("'=' -> le chiffre est bon");
         System.out.println("'+' -> le chiffre à trouver est plus grand");
         System.out.println("'-' -> le chiffre à trouver est plus petit");

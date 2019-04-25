@@ -1,6 +1,6 @@
 package com.gameplaystudio.combination.gameModes;
 
-import com.gameplaystudio.combination.CombinationGame;
+import com.gameplaystudio.combination.util.Config;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -77,7 +77,7 @@ public abstract class GameMode {
     public String generateCombination(){
         StringBuilder combinationBuilder = new StringBuilder();
 
-        for (int i = 0; i < CombinationGame.combinationLength; i++) {
+        for (int i = 0; i < Config.combinationLength; i++) {
             combinationBuilder.append((int)(Math.random() * 10));
         }
 

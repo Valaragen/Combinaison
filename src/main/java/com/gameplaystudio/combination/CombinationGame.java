@@ -5,9 +5,9 @@ import com.gameplaystudio.combination.gameModes.GameMode;
 import com.gameplaystudio.combination.gameModes.ModeChallenger;
 import com.gameplaystudio.combination.gameModes.ModeDefense;
 import com.gameplaystudio.combination.gameModes.ModeDuel;
+import com.gameplaystudio.combination.util.Config;
 import org.apache.log4j.Logger;
 
-import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -32,23 +32,6 @@ public class CombinationGame {
      * Scanner object used to get user inputs
      */
     private Scanner sc = new Scanner(System.in);
-
-    /**
-     * Attribute used to set the number of allowed try in a game mode with a limited number of tries<br>
-     * <i>This attribute is extracted from a file</i>
-     *
-     * @see #updateAttributesFromFile()
-     * @see #init()
-     */
-    public static int nbAllowedTry;
-    /**
-     * Attribute used to set the number of digit a combinations will have in all Game Modes<br>
-     * <i>This attribute is extracted from a file</i>
-     *
-     * @see #updateAttributesFromFile()
-     * @see #init()
-     */
-    public static int combinationLength;
 
 
     /**
@@ -81,13 +64,13 @@ public class CombinationGame {
      * <p><b>This method really need to contain an initialisation of ALL the attributes that could change during the game<br>
      * in order to reinitialise the game just by using this method or at each game start</b></p>
      *
-     * @see #updateAttributesFromFile()
+     * @see Config#updateSettingsFromFile()
      * @see #run
      * @see #gameModes
      * @see #start()
      */
     private void init() {
-        updateAttributesFromFile();
+        Config.updateSettingsFromFile();
         run = true;
         gameModes.clear();
         gameModes.add(new ModeChallenger());
@@ -124,69 +107,6 @@ public class CombinationGame {
         run = false;
     }
 
-    /**
-     * <p>Method that check for the file config.properties at the Root of the project</p>
-     * <p>If the file is found :<br>
-     * the method actualise the associated class attributes<br>
-     * If the file is not found :<br>
-     * The method create config.properties and write default values in it</p>
-     *
-     * @see #nbAllowedTry
-     * @see #combinationLength
-     */
-    private void updateAttributesFromFile() { //TODO Create a custom exception to limit the usage of the file. user can't set combination length > 10
-        String fileName = "config.properties";
-        String path = System.getProperty("user.dir") + "/" + fileName;
-
-        try {
-            InputStream input = new FileInputStream(path);
-            Properties prop = new Properties();
-
-
-            // load a properties file
-            prop.load(input);
-
-            // get the properties values and update the associated attributes
-            nbAllowedTry = Integer.parseInt(prop.getProperty("nbAllowedTry"));
-            combinationLength = Integer.parseInt(prop.getProperty("combinationLength"));
-
-        } catch (NumberFormatException | FileNotFoundException e){
-            Properties prop = new Properties();
-
-            if (e instanceof FileNotFoundException){
-                logger.warn("Unable to find " + fileName);
-                logger.warn("Creating " + path + " with default values");
-            } else {
-                logger.warn("The config file " + fileName + " contains incorrect information");
-                logger.warn("Resetting settings attribute to default values");
-            }
-
-            try {
-                OutputStream output = new FileOutputStream(path);
-
-                // set default values
-                prop.setProperty("nbAllowedTry", Integer.toString(5));
-                prop.setProperty("combinationLength", Integer.toString(4));
-
-                // save properties to project root folder
-                prop.store(output, null);
-
-                InputStream input = new FileInputStream(path);
-
-                prop.load(input);
-
-
-
-            } catch (IOException io) {
-                logger.fatal("Config file " + path + " can't be created");
-                io.printStackTrace();
-            }
-
-        } catch (IOException io){
-            logger.fatal("An unhandled exception has occured");
-            io.printStackTrace();
-        }
-    }
 
     /**
      * Display the menu by iterate through {@link #gameModes}
@@ -227,7 +147,7 @@ public class CombinationGame {
             if (intChoice > 0 && intChoice <= gameModes.size()) {
                 GameMode selectedGameMode = gameModes.get(intChoice - 1);
                 selectedGameMode.start();
-                updateAttributesFromFile();
+                Config.updateSettingsFromFile();
 
                 if(selectedGameMode.getLeaveApp()){
                     quit();
