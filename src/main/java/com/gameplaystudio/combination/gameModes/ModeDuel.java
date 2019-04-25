@@ -1,12 +1,10 @@
 package com.gameplaystudio.combination.gameModes;
 
 import com.gameplaystudio.combination.CombinationGame;
-import com.gameplaystudio.combination.util.Combination;
 
 import java.util.regex.Pattern;
 
 public class ModeDuel extends GameMode {
-    private Combination combination = new Combination();
 
     @Override
     public String getNameInMenu() {
@@ -18,7 +16,7 @@ public class ModeDuel extends GameMode {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Bienvenue dans le mode Duel");
         while (run) {
-            String playerCombinationToFind = combination.generateCombination().getCombination();
+            String playerCombinationToFind = super.generateCombination();
             CombinationGame.logger.debug("(Combinaison secrète de l'ordinateur : " + playerCombinationToFind + ")");//TODO add a dev condition
 
             String iaCombinationToFind = chooseCombination();
@@ -31,17 +29,16 @@ public class ModeDuel extends GameMode {
             boolean play = true;
             boolean win = false;
             int nbTry = 0;
-            int nbAllowedTry = 10;
 
             displayIndication();
 
             while (play) {
                 playerCombinationGuess = sc.nextLine();
 
-                if (Pattern.matches("[0-9]+", playerCombinationGuess) && playerCombinationGuess.length() == combination.getLength()) {
+                if (Pattern.matches("^[0-9]+$", playerCombinationGuess) && playerCombinationGuess.length() == playerCombinationToFind.length()) {
                     System.out.println("Votre proposition : " + playerCombinationGuess + " -> Réponse : " + showHint(playerCombinationToFind, playerCombinationGuess));
                     nbTry++;
-                    if (nbTry >= nbAllowedTry) {
+                    if (nbTry >= CombinationGame.nbAllowedTry) {
                         play = false;
                     }
 
@@ -56,7 +53,7 @@ public class ModeDuel extends GameMode {
                         }
                     }
                 } else {
-                    System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + combination.getLength() + " chiffres");
+                    System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + playerCombinationToFind.length() + " chiffres");
                 }
 
             }
@@ -78,7 +75,7 @@ public class ModeDuel extends GameMode {
 
             } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("Dommage vous avez dépassé les " + nbAllowedTry + " éssais autorisés !");
+                System.out.println("Dommage vous avez dépassé les " + CombinationGame.nbAllowedTry + " éssais autorisés !");
                 System.out.println("Ni vous ni l'ordinateur n'avez réussi à trouver la combinaison de l'autre");
                 System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
                 System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
@@ -93,16 +90,16 @@ public class ModeDuel extends GameMode {
         boolean validChoice = false;
         String choice;
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Veuillez définir une combinaison de " + combination.getLength() + " chiffres");
+        System.out.println("Veuillez définir une combinaison de " + CombinationGame.combinationLength + " chiffres");
         System.out.println("L'ordinateur devra deviner cette combinaison ne lui faites pas de cadeau");
         System.out.println("De votre coté, vous devrez trouver la combinaison que l'ordinateur a choisi");
         System.out.println("------------------------------------------------------------------");
         do {
             choice = sc.nextLine();
-            if (Pattern.matches("[0-9]+", choice) && choice.length() == combination.getLength()) {
+            if (Pattern.matches("[0-9]+", choice) && choice.length() == CombinationGame.combinationLength) {
                 validChoice = true;
             } else {
-                System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + combination.getLength() + " chiffres");
+                System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + CombinationGame.combinationLength + " chiffres");
             }
         } while (!validChoice);
         return choice;
@@ -111,7 +108,7 @@ public class ModeDuel extends GameMode {
     private void displayIndication() {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Devinez la combinaison secrète de l'ordinateur avant qu'il ne trouve la vôtre !");
-        System.out.println("Tappez une combinsaison à " + combination.getLength() + " chiffres");
+        System.out.println("Tappez une combinsaison à " + CombinationGame.combinationLength + " chiffres");
         System.out.println("'=' -> le chiffre est bon");
         System.out.println("'+' -> le chiffre à trouver est plus grand");
         System.out.println("'-' -> le chiffre à trouver est plus petit");
@@ -136,7 +133,7 @@ public class ModeDuel extends GameMode {
 
     private String iaGuessNewCombination(String combination, String combinationToFind) {
         if (combination.length() != combinationToFind.length())
-            return this.combination.generateCombination().getCombination();
+            return super.generateCombination();
 
         StringBuilder newCombination = new StringBuilder();
         for (int i = 0; i < combinationToFind.length(); i++) {

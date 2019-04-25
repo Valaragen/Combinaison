@@ -34,21 +34,21 @@ public class CombinationGame {
     private Scanner sc = new Scanner(System.in);
 
     /**
-     * Attribute used to set the number of try allowed in a game mode with limited tries<br>
-     * <i>This attribute is get from a file</i>
+     * Attribute used to set the number of allowed try in a game mode with a limited number of tries<br>
+     * <i>This attribute is extracted from a file</i>
      *
      * @see #updateAttributesFromFile()
      * @see #init()
      */
-    private static int nbAllowedTry;
+    public static int nbAllowedTry;
     /**
      * Attribute used to set the number of digit a combinations will have in all Game Modes<br>
-     * <i>This attribute is get from a file</i>
+     * <i>This attribute is extracted from a file</i>
      *
      * @see #updateAttributesFromFile()
      * @see #init()
      */
-    private static int combinationLength;
+    public static int combinationLength;
 
 
     /**
@@ -65,7 +65,8 @@ public class CombinationGame {
 
     /**
      * List that contains all the playable {@link GameMode}<br>
-     * This list should be filled in {@link #init()} to perform easy reinitialisation
+     * @see GameMode
+     * @see #init()
      */
     private List<GameMode> gameModes = new ArrayList<>();
 
@@ -77,7 +78,7 @@ public class CombinationGame {
      * Some attributes are initialised from a file</p>
      *
      *
-     * <p><b>This method really need to contains an initialisation of ALL the attributes that could change during the game<br>
+     * <p><b>This method really need to contain an initialisation of ALL the attributes that could change during the game<br>
      * in order to reinitialise the game just by using this method or at each game start</b></p>
      *
      * @see #updateAttributesFromFile()
@@ -163,11 +164,9 @@ public class CombinationGame {
             try {
                 OutputStream output = new FileOutputStream(path);
 
-                // set the class attributes and the properties default value
-                nbAllowedTry = 5;
-                combinationLength = 4;
-                prop.setProperty("nbAllowedTry", Integer.toString(nbAllowedTry));
-                prop.setProperty("combinationLength", Integer.toString(combinationLength));
+                // set default values
+                prop.setProperty("nbAllowedTry", Integer.toString(5));
+                prop.setProperty("combinationLength", Integer.toString(4));
 
                 // save properties to project root folder
                 prop.store(output, null);
@@ -222,12 +221,13 @@ public class CombinationGame {
     private void chooseMode() {
         String choice = sc.nextLine();
 
-        if (Pattern.matches("[0-9]+", choice) && choice.length() < 2) {
+        if (Pattern.matches("^[0-9]{1,2}$", choice)) {
             int intChoice = Integer.parseInt(choice);
 
             if (intChoice > 0 && intChoice <= gameModes.size()) {
                 GameMode selectedGameMode = gameModes.get(intChoice - 1);
                 selectedGameMode.start();
+                updateAttributesFromFile();
 
                 if(selectedGameMode.getLeaveApp()){
                     quit();
@@ -240,7 +240,7 @@ public class CombinationGame {
             }
         } else {
             System.out.println("Votre sélection n'est pas valide");
-            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size()+1) + " inclus");
+            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size()+1) + " inclus 1111");
         }
 
 
