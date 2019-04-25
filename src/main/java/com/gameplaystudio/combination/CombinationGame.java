@@ -33,7 +33,6 @@ public class CombinationGame { //TODO More logger info
      */
     private Scanner sc = new Scanner(System.in);
 
-
     /**
      * <p>This attribute represent the running state of the application<br>
      * It must be initialised to true at the start or the application will not start properly</p>
@@ -52,8 +51,6 @@ public class CombinationGame { //TODO More logger info
      * @see #init()
      */
     private List<GameMode> gameModes = new ArrayList<>();
-
-
 
 
     /**
@@ -140,6 +137,7 @@ public class CombinationGame { //TODO More logger info
     private void chooseMode() {
         String choice = sc.nextLine();
 
+        //Regex that check if the user choice is an positive int with 1 or 2 digits
         if (Pattern.matches("^[0-9]{1,2}$", choice)) {
             int intChoice = Integer.parseInt(choice);
 
@@ -158,7 +156,7 @@ public class CombinationGame { //TODO More logger info
             }
         } else {
             System.out.println("Votre sélection n'est pas valide");
-            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size()+1) + " inclus 1111");
+            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size()+1) + " inclus");
         }
 
 
