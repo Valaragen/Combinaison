@@ -20,6 +20,7 @@ public abstract class GameMode {
 
     protected void init() {
         run = true;
+        Config.updateSettingsFromFile();
     }
 
     public boolean start() {
@@ -58,6 +59,7 @@ public abstract class GameMode {
             switch (choice) {
                 case 1:
                     validChoice = true;
+                    Config.updateSettingsFromFile();
                     break;
                 case 2:
                     validChoice = true;

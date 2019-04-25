@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * @author Valaragen
  * @version 1.0
  */
-public class CombinationGame {
+public class CombinationGame { //TODO More logger info
 
     /**
      * Logger object from the log4j library
@@ -70,7 +70,6 @@ public class CombinationGame {
      * @see #start()
      */
     private void init() {
-        Config.updateSettingsFromFile();
         run = true;
         gameModes.clear();
         gameModes.add(new ModeChallenger());
@@ -147,7 +146,6 @@ public class CombinationGame {
             if (intChoice > 0 && intChoice <= gameModes.size()) {
                 GameMode selectedGameMode = gameModes.get(intChoice - 1);
                 selectedGameMode.start();
-                Config.updateSettingsFromFile();
 
                 if(selectedGameMode.getLeaveApp()){
                     quit();
