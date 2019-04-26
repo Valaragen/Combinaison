@@ -67,6 +67,7 @@ public class CombinationGame { //TODO More logger info
      * @see #start()
      */
     private void init() {
+        Config.updateSettingsFromFile();
         run = true;
         gameModes.clear();
         gameModes.add(new ModeChallenger());
