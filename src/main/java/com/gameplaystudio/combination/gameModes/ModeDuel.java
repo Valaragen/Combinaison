@@ -37,7 +37,7 @@ public class ModeDuel extends GameMode {
                 playerCombinationGuess = sc.nextLine();
 
                 if (Pattern.matches("^[0-9]+$", playerCombinationGuess) && playerCombinationGuess.length() == playerCombinationToFind.length()) {
-                    System.out.println("Votre proposition : " + playerCombinationGuess + " -> Réponse : " + showHint(playerCombinationToFind, playerCombinationGuess));
+                    System.out.println("Votre proposition : " + playerCombinationGuess + " -> Réponse : " + super.showHint(playerCombinationToFind, playerCombinationGuess));
                     nbTry++;
                     if (nbTry >= Config.nbAllowedTry) {
                         play = false;
@@ -48,7 +48,7 @@ public class ModeDuel extends GameMode {
                         win = true;
                     } else {
                         iaCombinationGuess = iaGuessNewCombination(iaCombinationGuess, iaCombinationToFind);
-                        System.out.println("L'ordinateur propose : " + iaCombinationGuess + " -> Réponse : " + showHint(iaCombinationToFind, iaCombinationGuess));
+                        System.out.println("L'ordinateur propose : " + iaCombinationGuess + " -> Réponse : " + super.showHint(iaCombinationToFind, iaCombinationGuess));
                         if (iaCombinationGuess.equals(iaCombinationToFind)) {
                             play = false;
                         }
@@ -120,22 +120,7 @@ public class ModeDuel extends GameMode {
     }
 
 
-    private String showHint(String str, String strToCompare) {
-        StringBuilder hintBuilder = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            int difference = str.charAt(i) - strToCompare.charAt(i);
-            if (difference == 0) {
-                hintBuilder.append("=");
-            } else if (difference < 0) {
-                hintBuilder.append("-");
-            } else {
-                hintBuilder.append("+");
-            }
-        }
-        return hintBuilder.toString();
-    }
-
-    private String iaGuessNewCombination(String combination, String combinationToFind) {
+    private String iaGuessNewCombination(String combination, String combinationToFind) {//TODO optimise this
         if (combination.length() != combinationToFind.length())
             return super.generateCombination();
 

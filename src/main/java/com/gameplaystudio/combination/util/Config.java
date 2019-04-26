@@ -50,8 +50,6 @@ public final class Config{
      * If the file is not found :<br>
      * The method create config.properties and write default values in it</p>
      *
-     * @throws NumberFormatException when a property value can't be parsed to an int
-     * @throws FileNotFoundException when the file do not exist for the specified path
      * @throws InvalidSettingsInFile when a property contains incorrect information
      * @see #nbAllowedTry
      * @see #combinationLength

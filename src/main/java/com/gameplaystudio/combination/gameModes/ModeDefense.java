@@ -1,6 +1,5 @@
 package com.gameplaystudio.combination.gameModes;
 
-import com.gameplaystudio.combination.CombinationGame;
 import com.gameplaystudio.combination.util.Config;
 
 import java.util.regex.Pattern;
@@ -44,7 +43,7 @@ public class ModeDefense extends GameMode {
                 String playerHint = sc.nextLine();
 
                 if (Pattern.matches("[=+-]+", playerHint) && playerHint.length() == Config.combinationLength) {
-                    iaCombinationGuess = iaGuessNewCombination(iaCombinationGuess, playerHint);
+                    iaCombinationGuess = iaGuessNewCombinationFromHint(iaCombinationGuess, playerHint);
                     System.out.println("L'ordinateur propose la combinaison : " + iaCombinationGuess);
 
                     nbTry++;
@@ -120,7 +119,7 @@ public class ModeDefense extends GameMode {
     }
 
 
-    private String iaGuessNewCombination(String combination, String hint) {
+    private String iaGuessNewCombinationFromHint(String combination, String hint) {
         if (combination.length() != hint.length())
             throw new IllegalArgumentException("combination and hint arguments must have the same length");//TODO handle this exceptions + add other Exception
 

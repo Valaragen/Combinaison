@@ -5,6 +5,17 @@ import com.gameplaystudio.combination.util.Config;
 
 import java.util.regex.Pattern;
 
+/**
+ * Sub-class of {@link GameMode}<br>
+ * In this Game Mode a combination is generated<br>
+ * The player has a limited number of try to find the generated combination<br>
+ * After each try the player receive an hint
+ * <i>The number of try and the number of digit in the combination are get from a setting file</i>
+ * @see #logic()
+ * @see #showHint(String, String)
+ * @see #generateCombination()
+ * @see Config
+ */
 public class ModeChallenger extends GameMode {
 
     @Override
@@ -31,7 +42,7 @@ public class ModeChallenger extends GameMode {
                 String combinationGuess = sc.nextLine();
 
                 if (Pattern.matches("^[0-9]+$", combinationGuess) && combinationGuess.length() == Config.combinationLength) {
-                    System.out.println("Proposition : " + combinationGuess + " -> Réponse : " + showHint(combinationToFind, combinationGuess));
+                    System.out.println("Proposition : " + combinationGuess + " -> Réponse : " + super.showHint(combinationToFind, combinationGuess));
                     nbTry++;
                     if (nbTry >= Config.nbAllowedTry) {
                         play = false;
@@ -76,19 +87,5 @@ public class ModeChallenger extends GameMode {
     }
 
 
-    private String showHint(String str, String strToCompare) {
-        StringBuilder hintBuilder = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            int difference = str.charAt(i) - strToCompare.charAt(i);
-            if (difference == 0) {
-                hintBuilder.append("=");
-            } else if (difference < 0) {
-                hintBuilder.append("-");
-            } else {
-                hintBuilder.append("+");
-            }
-        }
-        return hintBuilder.toString();
-    }
 
 }

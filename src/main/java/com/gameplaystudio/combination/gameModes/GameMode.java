@@ -6,6 +6,9 @@ import com.gameplaystudio.combination.util.Config;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * GameMode class is designed to be the superclass of all Game Modes
+ */
 public abstract class GameMode {
     /**
      * <p>This attribute represent the running state of the Game Mode<br>
@@ -33,15 +36,14 @@ public abstract class GameMode {
      * It return a string that represent the name of the Game Mode<br>
      * <i>This method must be override in every class that extends GameMode</i>
      *
-     * @return The name of the Game Mode as a String
+     * @return Return the name of the Game Mode as a String
      * @see GameMode
-     * @see String
      */
     public abstract String getModeName();
 
     /**
      * Getter for the {@link #leaveApp} boolean
-     * @return return <code>true</code> if the player want to leave the application else return <code>false</code>
+     * @return Return <code>true</code> if the player want to leave the application else return <code>false</code>
      * @see CombinationGame
      */
     public boolean getLeaveApp(){
@@ -152,7 +154,7 @@ public abstract class GameMode {
      * @see Config
      * @see Config#updateSettingsFromFile()
      */
-    public String generateCombination(){
+    protected String generateCombination(){
         StringBuilder combinationBuilder = new StringBuilder();
 
         for (int i = 0; i < Config.combinationLength; i++) {
@@ -160,6 +162,31 @@ public abstract class GameMode {
         }
 
         return combinationBuilder.toString();
+    }
+
+    /**
+     * Method that return an hint composed of '=','-' or '+' chars<br>
+     * = -> if the digit is correct<br>
+     * + -> if the digit to find is bigger<br>
+     * - -> if the digit to find is smaller
+     *
+     * @param str The combination to test
+     * @param strToCompare The combination to find
+     * @return Return the hint as a string
+     */
+    protected String showHint(String str, String strToCompare) {
+        StringBuilder hintBuilder = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            int difference = str.charAt(i) - strToCompare.charAt(i);
+            if (difference == 0) {
+                hintBuilder.append("=");
+            } else if (difference < 0) {
+                hintBuilder.append("-");
+            } else {
+                hintBuilder.append("+");
+            }
+        }
+        return hintBuilder.toString();
     }
 
 
