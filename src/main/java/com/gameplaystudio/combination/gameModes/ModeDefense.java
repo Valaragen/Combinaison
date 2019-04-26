@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class ModeDefense extends GameMode {
 
     @Override
-    public String getNameInMenu() {
+    public String getModeName() {
         return "Mode Defense";
     }
 
@@ -84,7 +84,7 @@ public class ModeDefense extends GameMode {
                 System.out.println("------------------------------------------------------------------");
             }
 
-            showReplayMenu();
+            super.showReplayMenu();
 
         }
     }
@@ -106,6 +106,9 @@ public class ModeDefense extends GameMode {
         return choice;
     }
 
+    /**
+     * Show indications about how the game should be played
+     */
     private void displayIndication(String combinationToShow) {
         System.out.println("------------------------------------------------------------------");
         System.out.println("L'ordinateur doit trouver votre combinaison : " + combinationToShow);

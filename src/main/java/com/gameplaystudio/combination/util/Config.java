@@ -9,9 +9,8 @@ import static com.gameplaystudio.combination.CombinationGame.logger;
 
 /**
  * This class contains all the configurable attributes of the game<br>
- * this class can't be instanced<br>
- * all the methods and attributes are statics<br>
- * in order to access them in the whole project<br>
+ * <i>this class can't be instanced</i><br>
+ * all the methods and attributes are statics in order to access them in the whole project<br>
  */
 public final class Config{
     /**
@@ -57,9 +56,9 @@ public final class Config{
      * @see #nbAllowedTry
      * @see #combinationLength
      */
-    public static void updateSettingsFromFile() {
+    public static void updateSettingsFromFile() { //TODO Add dev option XML ?
         logger.info("Update settings");
-        
+
         String path = configPath + configFileName;
         var nbAllowedTryMin = 1;
         var combinationLengthMin = 1;

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class ModeDuel extends GameMode {
 
     @Override
-    public String getNameInMenu() {
+    public String getModeName() {
         return "Mode Duel";
     }
 
@@ -83,7 +83,7 @@ public class ModeDuel extends GameMode {
                 System.out.println("------------------------------------------------------------------");
             }
 
-            showReplayMenu();
+            super.showReplayMenu();
         }
     }
 
@@ -106,6 +106,9 @@ public class ModeDuel extends GameMode {
         return choice;
     }
 
+    /**
+     * Show indications about how the game should be played
+     */
     private void displayIndication() {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Devinez la combinaison secrète de l'ordinateur avant qu'il ne trouve la vôtre !");

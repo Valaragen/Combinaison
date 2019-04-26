@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class ModeChallenger extends GameMode {
 
     @Override
-    public String getNameInMenu() {
+    public String getModeName() {
         return "Mode Challenger";
     }
 
@@ -58,11 +58,14 @@ public class ModeChallenger extends GameMode {
                 System.out.println("------------------------------------------------------------------");
             }
 
-            showReplayMenu();
+            super.showReplayMenu();
 
         }
     }
 
+    /**
+     * Show indications about how the game should be played
+     */
     private void displayIndication() {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Tappez une combinsaison à " + Config.combinationLength + " chiffres");

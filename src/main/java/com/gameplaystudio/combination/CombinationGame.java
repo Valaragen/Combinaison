@@ -98,7 +98,7 @@ public class CombinationGame { //TODO More logger info
     }
 
     /**
-     * Method that set {@link #run} to false in order to leave the game
+     * Method that set {@link #run} to false in order to leave the application
      */
     private void quit() {
         run = false;
@@ -106,9 +106,7 @@ public class CombinationGame { //TODO More logger info
 
 
     /**
-     * Display the menu by iterate through {@link #gameModes}
-     *
-     * @see java.util.List
+     * Display the menu by iterating through {@link #gameModes}
      */
     private void displayMenu() {
         System.out.println("------------------------------------------------------------------");
@@ -118,7 +116,7 @@ public class CombinationGame { //TODO More logger info
 
         int selectionNumber = 1;
         for (GameMode gameMode : gameModes) {
-            System.out.println(selectionNumber + ". " + gameMode.getNameInMenu());
+            System.out.println(selectionNumber + ". " + gameMode.getModeName());
             selectionNumber++;
         }
 
@@ -131,7 +129,7 @@ public class CombinationGame { //TODO More logger info
      * Display indications when the selection is not valid
      * It also set run to false if player want to leave the application from a GameMode
      *
-     * @see GameMode#start() GameMode.start()
+     * @see GameMode#start()
      * @see GameMode#getLeaveApp()
      * @see #quit()
      */
