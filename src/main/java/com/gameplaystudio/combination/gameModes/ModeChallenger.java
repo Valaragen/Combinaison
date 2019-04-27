@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * Sub-class of {@link GameMode}<br>
  * In this Game Mode a combination is generated<br>
- * The player has a limited number of try to find the generated combination<br>
+ * The player has a limited number of tries to find the generated combination<br>
  * After each try the player receive an hint
  * <i>The number of try and the number of digit in the combination are get from a setting file</i>
  * @see #logic()

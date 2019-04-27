@@ -4,6 +4,17 @@ import com.gameplaystudio.combination.util.Config;
 
 import java.util.regex.Pattern;
 
+/**
+ * Sub-class of {@link GameMode}<br>
+ * In this Game Mode the player choose a combination<br>
+ * The player help the ia finding the combination by giving hints
+ * The player has a limited number of tries to help the ia finding the combination<br>
+ * <i>The number of try and the number of digit in the combination are get from a setting file</i>
+ * @see #logic()
+ * @see #iaGuessNewCombinationFromHint(String, String)
+ * @see #chooseCombination()
+ * @see Config
+ */
 public class ModeDefense extends GameMode {
 
     @Override
@@ -88,6 +99,24 @@ public class ModeDefense extends GameMode {
         }
     }
 
+    /**
+     * Show indications about how the game should be played
+     */
+    private void displayIndication(String combinationToShow) {
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("L'ordinateur doit trouver votre combinaison : " + combinationToShow);
+        System.out.println("Pour l'aider il va falloir lui donner un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)");
+        System.out.println("'=' -> le chiffre est bon");
+        System.out.println("'+' -> le chiffre à trouver est plus grand");
+        System.out.println("'-' -> le chiffre à trouver est plus petit");
+        System.out.println("------------------------------------------------------------------");
+    }
+
+    /**
+     * This method ask the player to enter a valid combination<br>
+     * It return the choice of the player when the combination match the requirements<br>
+     * @return Return the player combination as a string
+     */
     private String chooseCombination() {
         boolean validChoice = false;
         String choice;
@@ -106,20 +135,16 @@ public class ModeDefense extends GameMode {
     }
 
     /**
-     * Show indications about how the game should be played
+     * This method use a combination and a hint and return a new combination based of the hint given<br>
+     * The hint is composed of '=','-' or '+' chars<br>
+     * = -> the digit will stay the same<br>
+     * + -> the digit will increment<br>
+     * - -> the digit will decrement
+     * @param combination Combination to change as a String
+     * @param hint String of the hint to change the combination
+     * @return Return the new combination as a String
      */
-    private void displayIndication(String combinationToShow) {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("L'ordinateur doit trouver votre combinaison : " + combinationToShow);
-        System.out.println("Pour l'aider il va falloir lui donner un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)");
-        System.out.println("'=' -> le chiffre est bon");
-        System.out.println("'+' -> le chiffre à trouver est plus grand");
-        System.out.println("'-' -> le chiffre à trouver est plus petit");
-        System.out.println("------------------------------------------------------------------");
-    }
-
-
-    private String iaGuessNewCombinationFromHint(String combination, String hint) {
+    private String iaGuessNewCombinationFromHint(String combination, String hint) { //TODO enhance the ia
         if (combination.length() != hint.length())
             throw new IllegalArgumentException("combination and hint arguments must have the same length");//TODO handle this exceptions + add other Exception
 

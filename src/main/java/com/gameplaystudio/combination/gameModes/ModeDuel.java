@@ -87,6 +87,24 @@ public class ModeDuel extends GameMode {
         }
     }
 
+    /**
+     * Show indications about how the game should be played
+     */
+    private void displayIndication() {
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("Devinez la combinaison secrète de l'ordinateur avant qu'il ne trouve la vôtre !");
+        System.out.println("Tappez une combinsaison à " + Config.combinationLength + " chiffres");
+        System.out.println("'=' -> le chiffre est bon");
+        System.out.println("'+' -> le chiffre à trouver est plus grand");
+        System.out.println("'-' -> le chiffre à trouver est plus petit");
+        System.out.println("------------------------------------------------------------------");
+    }
+
+    /**
+     * This method ask the player to enter a valid combination<br>
+     * It return the choice of the player when the combination match the requirements<br>
+     * @return Return the player combination as a string
+     */
     private String chooseCombination() {
         boolean validChoice = false;
         String choice;
@@ -107,19 +125,15 @@ public class ModeDuel extends GameMode {
     }
 
     /**
-     * Show indications about how the game should be played
+     * This method take a combination and return a new combination which closer to the combination to find<br>
+     * The hint is composed of '=','-' or '+' chars<br>
+     * = -> the digit will stay the same<br>
+     * + -> the digit will increment<br>
+     * - -> the digit will decrement
+     * @param combination Combination to change as a String
+     * @param combinationToFind Combination to find as a String
+     * @return Return the new combination as a String
      */
-    private void displayIndication() {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Devinez la combinaison secrète de l'ordinateur avant qu'il ne trouve la vôtre !");
-        System.out.println("Tappez une combinsaison à " + Config.combinationLength + " chiffres");
-        System.out.println("'=' -> le chiffre est bon");
-        System.out.println("'+' -> le chiffre à trouver est plus grand");
-        System.out.println("'-' -> le chiffre à trouver est plus petit");
-        System.out.println("------------------------------------------------------------------");
-    }
-
-
     private String iaGuessNewCombination(String combination, String combinationToFind) {//TODO optimise this
         if (combination.length() != combinationToFind.length())
             return super.generateCombination();
