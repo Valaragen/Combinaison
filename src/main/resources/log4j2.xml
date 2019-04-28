@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5p %C{2} (%F:%L) - %m%n"/>
+        </Console>
+        <File name="FILE" fileName="log/trace.log" append="false">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.gameplaystudio.combination.CombinationGame" level="WARN">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+
+        <Root level="ERROR">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>

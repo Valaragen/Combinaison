@@ -1,12 +1,12 @@
 package com.gameplaystudio.combination;
 
-import com.gameplaystudio.Main;
 import com.gameplaystudio.combination.gameModes.GameMode;
 import com.gameplaystudio.combination.gameModes.ModeChallenger;
 import com.gameplaystudio.combination.gameModes.ModeDefense;
 import com.gameplaystudio.combination.gameModes.ModeDuel;
 import com.gameplaystudio.combination.util.Config;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -16,17 +16,16 @@ import java.util.regex.Pattern;
  *
  * <p>To run the game you just need to initialise a CombinationGame object and use {@link #start()}</p>
  *
- * @see GameMode
- *
  * @author Valaragen
  * @version 1.0
+ * @see GameMode
  */
 public class CombinationGame { //TODO More logger info
 
     /**
      * Logger object from the log4j library
      */
-    public final static Logger logger = Logger.getLogger(CombinationGame.class);
+    public static final Logger logger = LogManager.getLogger(CombinationGame.class);
 
     /**
      * Scanner object used to get user inputs
@@ -47,6 +46,7 @@ public class CombinationGame { //TODO More logger info
 
     /**
      * List that contains all the playable {@link GameMode}<br>
+     *
      * @see GameMode
      * @see #init()
      */
@@ -82,7 +82,9 @@ public class CombinationGame { //TODO More logger info
     public void start() {
         init();
         while (run) {
+            logger.trace("Enter the logic method");
             logic();
+            logger.trace("Leave CombinationGame logic");
         }
     }
 
@@ -144,18 +146,18 @@ public class CombinationGame { //TODO More logger info
                 GameMode selectedGameMode = gameModes.get(intChoice - 1);
                 selectedGameMode.start();
 
-                if(selectedGameMode.getLeaveApp()){
+                if (selectedGameMode.getLeaveApp()) {
                     quit();
                 }
             } else if (intChoice == gameModes.size() + 1) {
                 quit();
             } else {
                 System.out.println("Votre sélection n'est pas valide");
-                System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size()+1) + " inclus");
+                System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus");
             }
         } else {
             System.out.println("Votre sélection n'est pas valide");
-            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size()+1) + " inclus");
+            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus");
         }
 
 

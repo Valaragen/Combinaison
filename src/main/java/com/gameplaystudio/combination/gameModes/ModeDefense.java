@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
  * The player help the ia finding the combination by giving hints
  * The player has a limited number of tries to help the ia finding the combination<br>
  * <i>The number of try and the number of digit in the combination are get from a setting file</i>
+ *
  * @see #logic()
  * @see #iaGuessNewCombinationFromHint(String, String)
  * @see #chooseCombination()
@@ -50,7 +51,7 @@ public class ModeDefense extends GameMode {
                 System.out.println("L'ordinateur à proposé | " + iaCombinationGuess + " |");
             }
 
-            while (play) {//TODO option pour quitter ? Option pour afficher les indications?
+            while (play) {
                 String playerHint = sc.nextLine();
 
                 if (Pattern.matches("[=+-]+", playerHint) && playerHint.length() == Config.combinationLength) {
@@ -82,7 +83,7 @@ public class ModeDefense extends GameMode {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("L'ordinateur à réussi à trouver votre combinaison secrète!");
                 System.out.println("Vos indications ont été éfficaces");
-                System.out.println("L'ordinateur à mis " + nbTry + " éssai" + (nbTry>1?"s":""));
+                System.out.println("L'ordinateur à mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
                 System.out.println("La combinaison était  | " + playerCombination + " |");
                 System.out.println("------------------------------------------------------------------");
             } else {
@@ -115,6 +116,7 @@ public class ModeDefense extends GameMode {
     /**
      * This method ask the player to enter a valid combination<br>
      * It return the choice of the player when the combination match the requirements<br>
+     *
      * @return Return the player combination as a string
      */
     private String chooseCombination() {
@@ -140,8 +142,9 @@ public class ModeDefense extends GameMode {
      * = -> the digit will stay the same<br>
      * + -> the digit will increment<br>
      * - -> the digit will decrement
+     *
      * @param combination Combination to change as a String
-     * @param hint String of the hint to change the combination
+     * @param hint        String of the hint to change the combination
      * @return Return the new combination as a String
      */
     private String iaGuessNewCombinationFromHint(String combination, String hint) { //TODO enhance the ia

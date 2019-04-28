@@ -1,7 +1,8 @@
 package com.gameplaystudio.combination.util;
 
 import com.gameplaystudio.combination.util.exceptions.InvalidSettingsInFile;
-import org.apache.log4j.Level;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 
 import java.io.*;
 import java.util.Properties;
@@ -13,15 +14,15 @@ import static com.gameplaystudio.combination.CombinationGame.logger;
  * <i>this class can't be instanced</i><br>
  * all the methods and attributes are statics in order to access them in the whole project<br>
  */
-public final class Config{
+public final class Config {
     /**
-     *Name of the config file
+     * Name of the config file
      */
-    private final static String configFileName = "config.properties";
+    private static final String configFileName = "config.properties";
     /**
      * Path to the config folder
      */
-    private final static String configPath = System.getProperty("user.dir") + "/";
+    private static final String configPath = System.getProperty("user.dir") + "/";
 
     /**
      * Attribute used to set the number of allowed try in a game mode with a limited number of tries<br>
@@ -51,8 +52,8 @@ public final class Config{
     /**
      * Private constructor to block instantiation
      */
-    private Config()
-    {}
+    private Config() {
+    }
 
     /**
      * <p>Method that check for the file config.properties at the Root of the project</p>
@@ -65,7 +66,7 @@ public final class Config{
      * @see #nbAllowedTry
      * @see #combinationLength
      */
-    public static void updateSettingsFromFile() { //TODO Add dev option XML ?
+    public static void updateSettingsFromFile() {
         logger.trace("Update settings");
 
         String path = configPath + configFileName;
@@ -85,30 +86,31 @@ public final class Config{
             int temp_combinationLength = Integer.parseInt(prop.getProperty("combinationLength"));
             boolean temp_devMode = Boolean.parseBoolean(prop.getProperty("devMode"));
 
-            if(temp_combinationLength >= combinationLengthMin && temp_combinationLength <= combinationLengthMax && temp_nbAllowedTry >= nbAllowedTryMin){
+            if (temp_combinationLength >= combinationLengthMin && temp_combinationLength <= combinationLengthMax && temp_nbAllowedTry >= nbAllowedTryMin) {
                 nbAllowedTry = temp_nbAllowedTry;
                 combinationLength = temp_combinationLength;
             } else {
                 throw new InvalidSettingsInFile();
             }
 
-            if (temp_devMode != devMode){
-                if (temp_devMode){
+            if (temp_devMode != devMode) {
+                if (temp_devMode) {
+                    Configurator.setLevel(logger.getName(), Level.DEBUG);
                     logger.info("Dev mode has been enabled");
-                    logger.setLevel(Level.DEBUG);
                 } else {
-                    logger.setLevel(Level.WARN);
                     logger.info("Dev mode has been disabled");
+                    Configurator.setLevel(logger.getName(), Level.WARN);
                 }
+                devMode = temp_devMode;
             }
 
-            logger.info("Settings has been updated from file");
+            logger.info("Settings has been updated from " + configFileName);
 
-        } catch (NumberFormatException | InvalidSettingsInFile | FileNotFoundException e){
-            if (e instanceof FileNotFoundException){
+        } catch (NumberFormatException | InvalidSettingsInFile | FileNotFoundException e) {
+            if (e instanceof FileNotFoundException) {
                 logger.warn("Unable to find " + configFileName);
                 logger.warn("Creating " + path + " with default parameters");
-            } else{
+            } else {
                 logger.warn(configFileName + " contains incorrect parameters");
                 logger.warn("Combination length min:" + combinationLengthMin + " max:" + combinationLengthMax + " nbTryAllowed min:" + nbAllowedTryMin + " devMode = true or false");
             }
@@ -129,13 +131,13 @@ public final class Config{
 
                 prop.load(input);
 
-                logger.warn("Settings file has been reset");
+                logger.warn(configFileName + " has been reset");
 
             } catch (IOException io) {
                 logger.error("Unhandled exception : Config file " + path + " can't be created");
             }
 
-        } catch (IOException io){
+        } catch (IOException io) {
             logger.fatal("An unhandled exception has occurred");
             io.printStackTrace();
         }

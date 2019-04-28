@@ -2,6 +2,7 @@ package com.gameplaystudio.combination.gameModes;
 
 import com.gameplaystudio.combination.CombinationGame;
 import com.gameplaystudio.combination.util.Config;
+import org.apache.logging.log4j.Logger;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -10,6 +11,10 @@ import java.util.Scanner;
  * GameMode class is designed to be the superclass of all Game Modes
  */
 public abstract class GameMode {
+    /**
+     * Set the logger used for all GameMode child
+     */
+    protected final Logger logger = CombinationGame.logger;
     /**
      * <p>This attribute represent the running state of the Game Mode<br>
      * It must be initialised to true at the start or the Game Mode will not start properly</p>
@@ -43,10 +48,11 @@ public abstract class GameMode {
 
     /**
      * Getter for the {@link #leaveApp} boolean
+     *
      * @return Return <code>true</code> if the player want to leave the application else return <code>false</code>
      * @see CombinationGame
      */
-    public boolean getLeaveApp(){
+    public boolean getLeaveApp() {
         return leaveApp;
     }
 
@@ -120,9 +126,9 @@ public abstract class GameMode {
             System.out.println("1.Rejouer");
             System.out.println("2.Retourner au menu");
             System.out.println("3.Quitter l'application");
-            try{
+            try {
                 choice = sc.nextByte();//TODO Optimise handle typing error
-            }catch(InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.err.println("Votre sélection n'est pas valide");
             }
 
@@ -154,11 +160,11 @@ public abstract class GameMode {
      * @see Config
      * @see Config#updateSettingsFromFile()
      */
-    protected String generateCombination(){
+    protected String generateCombination() {
         StringBuilder combinationBuilder = new StringBuilder();
 
         for (int i = 0; i < Config.combinationLength; i++) {
-            combinationBuilder.append((int)(Math.random() * 10));
+            combinationBuilder.append((int) (Math.random() * 10));
         }
 
         return combinationBuilder.toString();
@@ -170,7 +176,7 @@ public abstract class GameMode {
      * + -> if the digit to find is bigger<br>
      * - -> if the digit to find is smaller
      *
-     * @param str The combination to test
+     * @param str          The combination to test
      * @param strToCompare The combination to find
      * @return Return the hint as a string
      */

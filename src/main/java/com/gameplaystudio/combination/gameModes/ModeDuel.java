@@ -1,6 +1,5 @@
 package com.gameplaystudio.combination.gameModes;
 
-import com.gameplaystudio.combination.CombinationGame;
 import com.gameplaystudio.combination.util.Config;
 
 import java.util.regex.Pattern;
@@ -12,6 +11,7 @@ import java.util.regex.Pattern;
  * After each try the player and the computer receive an hint<br>
  * If the player find the combination before the computer he win<br>
  * <i>The number of try and the number of digit in the combination are get from a setting file</i>
+ *
  * @see #logic()
  * @see #showHint(String, String)
  * @see #generateCombination()
@@ -30,7 +30,7 @@ public class ModeDuel extends GameMode {
         System.out.println("Bienvenue dans le mode Duel");
         while (run) {
             String playerCombinationToFind = super.generateCombination();
-            CombinationGame.logger.debug("(Combinaison secrète de l'ordinateur : " + playerCombinationToFind + ")");//TODO add a dev condition
+            logger.debug("(Combinaison secrète de l'ordinateur : " + playerCombinationToFind + ")");
 
             String iaCombinationToFind = chooseCombination();
             System.out.println("------------------------------------------------------------------");
@@ -74,14 +74,14 @@ public class ModeDuel extends GameMode {
             if (win) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("Bravo vous avez trouvé la combinaison avant l'ordinateur !");
-                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry>1?"s":""));
+                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
                 System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
                 System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
                 System.out.println("------------------------------------------------------------------");
             } else if (iaCombinationGuess.equals(iaCombinationToFind)) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("Dommage l'ordinateur a trouvé la combinaison avant vous...");
-                System.out.println("L'ordinateur a mis " + nbTry + " éssai" + (nbTry>1?"s":""));
+                System.out.println("L'ordinateur a mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
                 System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
                 System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
                 System.out.println("------------------------------------------------------------------");
@@ -115,6 +115,7 @@ public class ModeDuel extends GameMode {
     /**
      * This method ask the player to enter a valid combination<br>
      * It return the choice of the player when the combination match the requirements<br>
+     *
      * @return Return the player combination as a string
      */
     private String chooseCombination() {
@@ -142,7 +143,8 @@ public class ModeDuel extends GameMode {
      * = -> the digit will stay the same<br>
      * + -> the digit will increment<br>
      * - -> the digit will decrement
-     * @param combination Combination to change as a String
+     *
+     * @param combination       Combination to change as a String
      * @param combinationToFind Combination to find as a String
      * @return Return the new combination as a String
      */

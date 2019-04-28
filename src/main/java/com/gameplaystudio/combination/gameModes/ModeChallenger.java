@@ -1,6 +1,5 @@
 package com.gameplaystudio.combination.gameModes;
 
-import com.gameplaystudio.combination.CombinationGame;
 import com.gameplaystudio.combination.util.Config;
 
 import java.util.regex.Pattern;
@@ -11,6 +10,7 @@ import java.util.regex.Pattern;
  * The player has a limited number of tries to find the generated combination<br>
  * After each try the player receive an hint
  * <i>The number of try and the number of digit in the combination are get from a setting file</i>
+ *
  * @see #logic()
  * @see #showHint(String, String)
  * @see #generateCombination()
@@ -30,7 +30,7 @@ public class ModeChallenger extends GameMode {
 
         while (run) {
             String combinationToFind = super.generateCombination();
-            CombinationGame.logger.debug("(Combinaison secrète : " + combinationToFind + ")");
+            logger.debug("(Combinaison secrète : " + combinationToFind + ")");
 
             boolean play = true;
             boolean win = false;
@@ -59,7 +59,7 @@ public class ModeChallenger extends GameMode {
             if (win) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("Bravo vous avez trouvé la combinaison !");
-                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry>1?"s":""));
+                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
                 System.out.println("La combinaison était  | " + combinationToFind + " |");
                 System.out.println("------------------------------------------------------------------");
             } else {
@@ -85,7 +85,6 @@ public class ModeChallenger extends GameMode {
         System.out.println("'-' -> le chiffre à trouver est plus petit");
         System.out.println("------------------------------------------------------------------");
     }
-
 
 
 }
