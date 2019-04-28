@@ -26,7 +26,7 @@ public class CombinationGame { //TODO More logger info
     /**
      * Logger object from the log4j library
      */
-    public final static Logger logger = Logger.getLogger(Main.class);
+    public final static Logger logger = Logger.getLogger(CombinationGame.class);
 
     /**
      * Scanner object used to get user inputs

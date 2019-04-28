@@ -1,8 +1,6 @@
 package com.gameplaystudio;
 
 import com.gameplaystudio.combination.CombinationGame;
-import com.gameplaystudio.combination.gameModes.GameMode;
-import com.gameplaystudio.combination.gameModes.ModeDuel;
 
 public class Main {
 

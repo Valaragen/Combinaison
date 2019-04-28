@@ -5,6 +5,18 @@ import com.gameplaystudio.combination.util.Config;
 
 import java.util.regex.Pattern;
 
+/**
+ * Sub-class of {@link GameMode}<br>
+ * In this Game Mode a combination is generated for the computer and the player choose a combination<br>
+ * The player and the computer have a limited number of tries to find the combination of the other<br>
+ * After each try the player and the computer receive an hint<br>
+ * If the player find the combination before the computer he win<br>
+ * <i>The number of try and the number of digit in the combination are get from a setting file</i>
+ * @see #logic()
+ * @see #showHint(String, String)
+ * @see #generateCombination()
+ * @see Config
+ */
 public class ModeDuel extends GameMode {
 
     @Override
