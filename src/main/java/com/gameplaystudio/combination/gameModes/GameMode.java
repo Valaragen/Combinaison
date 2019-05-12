@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * GameMode class is designed to be the superclass of all Game Modes
@@ -91,7 +92,7 @@ public abstract class GameMode {
      *
      * @see #stop()
      */
-    protected abstract void logic(); //TODO Display the number of tries that last
+    protected abstract void logic();
 
     /**
      * Method that set {@link #run} to false in order to leave the current GameMode
@@ -120,35 +121,39 @@ public abstract class GameMode {
      */
     protected void showReplayMenu() {
         boolean validChoice = false;
-        int choice = 0;
+        String choice = "";
         while (!validChoice) {
             System.out.println("Souhaitez vous rejouer ?");
             System.out.println("1.Rejouer");
             System.out.println("2.Retourner au menu");
             System.out.println("3.Quitter l'application");
-            try {
-                choice = sc.nextByte();//TODO Optimise handle typing error
-            } catch (InputMismatchException e) {
-                System.err.println("Votre sélection n'est pas valide");
-            }
 
-            switch (choice) {
-                case 1:
-                    validChoice = true;
-                    Config.updateSettingsFromFile();
-                    break;
-                case 2:
-                    validChoice = true;
-                    stop();
-                    break;
-                case 3:
-                    validChoice = true;
-                    leaveApp();
-                    break;
-                default:
-                    System.out.println("Votre séléction n'est pas valide");
+            choice = sc.nextLine();
+
+            //Regex that check if the user choice is an positive int with 1 digit
+            if (Pattern.matches("^[0-9]$", choice)) {
+                switch (choice) {
+                    case "1":
+                        validChoice = true;
+                        Config.updateSettingsFromFile();
+                        break;
+                    case "2":
+                        validChoice = true;
+                        stop();
+                        break;
+                    case "3":
+                        validChoice = true;
+                        leaveApp();
+                        break;
+                    default:
+                        System.out.println("Votre sélection n'est pas valide");
+                        System.out.println("Veuillez choisir un entier compris entre 1 et 3 inclus");
+                        break;
+                }
+            } else {
+                System.out.println("Votre sélection n'est pas valide");
+                System.out.println("Veuillez choisir un entier compris entre 1 et 3 inclus");
             }
-            sc.nextLine();
         }
     }
 

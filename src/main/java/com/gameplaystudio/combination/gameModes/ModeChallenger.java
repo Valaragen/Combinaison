@@ -41,9 +41,9 @@ public class ModeChallenger extends GameMode {
             while (play) {
                 String combinationGuess = sc.nextLine();
 
-                if (Pattern.matches("^[0-9]+$", combinationGuess) && combinationGuess.length() == Config.combinationLength) {
-                    System.out.println("Proposition : " + combinationGuess + " -> Réponse : " + super.showHint(combinationToFind, combinationGuess));
+                if (combinationGuess.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", combinationGuess)) {
                     nbTry++;
+                    System.out.println("Essai " + nbTry + "/" + Config.nbAllowedTry + " | Proposition : " + combinationGuess + " -> Réponse : " + super.showHint(combinationToFind, combinationGuess));
                     if (nbTry >= Config.nbAllowedTry) {
                         play = false;
                     }
@@ -56,18 +56,16 @@ public class ModeChallenger extends GameMode {
                 }
             }
 
+            System.out.println("------------------------------------------------------------------");
+
             if (win) {
-                System.out.println("------------------------------------------------------------------");
                 System.out.println("Bravo vous avez trouvé la combinaison !");
                 System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
-                System.out.println("La combinaison était  | " + combinationToFind + " |");
-                System.out.println("------------------------------------------------------------------");
             } else {
-                System.out.println("------------------------------------------------------------------");
                 System.out.println("Dommage vous avez dépassé les " + Config.nbAllowedTry + " éssais autorisés !");
-                System.out.println("La combinaison était | " + combinationToFind + " |");
-                System.out.println("------------------------------------------------------------------");
             }
+            System.out.println("La combinaison était | " + combinationToFind + " |");
+            System.out.println("------------------------------------------------------------------");
 
             super.showReplayMenu();
 

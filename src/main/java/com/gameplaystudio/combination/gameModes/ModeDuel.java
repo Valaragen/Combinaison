@@ -40,30 +40,31 @@ public class ModeDuel extends GameMode {
             String playerCombinationGuess;
             String iaCombinationGuess = "";
             boolean play = true;
-            boolean win = false;
+            boolean playerWin = false;
+            boolean computerWin = false;
             int nbTry = 0;
 
             displayIndication();
 
-            while (play) {//TODO Same number of tries
+            while (play) {
                 playerCombinationGuess = sc.nextLine();
 
-                if (Pattern.matches("^[0-9]+$", playerCombinationGuess) && playerCombinationGuess.length() == playerCombinationToFind.length()) {
-                    System.out.println("Votre proposition : " + playerCombinationGuess + " -> Réponse : " + super.showHint(playerCombinationToFind, playerCombinationGuess));
+                if (playerCombinationGuess.length() == playerCombinationToFind.length() && Pattern.matches("^[0-9]+$", playerCombinationGuess)) {
                     nbTry++;
+                    System.out.println("Essai " + nbTry + "/" + Config.nbAllowedTry + " | Votre proposition : " + playerCombinationGuess + " -> Réponse : " + super.showHint(playerCombinationToFind, playerCombinationGuess));
                     if (nbTry >= Config.nbAllowedTry) {
                         play = false;
                     }
 
                     if (playerCombinationGuess.equals(playerCombinationToFind)) {
                         play = false;
-                        win = true;
-                    } else {
-                        iaCombinationGuess = iaGuessNewCombination(iaCombinationGuess, iaCombinationToFind);
-                        System.out.println("L'ordinateur propose : " + iaCombinationGuess + " -> Réponse : " + super.showHint(iaCombinationToFind, iaCombinationGuess));
-                        if (iaCombinationGuess.equals(iaCombinationToFind)) {
-                            play = false;
-                        }
+                        playerWin = true;
+                    }
+                    iaCombinationGuess = iaGuessNewCombination(iaCombinationGuess, iaCombinationToFind);
+                    System.out.println("Essai " + nbTry + "/" + Config.nbAllowedTry + " | L'ordinateur propose : " + iaCombinationGuess + " -> Réponse : " + super.showHint(iaCombinationToFind, iaCombinationGuess));
+                    if (iaCombinationGuess.equals(iaCombinationToFind)) {
+                        play = false;
+                        computerWin = true;
                     }
                 } else {
                     System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + playerCombinationToFind.length() + " chiffres");
@@ -71,29 +72,26 @@ public class ModeDuel extends GameMode {
 
             }
 
-            if (win) {
-                System.out.println("------------------------------------------------------------------");
-                System.out.println("Bravo vous avez trouvé la combinaison avant l'ordinateur !");
-                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
-                System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
-                System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
-                System.out.println("------------------------------------------------------------------");
-            } else if (iaCombinationGuess.equals(iaCombinationToFind)) {
-                System.out.println("------------------------------------------------------------------");
-                System.out.println("Dommage l'ordinateur a trouvé la combinaison avant vous...");
-                System.out.println("L'ordinateur a mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
-                System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
-                System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
-                System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
 
+            if (computerWin && playerWin){
+                System.out.println("Égalité ! l'ordinateur et vous avez trouvé vos combinaisons respectives");
+                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
+            } else if (playerWin) {
+                System.out.println("Bravo, vous avez trouvé la combinaison avant l'ordinateur !");
+                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
+            } else if (computerWin) {
+                System.out.println("Dommage, l'ordinateur a trouvé la combinaison avant vous...");
+                System.out.println("L'ordinateur a mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
             } else {
-                System.out.println("------------------------------------------------------------------");
                 System.out.println("Dommage vous avez dépassé les " + Config.nbAllowedTry + " éssais autorisés !");
                 System.out.println("Ni vous ni l'ordinateur n'avez réussi à trouver la combinaison de l'autre");
-                System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
-                System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
-                System.out.println("------------------------------------------------------------------");
             }
+
+            System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
+            System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
+            System.out.println("------------------------------------------------------------------");
+
 
             super.showReplayMenu();
         }
