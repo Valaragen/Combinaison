@@ -26,7 +26,7 @@ public class ModeDefense extends GameMode {
     @Override
     protected void logic() {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le mode défense");
+        System.out.println("Bienvenue dans le mode Défense");
 
         while (run) {
             String playerCombination = chooseCombination();

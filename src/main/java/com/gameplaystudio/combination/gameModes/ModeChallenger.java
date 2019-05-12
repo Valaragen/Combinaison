@@ -26,7 +26,7 @@ public class ModeChallenger extends GameMode {
     @Override
     protected void logic() {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le mode challenger");
+        System.out.println("Bienvenue dans le mode Challenger");
 
         while (run) {
             String combinationToFind = super.generateCombination();

@@ -91,7 +91,7 @@ public abstract class GameMode {
      *
      * @see #stop()
      */
-    protected abstract void logic();
+    protected abstract void logic(); //TODO Display the number of tries that last
 
     /**
      * Method that set {@link #run} to false in order to leave the current GameMode

@@ -45,7 +45,7 @@ public class ModeDuel extends GameMode {
 
             displayIndication();
 
-            while (play) {
+            while (play) {//TODO Same number of tries
                 playerCombinationGuess = sc.nextLine();
 
                 if (Pattern.matches("^[0-9]+$", playerCombinationGuess) && playerCombinationGuess.length() == playerCombinationToFind.length()) {
