@@ -23,6 +23,8 @@ public class ModeDefense extends GameMode {
         return "Mode Defense";
     }
 
+
+
     @Override
     protected void logic() {
         System.out.println("------------------------------------------------------------------");
@@ -34,9 +36,9 @@ public class ModeDefense extends GameMode {
             System.out.println("Très bon choix !");
             System.out.println("Votre combinaison secrète est | " + playerCombination + " |");
 
-            boolean play = true;
-            boolean win = false;
-            int nbTry = 1;
+            boolean play = true;// TODO change name
+            boolean win = false;// TODO hasWin
+            int nbTry = 1;// TODO nbAttempt
 
             String iaCombinationGuess = super.generateCombination();
 

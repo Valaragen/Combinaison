@@ -28,6 +28,7 @@ public class ModeDuel extends GameMode {
     protected void logic() {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Bienvenue dans le mode Duel");
+
         while (run) {
             String playerCombinationToFind = super.generateCombination();
             logger.debug("(Combinaison secrète de l'ordinateur : " + playerCombinationToFind + ")");
@@ -46,7 +47,7 @@ public class ModeDuel extends GameMode {
 
             displayIndication();
 
-            while (play) {
+            while (play) { // TODO Cacher la combinaison secrete pour la machine
                 playerCombinationGuess = sc.nextLine();
 
                 if (playerCombinationGuess.length() == playerCombinationToFind.length() && Pattern.matches("^[0-9]+$", playerCombinationGuess)) {

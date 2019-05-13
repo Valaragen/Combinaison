@@ -26,15 +26,17 @@ public abstract class GameMode {
      * @see #stop()
      * @see GameMode
      */
-    boolean run;
+    boolean run; // TODO isRunning
     /**
      * Boolean that represent the will to leave the app
      */
-    private boolean leaveApp = false;
+    private boolean leaveApp = false; // TODO change variable name
     /**
      * Scanner object used to get user inputs
      */
-    Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in); //TODO scanner
+
+    //TODO add combinationGuess et la renommer humanGuess, computerGuess, secretGuess
 
     /**
      * Getter for the name of the GameMode<br>
@@ -77,7 +79,7 @@ public abstract class GameMode {
      * Method used to start the program<br>
      * It initialise the attributes attributes through {@link #init()} and run the logic of the game through {@link #logic()}
      */
-    public void start() {
+    public void start() { //TODO protected
         init();
         while (run) {
             logic();
