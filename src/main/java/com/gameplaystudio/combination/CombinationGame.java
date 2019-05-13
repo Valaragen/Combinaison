@@ -82,9 +82,7 @@ public class CombinationGame {
     public void start() {
         init();
         while (isRunning) {
-            logger.trace("Enter the logic method");
             logic();
-            logger.trace("Leave CombinationGame logic");
         }
     }
 
@@ -140,16 +138,16 @@ public class CombinationGame {
 
         //Regex that check if the user choice is an positive int with 1 or 2 digits
         if (Pattern.matches("^[0-9]{1,2}$", choice)) {
-            int intChoice = Integer.parseInt(choice);
+            int choiceAsInt = Integer.parseInt(choice);
 
-            if (intChoice > 0 && intChoice <= gameModes.size()) {
-                GameMode selectedGameMode = gameModes.get(intChoice - 1);
+            if (choiceAsInt > 0 && choiceAsInt <= gameModes.size()) {
+                GameMode selectedGameMode = gameModes.get(choiceAsInt - 1);
                 selectedGameMode.start();
 
                 if (selectedGameMode.isLeavingApp()) {
                     quit();
                 }
-            } else if (intChoice == gameModes.size() + 1) {
+            } else if (choiceAsInt == gameModes.size() + 1) {
                 quit();
             } else {
                 System.out.println("Votre sélection n'est pas valide");

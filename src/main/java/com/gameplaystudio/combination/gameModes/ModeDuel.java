@@ -50,7 +50,7 @@ public class ModeDuel extends GameMode {
 
         displayIndication();
 
-        while (isPLaying) { // TODO Cacher la combinaison secrete pour la machine
+        while (isPLaying) { // TODO Cacher la combinaison secrete pour la machine - improve ia
             playerGuess = scanner.nextLine();
 
             if (playerGuess.length() == computerSecretCombination.length() && Pattern.matches("^[0-9]+$", playerGuess)) {
@@ -150,7 +150,7 @@ public class ModeDuel extends GameMode {
      * @return Return the new combination as a String
      * @see super#generateCombination()
      */
-    private String iaGuessNewCombination(String combinationGuess, String combinationToFind) {
+    private String iaGuessNewCombination(String combinationGuess, String combinationToFind) { //TODO improve ia
         if (combinationGuess.length() != combinationToFind.length())
             return super.generateCombination();
 

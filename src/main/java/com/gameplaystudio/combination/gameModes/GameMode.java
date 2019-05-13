@@ -15,6 +15,7 @@ public abstract class GameMode {
      * Set the logger used for all GameMode child
      */
     final Logger logger = CombinationGame.logger;
+
     /**
      * <p>This attribute represent the running state of the Game Mode<br>
      * It must be initialised to true at the start or the Game Mode will not start properly</p>
@@ -26,7 +27,7 @@ public abstract class GameMode {
      * @see #stop()
      * @see GameMode
      */
-    boolean isRunning;
+    private boolean isRunning;
 
     /**
      * Boolean that represent the will to leave the app
