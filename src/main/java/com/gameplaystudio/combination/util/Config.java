@@ -31,7 +31,7 @@ public final class Config {
      *
      * @see #updateSettingsFromFile()
      */
-    public static int nbAllowedTry = 5;
+    public static int maxAttempts = 5;
     /**
      * Attribute used to set the number of digit a combinations will have in all Game Modes<br>
      * It's set to 4 by default<br>
@@ -63,7 +63,7 @@ public final class Config {
      * The method create config.properties and write default values in it</p>
      *
      * @throws InvalidSettingsInFile when a property contains incorrect information
-     * @see #nbAllowedTry
+     * @see #maxAttempts
      * @see #combinationLength
      */
     public static void updateSettingsFromFile() {
@@ -82,12 +82,12 @@ public final class Config {
             // load a properties file
             prop.load(input);
 
-            int temp_nbAllowedTry = Integer.parseInt(prop.getProperty("nbAllowedTry"));
+            int temp_nbAllowedTry = Integer.parseInt(prop.getProperty("maxAttempts"));
             int temp_combinationLength = Integer.parseInt(prop.getProperty("combinationLength"));
             boolean temp_devMode = Boolean.parseBoolean(prop.getProperty("devMode"));
 
             if (temp_combinationLength >= combinationLengthMin && temp_combinationLength <= combinationLengthMax && temp_nbAllowedTry >= nbAllowedTryMin) {
-                nbAllowedTry = temp_nbAllowedTry;
+                maxAttempts = temp_nbAllowedTry;
                 combinationLength = temp_combinationLength;
             } else {
                 throw new InvalidSettingsInFile();
@@ -120,7 +120,7 @@ public final class Config {
                 OutputStream output = new FileOutputStream(path);
 
                 // set default values
-                prop.setProperty("nbAllowedTry", Integer.toString(5));
+                prop.setProperty("maxAttempts", Integer.toString(5));
                 prop.setProperty("combinationLength", Integer.toString(4));
                 prop.setProperty("devMode", Boolean.toString(false));
 
@@ -141,7 +141,7 @@ public final class Config {
             logger.fatal("An unhandled exception has occurred");
             io.printStackTrace();
         }
-        logger.debug("nbAllowedTry : " + nbAllowedTry + " | combinationLength : " + combinationLength + " | devMode : " + devMode);
+        logger.debug("maxAttempts : " + maxAttempts + " | combinationLength : " + combinationLength + " | devMode : " + devMode);
 
     }
 }
