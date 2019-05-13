@@ -1,6 +1,0 @@
-2019-05-13 02:19:39,115 INFO  [main] util.Config (Config.java:99) - Dev mode has been enabled
-2019-05-13 02:19:39,118 INFO  [main] util.Config (Config.java:107) - Settings has been updated from config.properties
-2019-05-13 02:19:39,123 DEBUG [main] util.Config (Config.java:144) - nbAllowedTry : 5 | combinationLength : 4 | devMode : true
-2019-05-13 02:19:42,850 INFO  [main] util.Config (Config.java:107) - Settings has been updated from config.properties
-2019-05-13 02:19:42,850 DEBUG [main] util.Config (Config.java:144) - nbAllowedTry : 5 | combinationLength : 4 | devMode : true
-2019-05-13 02:19:42,851 DEBUG [main] gameModes.ModeChallenger (ModeChallenger.java:33) - (Combinaison secrète : 5877)
