@@ -24,52 +24,55 @@ public class ModeChallenger extends GameMode {
     }
 
     @Override
-    protected void logic() {
+    public void start() {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Bienvenue dans le mode Challenger");
+        super.start();
+    }
 
-        while (run) {
-            String combinationToFind = super.generateCombination();
-            logger.debug("(Combinaison secrète : " + combinationToFind + ")");
+    @Override
+    protected void logic() {
 
-            boolean play = true;
-            boolean win = false;
-            int nbTry = 0;
+        computerSecretCombination = super.generateCombination();
+        logger.debug("(Combinaison secrète : " + computerSecretCombination + ")");
 
-            displayIndication();
+        boolean isPlaying = true;
+        boolean hasWin = false;
+        int nbAttempts = 0;
 
-            while (play) {
-                String combinationGuess = sc.nextLine();
+        displayIndication();
 
-                if (combinationGuess.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", combinationGuess)) {
-                    nbTry++;
-                    System.out.println("Essai " + nbTry + "/" + Config.nbAllowedTry + " | Proposition : " + combinationGuess + " -> Réponse : " + super.showHint(combinationToFind, combinationGuess));
-                    if (nbTry >= Config.nbAllowedTry) {
-                        play = false;
-                    }
-                    if (combinationGuess.equals(combinationToFind)) {
-                        play = false;
-                        win = true;
-                    }
-                } else {
-                    System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres");
+        while (isPlaying) {
+            playerGuess = scanner.nextLine();
+
+            if (playerGuess.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", playerGuess)) {
+                nbAttempts++;
+                System.out.println("Essai " + nbAttempts + "/" + Config.maxAttempts + " | Proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess));
+                if (nbAttempts >= Config.maxAttempts) {
+                    isPlaying = false;
                 }
-            }
-
-            System.out.println("------------------------------------------------------------------");
-
-            if (win) {
-                System.out.println("Bravo vous avez trouvé la combinaison !");
-                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
+                if (playerGuess.equals(computerSecretCombination)) {
+                    isPlaying = false;
+                    hasWin = true;
+                }
             } else {
-                System.out.println("Dommage vous avez dépassé les " + Config.nbAllowedTry + " éssais autorisés !");
+                System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres");
             }
-            System.out.println("La combinaison était | " + combinationToFind + " |");
-            System.out.println("------------------------------------------------------------------");
-
-            super.showReplayMenu();
-
         }
+
+        System.out.println("------------------------------------------------------------------");
+
+        if (hasWin) {
+            System.out.println("Bravo vous avez trouvé la combinaison !");
+            System.out.println("Vous avez mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : ""));
+        } else {
+            System.out.println("Dommage vous avez dépassé les " + Config.maxAttempts + " éssais autorisés !");
+        }
+        System.out.println("La combinaison était | " + computerSecretCombination + " |");
+        System.out.println("------------------------------------------------------------------");
+
+        super.showReplayMenu();
+
     }
 
     /**

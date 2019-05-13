@@ -26,17 +26,38 @@ public abstract class GameMode {
      * @see #stop()
      * @see GameMode
      */
-    boolean run; // TODO isRunning
+    boolean isRunning;
+
     /**
      * Boolean that represent the will to leave the app
      */
-    private boolean leaveApp = false; // TODO change variable name
+    private boolean leavingApp = false;
+
     /**
      * Scanner object used to get user inputs
      */
-    Scanner sc = new Scanner(System.in); //TODO scanner
+    Scanner scanner = new Scanner(System.in);
 
-    //TODO add combinationGuess et la renommer humanGuess, computerGuess, secretGuess
+    /**
+     * The secret combination of the computer, the player has to find it
+     */
+    String computerSecretCombination;
+
+    /**
+     * The secret combination of the player, the computer has to find it
+     */
+    String playerSecretCombination;
+
+    /**
+     * The player guess about the computer combination
+     */
+    String playerGuess;
+
+    /**
+     * The computer guess about the player combination
+     */
+    String computerGuess;
+
 
     /**
      * Getter for the name of the GameMode<br>
@@ -49,13 +70,13 @@ public abstract class GameMode {
     public abstract String getModeName();
 
     /**
-     * Getter for the {@link #leaveApp} boolean
+     * Getter for the {@link #leavingApp} boolean
      *
      * @return Return <code>true</code> if the player want to leave the application else return <code>false</code>
      * @see CombinationGame
      */
-    public boolean getLeaveApp() {
-        return leaveApp;
+    public boolean isLeavingApp() {
+        return leavingApp;
     }
 
     /**
@@ -67,28 +88,28 @@ public abstract class GameMode {
      * in order to reinitialise the game just by using this method or at each game start</b></p>
      *
      * @see Config#updateSettingsFromFile()
-     * @see #run
+     * @see #isRunning
      * @see #start()
      */
     private void init() {
         Config.updateSettingsFromFile();
-        run = true;
+        isRunning = true;
     }
 
     /**
      * Method used to start the program<br>
-     * It initialise the attributes attributes through {@link #init()} and run the logic of the game through {@link #logic()}
+     * It initialise the attributes attributes through {@link #init()} and isRunning the logic of the game through {@link #logic()}
      */
-    public void start() { //TODO protected
+    public void start() {
         init();
-        while (run) {
+        while (isRunning) {
             logic();
         }
     }
 
     /**
      * This method contains the core of the Game Mode<br>
-     * It is executed while {@link #run} value is true
+     * It is executed while {@link #isRunning} value is true
      * <i>This method must be override in every class that extends GameMode</i>
      *
      * @see #stop()
@@ -96,20 +117,20 @@ public abstract class GameMode {
     protected abstract void logic();
 
     /**
-     * Method that set {@link #run} to false in order to leave the current GameMode
+     * Method that set {@link #isRunning} to false in order to leave the current GameMode
      */
     private void stop() {
-        run = false;
+        isRunning = false;
     }
 
     /**
-     * Method that set {@link #run} to false and {@link #leaveApp} to true in order to leave the application
+     * Method that set {@link #isRunning} to false and {@link #leavingApp} to true in order to leave the application
      *
      * @see CombinationGame
      */
     private void leaveApp() {
-        run = false;
-        leaveApp = true;
+        isRunning = false;
+        leavingApp = true;
     }
 
     /**
@@ -128,7 +149,7 @@ public abstract class GameMode {
             System.out.println("2.Retourner au menu");
             System.out.println("3.Quitter l'application");
 
-            String choice = sc.nextLine();
+            String choice = scanner.nextLine();
 
             //Regex that check if the user choice is an positive int with 1 digit
             if (Pattern.matches("^[0-9]$", choice)) {

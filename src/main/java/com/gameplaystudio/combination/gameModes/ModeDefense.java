@@ -23,84 +23,85 @@ public class ModeDefense extends GameMode {
         return "Mode Defense";
     }
 
-
+    @Override
+    public void start() {
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("Bienvenue dans le mode Défense");
+        super.start();
+    }
 
     @Override
     protected void logic() {
+
+        playerSecretCombination = chooseCombination();
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le mode Défense");
+        System.out.println("Très bon choix !");
+        System.out.println("Votre combinaison secrète est | " + playerSecretCombination + " |");
 
-        while (run) {
-            String playerCombination = chooseCombination();
-            System.out.println("------------------------------------------------------------------");
-            System.out.println("Très bon choix !");
-            System.out.println("Votre combinaison secrète est | " + playerCombination + " |");
+        boolean isPlaying = true;
+        boolean hasWin = false;
+        int nbAttempts = 1;
 
-            boolean play = true;// TODO change name
-            boolean win = false;// TODO hasWin
-            int nbTry = 1;// TODO nbAttempt
-
-            String iaCombinationGuess = super.generateCombination();
+        computerGuess = super.generateCombination();
 
 
-            if (iaCombinationGuess.equals(playerCombination)) {
-                play = false;
-                win = true;
-            } else {
-                displayIndication(playerCombination);
-                System.out.println("Essai " + nbTry + "/" + Config.nbAllowedTry);
-                System.out.println("L'ordinateur n'a pas trouvé votre combinaison et attend votre aide");
-                System.out.println("Votre combinaison est | " + playerCombination + " |");
-                System.out.println("L'ordinateur à proposé | " + iaCombinationGuess + " |");
-            }
+        if (computerGuess.equals(playerSecretCombination)) {
+            isPlaying = false;
+            hasWin = true;
+        } else {
+            displayIndication(playerSecretCombination);
+            System.out.println("Essai " + nbAttempts + "/" + Config.maxAttempts);
+            System.out.println("L'ordinateur n'a pas trouvé votre combinaison et attend votre aide");
+            System.out.println("Votre combinaison est | " + playerSecretCombination + " |");
+            System.out.println("L'ordinateur à proposé | " + computerGuess + " |");
+        }
 
-            while (play) {
-                String playerHint = sc.nextLine();
+        while (isPlaying) {
+            String playerHint = scanner.nextLine();
 
-                if (playerHint.length() == Config.combinationLength && Pattern.matches("[=+-]+", playerHint)) {
-                    nbTry++;
-                    iaCombinationGuess = iaGuessNewCombinationFromHint(iaCombinationGuess, playerHint);
-                    System.out.println("L'ordinateur propose la combinaison : " + iaCombinationGuess);
+            if (playerHint.length() == Config.combinationLength && Pattern.matches("[=+-]+", playerHint)) {
+                nbAttempts++;
+                computerGuess = iaGuessNewCombinationFromHint(computerGuess, playerHint);
+                System.out.println("L'ordinateur propose la combinaison : " + computerGuess);
 
-                    if (nbTry >= Config.nbAllowedTry) {
-                        play = false;
-                    }
-
-
-                    if (playerCombination.equals(iaCombinationGuess)) {
-                        play = false;
-                        win = true;
-                    } else if (play) {
-                        System.out.println("Essai " + nbTry + "/" + Config.nbAllowedTry);
-                        System.out.println("L'ordinateur n'a pas trouvé votre combinaison et attend votre aide");
-                        System.out.println("Votre combinaison est | " + playerCombination + " |");
-                        System.out.println("L'ordinateur à proposé | " + iaCombinationGuess + " |");
-                    }
-                } else {
-                    System.out.println("Votre indice n'est pas valide");
-                    System.out.println("Merci d'entrer un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)");
+                if (nbAttempts >= Config.maxAttempts) {
+                    isPlaying = false;
                 }
 
-            }
 
-            System.out.println("------------------------------------------------------------------");
-
-            if (win) {
-                System.out.println("L'ordinateur à réussi à trouver votre combinaison secrète!");
-                System.out.println("Vos indications ont été éfficaces");
-                System.out.println("L'ordinateur à mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
-                System.out.println("La combinaison était  | " + playerCombination + " |");
+                if (playerSecretCombination.equals(computerGuess)) {
+                    isPlaying = false;
+                    hasWin = true;
+                } else if (isPlaying) {
+                    System.out.println("Essai " + nbAttempts + "/" + Config.maxAttempts);
+                    System.out.println("L'ordinateur n'a pas trouvé votre combinaison et attend votre aide");
+                    System.out.println("Votre combinaison est | " + playerSecretCombination + " |");
+                    System.out.println("L'ordinateur à proposé | " + computerGuess + " |");
+                }
             } else {
-                System.out.println("L'ordinateur n'a pas réussi à trouver votre combinaison secrète !");
-                System.out.println("L'ordinateur a dépassé les " + Config.nbAllowedTry + " éssais autorisés !");
-                System.out.println("La combinaison était | " + playerCombination + " |");
-                System.out.println("La dernière proposition de l'ordinateur était | " + iaCombinationGuess + " |");
+                System.out.println("Votre indice n'est pas valide");
+                System.out.println("Merci d'entrer un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)");
             }
-            System.out.println("------------------------------------------------------------------");
-
-            super.showReplayMenu();
 
         }
+
+        System.out.println("------------------------------------------------------------------");
+
+        if (hasWin) {
+            System.out.println("L'ordinateur à réussi à trouver votre combinaison secrète!");
+            System.out.println("Vos indications ont été éfficaces");
+            System.out.println("L'ordinateur à mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : ""));
+            System.out.println("La combinaison était  | " + playerSecretCombination + " |");
+        } else {
+            System.out.println("L'ordinateur n'a pas réussi à trouver votre combinaison secrète !");
+            System.out.println("L'ordinateur a dépassé les " + Config.maxAttempts + " éssais autorisés !");
+            System.out.println("La combinaison était | " + playerSecretCombination + " |");
+            System.out.println("La dernière proposition de l'ordinateur était | " + computerGuess + " |");
+        }
+        System.out.println("------------------------------------------------------------------");
+
+        super.showReplayMenu();
+
     }
 
     /**
@@ -129,7 +130,7 @@ public class ModeDefense extends GameMode {
         System.out.println("Veuillez définir une combinaison de " + Config.combinationLength + " chiffres");
         System.out.println("------------------------------------------------------------------");
         do {
-            choice = sc.nextLine();
+            choice = scanner.nextLine();
             if (Pattern.matches("^[0-9]+$", choice) && choice.length() == Config.combinationLength) {
                 validChoice = true;
             } else {

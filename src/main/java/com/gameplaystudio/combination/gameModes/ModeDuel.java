@@ -25,77 +25,78 @@ public class ModeDuel extends GameMode {
     }
 
     @Override
-    protected void logic() {
+    public void start() {
         System.out.println("------------------------------------------------------------------");
         System.out.println("Bienvenue dans le mode Duel");
+        super.start();
+    }
 
-        while (run) {
-            String playerCombinationToFind = super.generateCombination();
-            logger.debug("(Combinaison secrète de l'ordinateur : " + playerCombinationToFind + ")");
+    @Override
+    protected void logic() {
+        computerSecretCombination = super.generateCombination();
+        logger.debug("(Combinaison secrète de l'ordinateur : " + computerSecretCombination + ")");
 
-            String iaCombinationToFind = chooseCombination();
-            System.out.println("------------------------------------------------------------------");
-            System.out.println("Très bon choix !");
-            System.out.println("Votre combinaison secrète est | " + iaCombinationToFind + " |");
+        playerSecretCombination = chooseCombination();
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("Très bon choix !");
+        System.out.println("Votre combinaison secrète est | " + playerSecretCombination + " |");
 
-            String playerCombinationGuess;
-            String iaCombinationGuess = "";
-            boolean play = true;
-            boolean playerWin = false;
-            boolean computerWin = false;
-            int nbTry = 0;
 
-            displayIndication();
+        computerGuess = "";
+        boolean isPLaying = true;
+        boolean playerHasWin = false;
+        boolean computerHasWin = false;
+        int nbAttempts = 0;
 
-            while (play) { // TODO Cacher la combinaison secrete pour la machine
-                playerCombinationGuess = sc.nextLine();
+        displayIndication();
 
-                if (playerCombinationGuess.length() == playerCombinationToFind.length() && Pattern.matches("^[0-9]+$", playerCombinationGuess)) {
-                    nbTry++;
-                    System.out.println("Essai " + nbTry + "/" + Config.nbAllowedTry + " | Votre proposition : " + playerCombinationGuess + " -> Réponse : " + super.showHint(playerCombinationToFind, playerCombinationGuess));
-                    if (nbTry >= Config.nbAllowedTry) {
-                        play = false;
-                    }
+        while (isPLaying) { // TODO Cacher la combinaison secrete pour la machine
+            playerGuess = scanner.nextLine();
 
-                    if (playerCombinationGuess.equals(playerCombinationToFind)) {
-                        play = false;
-                        playerWin = true;
-                    }
-                    iaCombinationGuess = iaGuessNewCombination(iaCombinationGuess, iaCombinationToFind);
-                    System.out.println("Essai " + nbTry + "/" + Config.nbAllowedTry + " | L'ordinateur propose : " + iaCombinationGuess + " -> Réponse : " + super.showHint(iaCombinationToFind, iaCombinationGuess));
-                    if (iaCombinationGuess.equals(iaCombinationToFind)) {
-                        play = false;
-                        computerWin = true;
-                    }
-                } else {
-                    System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + playerCombinationToFind.length() + " chiffres");
+            if (playerGuess.length() == computerSecretCombination.length() && Pattern.matches("^[0-9]+$", playerGuess)) {
+                nbAttempts++;
+                System.out.println("Essai " + nbAttempts + "/" + Config.maxAttempts + " | Votre proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess));
+                if (nbAttempts >= Config.maxAttempts) {
+                    isPLaying = false;
                 }
 
-            }
-
-            System.out.println("------------------------------------------------------------------");
-
-            if (computerWin && playerWin){
-                System.out.println("Égalité ! l'ordinateur et vous avez trouvé vos combinaisons respectives");
-                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
-            } else if (playerWin) {
-                System.out.println("Bravo, vous avez trouvé la combinaison avant l'ordinateur !");
-                System.out.println("Vous avez mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
-            } else if (computerWin) {
-                System.out.println("Dommage, l'ordinateur a trouvé la combinaison avant vous...");
-                System.out.println("L'ordinateur a mis " + nbTry + " éssai" + (nbTry > 1 ? "s" : ""));
+                if (playerGuess.equals(computerSecretCombination)) {
+                    isPLaying = false;
+                    playerHasWin = true;
+                }
+                computerGuess = iaGuessNewCombination(computerGuess, playerSecretCombination);
+                System.out.println("Essai " + nbAttempts + "/" + Config.maxAttempts + " | L'ordinateur propose : " + computerGuess + " -> Réponse : " + super.showHint(playerSecretCombination, computerGuess));
+                if (computerGuess.equals(playerSecretCombination)) {
+                    isPLaying = false;
+                    computerHasWin = true;
+                }
             } else {
-                System.out.println("Dommage vous avez dépassé les " + Config.nbAllowedTry + " éssais autorisés !");
-                System.out.println("Ni vous ni l'ordinateur n'avez réussi à trouver la combinaison de l'autre");
+                System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + computerSecretCombination.length() + " chiffres");
             }
 
-            System.out.println("La combinaison que vous deviez trouver était  | " + playerCombinationToFind + " |");
-            System.out.println("La combinaison que l'ordinateur devait trouver était  | " + iaCombinationToFind + " |");
-            System.out.println("------------------------------------------------------------------");
-
-
-            super.showReplayMenu();
         }
+
+        System.out.println("------------------------------------------------------------------");
+
+        if (computerHasWin && playerHasWin) {
+            System.out.println("Égalité ! l'ordinateur et vous avez trouvé vos combinaisons respectives");
+            System.out.println("Vous avez mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : ""));
+        } else if (playerHasWin) {
+            System.out.println("Bravo, vous avez trouvé la combinaison avant l'ordinateur !");
+            System.out.println("Vous avez mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : ""));
+        } else if (computerHasWin) {
+            System.out.println("Dommage, l'ordinateur a trouvé la combinaison avant vous...");
+            System.out.println("L'ordinateur a mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : ""));
+        } else {
+            System.out.println("Dommage vous avez dépassé les " + Config.maxAttempts + " éssais autorisés !");
+            System.out.println("Ni vous ni l'ordinateur n'avez réussi à trouver la combinaison de l'autre");
+        }
+
+        System.out.println("La combinaison que vous deviez trouver était  | " + computerSecretCombination + " |");
+        System.out.println("La combinaison que l'ordinateur devait trouver était  | " + playerSecretCombination + " |");
+        System.out.println("------------------------------------------------------------------");
+
+        super.showReplayMenu();
     }
 
     /**
@@ -126,7 +127,7 @@ public class ModeDuel extends GameMode {
         System.out.println("De votre coté, vous devrez trouver la combinaison que l'ordinateur a choisi");
         System.out.println("------------------------------------------------------------------");
         do {
-            choice = sc.nextLine();
+            choice = scanner.nextLine();
             if (Pattern.matches("[0-9]+", choice) && choice.length() == Config.combinationLength) {
                 validChoice = true;
             } else {
@@ -144,10 +145,10 @@ public class ModeDuel extends GameMode {
      * - -> the digit will decrement<br>
      * <i>If it's the first guess (combinationGuess is empty) it return a random combination</i>
      *
-     * @see super#generateCombination()
      * @param combinationGuess  Combination to change as a String
      * @param combinationToFind Combination to find as a String
      * @return Return the new combination as a String
+     * @see super#generateCombination()
      */
     private String iaGuessNewCombination(String combinationGuess, String combinationToFind) {
         if (combinationGuess.length() != combinationToFind.length())
