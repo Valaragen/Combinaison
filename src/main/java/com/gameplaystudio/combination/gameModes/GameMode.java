@@ -4,7 +4,6 @@ import com.gameplaystudio.combination.CombinationGame;
 import com.gameplaystudio.combination.util.Config;
 import org.apache.logging.log4j.Logger;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -15,7 +14,7 @@ public abstract class GameMode {
     /**
      * Set the logger used for all GameMode child
      */
-    protected final Logger logger = CombinationGame.logger;
+    final Logger logger = CombinationGame.logger;
     /**
      * <p>This attribute represent the running state of the Game Mode<br>
      * It must be initialised to true at the start or the Game Mode will not start properly</p>
@@ -27,15 +26,15 @@ public abstract class GameMode {
      * @see #stop()
      * @see GameMode
      */
-    protected boolean run;
+    boolean run;
     /**
      * Boolean that represent the will to leave the app
      */
-    protected boolean leaveApp = false;
+    private boolean leaveApp = false;
     /**
      * Scanner object used to get user inputs
      */
-    protected Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
 
     /**
      * Getter for the name of the GameMode<br>
@@ -69,7 +68,7 @@ public abstract class GameMode {
      * @see #run
      * @see #start()
      */
-    protected void init() {
+    private void init() {
         Config.updateSettingsFromFile();
         run = true;
     }
@@ -97,7 +96,7 @@ public abstract class GameMode {
     /**
      * Method that set {@link #run} to false in order to leave the current GameMode
      */
-    protected void stop() {
+    private void stop() {
         run = false;
     }
 
@@ -106,7 +105,7 @@ public abstract class GameMode {
      *
      * @see CombinationGame
      */
-    protected void leaveApp() {
+    private void leaveApp() {
         run = false;
         leaveApp = true;
     }
@@ -119,16 +118,15 @@ public abstract class GameMode {
      * @see #stop()
      * @see #leaveApp()
      */
-    protected void showReplayMenu() {
+    void showReplayMenu() {
         boolean validChoice = false;
-        String choice = "";
         while (!validChoice) {
             System.out.println("Souhaitez vous rejouer ?");
             System.out.println("1.Rejouer");
             System.out.println("2.Retourner au menu");
             System.out.println("3.Quitter l'application");
 
-            choice = sc.nextLine();
+            String choice = sc.nextLine();
 
             //Regex that check if the user choice is an positive int with 1 digit
             if (Pattern.matches("^[0-9]$", choice)) {
@@ -165,7 +163,7 @@ public abstract class GameMode {
      * @see Config
      * @see Config#updateSettingsFromFile()
      */
-    protected String generateCombination() {
+    String generateCombination() {
         StringBuilder combinationBuilder = new StringBuilder();
 
         for (int i = 0; i < Config.combinationLength; i++) {
@@ -185,7 +183,7 @@ public abstract class GameMode {
      * @param strToCompare The combination to find
      * @return Return the hint as a string
      */
-    protected String showHint(String str, String strToCompare) {
+    String showHint(String str, String strToCompare) {
         StringBuilder hintBuilder = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             int difference = str.charAt(i) - strToCompare.charAt(i);

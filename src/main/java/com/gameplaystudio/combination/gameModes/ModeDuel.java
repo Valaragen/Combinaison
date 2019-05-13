@@ -140,19 +140,21 @@ public class ModeDuel extends GameMode {
      * The hint is composed of '=','-' or '+' chars<br>
      * = -> the digit will stay the same<br>
      * + -> the digit will increment<br>
-     * - -> the digit will decrement
+     * - -> the digit will decrement<br>
+     * <i>If it's the first guess (combinationGuess is empty) it return a random combination</i>
      *
-     * @param combination       Combination to change as a String
+     * @see super#generateCombination()
+     * @param combinationGuess  Combination to change as a String
      * @param combinationToFind Combination to find as a String
      * @return Return the new combination as a String
      */
-    private String iaGuessNewCombination(String combination, String combinationToFind) {//TODO optimise this
-        if (combination.length() != combinationToFind.length())
+    private String iaGuessNewCombination(String combinationGuess, String combinationToFind) {
+        if (combinationGuess.length() != combinationToFind.length())
             return super.generateCombination();
 
         StringBuilder newCombination = new StringBuilder();
         for (int i = 0; i < combinationToFind.length(); i++) {
-            int combinationDigit = combination.charAt(i) - '0';
+            int combinationDigit = combinationGuess.charAt(i) - '0';
             int combinationToFindDigit = combinationToFind.charAt(i) - '0';
 
             if (combinationToFindDigit > combinationDigit) {

@@ -47,7 +47,7 @@ public final class Config {
      *
      * @see #updateSettingsFromFile()
      */
-    public static boolean devMode = false;
+    private static boolean devMode = false;
 
     /**
      * Private constructor to block instantiation
@@ -141,6 +141,7 @@ public final class Config {
             logger.fatal("An unhandled exception has occurred");
             io.printStackTrace();
         }
+        logger.debug("nbAllowedTry : " + nbAllowedTry + " | combinationLength : " + combinationLength + " | devMode : " + devMode);
 
     }
 }

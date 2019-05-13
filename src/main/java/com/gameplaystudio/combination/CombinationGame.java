@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @see GameMode
  */
-public class CombinationGame { //TODO More logger info
+public class CombinationGame {
 
     /**
      * Logger object from the log4j library

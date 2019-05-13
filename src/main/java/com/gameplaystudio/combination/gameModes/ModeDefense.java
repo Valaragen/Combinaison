@@ -148,9 +148,9 @@ public class ModeDefense extends GameMode {
      * @param hint        String of the hint to change the combination
      * @return Return the new combination as a String
      */
-    private String iaGuessNewCombinationFromHint(String combination, String hint) { //TODO enhance the ia
+    private String iaGuessNewCombinationFromHint(String combination, String hint) {
         if (combination.length() != hint.length())
-            throw new IllegalArgumentException("combination and hint arguments must have the same length");//TODO handle this exceptions + add other Exception
+            throw new IllegalArgumentException("combination and hint arguments must have the same length");
 
         StringBuilder newCombination = new StringBuilder();
         for (int i = 0; i < hint.length(); i++) {
