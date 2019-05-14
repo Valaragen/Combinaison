@@ -5,6 +5,7 @@ import com.gameplaystudio.combination.gameModes.ModeChallenger;
 import com.gameplaystudio.combination.gameModes.ModeDefense;
 import com.gameplaystudio.combination.gameModes.ModeDuel;
 import com.gameplaystudio.combination.util.Config;
+import com.gameplaystudio.combination.util.Displayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -109,18 +110,24 @@ public class CombinationGame {
      * Display the menu by iterating through {@link #gameModes}
      */
     private void displayMenu() {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue sur le jeu combinaison");
-        System.out.println("Veuillez selectionner le mode de jeu souhaité");
-        System.out.println("------------------------------------------------------------------\n");
+        StringBuilder menuToDisplay = new StringBuilder();
+        menuToDisplay.append("\n");
+        menuToDisplay.append(Displayer.TAG.LINE_SEPARATOR);
+        menuToDisplay.append("Bienvenue sur le jeu combinaison\n");
+        menuToDisplay.append("Veuillez selectionner le mode de jeu souhaité\n");
+        menuToDisplay.append(Displayer.TAG.LINE_SEPARATOR);
 
         int selectionNumber = 1;
         for (GameMode gameMode : gameModes) {
-            System.out.println(selectionNumber + ". " + gameMode.getModeName());
+            String menuLine = selectionNumber + ". " + gameMode.getModeName() + "\n";
+            menuToDisplay.append(menuLine);
             selectionNumber++;
         }
+        String leaveAppLine = "\n" + selectionNumber + ". Quitter l'application";
 
-        System.out.println("\n" + selectionNumber + ". Quitter l'application");
+        menuToDisplay.append(leaveAppLine);
+
+        Displayer.display(menuToDisplay.toString());
     }
 
     /**
@@ -134,28 +141,38 @@ public class CombinationGame {
      * @see #quit()
      */
     private void chooseMode() {
-        String choice = scanner.nextLine();
+        String errorMessage =  "Votre sélection n'est pas valide\n" +
+                "Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus";
+        boolean choiceIsValid = false;
+        int nbErrorInARow = 0;
 
-        //Regex that check if the user choice is an positive int with 1 or 2 digits
-        if (Pattern.matches("^[0-9]{1,2}$", choice)) {
-            int choiceAsInt = Integer.parseInt(choice);
+        while (!choiceIsValid){
+            String choice = scanner.nextLine();
+            //Regex that check if the user choice is an positive int with 1 or 2 digits
+            if (Pattern.matches("^[0-9]{1,2}$", choice)) {
+                int choiceAsInt = Integer.parseInt(choice);
 
-            if (choiceAsInt > 0 && choiceAsInt <= gameModes.size()) {
-                GameMode selectedGameMode = gameModes.get(choiceAsInt - 1);
-                selectedGameMode.start();
+                if (choiceAsInt > 0 && choiceAsInt <= gameModes.size()) {
+                    choiceIsValid = true;
+                    GameMode selectedGameMode = gameModes.get(choiceAsInt - 1);
+                    selectedGameMode.start();
 
-                if (selectedGameMode.isLeavingApp()) {
+                    if (selectedGameMode.isLeavingApp()) {
+                        quit();
+                    }
+                } else if (choiceAsInt == gameModes.size() + 1) {
+                    choiceIsValid = true;
                     quit();
                 }
-            } else if (choiceAsInt == gameModes.size() + 1) {
-                quit();
-            } else {
-                System.out.println("Votre sélection n'est pas valide");
-                System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus");
             }
-        } else {
-            System.out.println("Votre sélection n'est pas valide");
-            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus");
+            if (!choiceIsValid){
+                nbErrorInARow++;
+                Displayer.display(errorMessage);
+                if(nbErrorInARow%3 == 0){
+                    displayMenu();
+                    nbErrorInARow = 0;
+                }
+            }
         }
 
 

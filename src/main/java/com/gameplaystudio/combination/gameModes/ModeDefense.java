@@ -124,7 +124,7 @@ public class ModeDefense extends GameMode {
      * @return Return the player combination as a string
      */
     private String chooseCombination() {
-        boolean validChoice = false;
+        boolean choiceIsValid = false;
         String choice;
         System.out.println("------------------------------------------------------------------");
         System.out.println("Veuillez définir une combinaison de " + Config.combinationLength + " chiffres");
@@ -132,11 +132,11 @@ public class ModeDefense extends GameMode {
         do {
             choice = scanner.nextLine();
             if (Pattern.matches("^[0-9]+$", choice) && choice.length() == Config.combinationLength) {
-                validChoice = true;
+                choiceIsValid = true;
             } else {
                 System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres");
             }
-        } while (!validChoice);
+        } while (!choiceIsValid);
         return choice;
     }
 
