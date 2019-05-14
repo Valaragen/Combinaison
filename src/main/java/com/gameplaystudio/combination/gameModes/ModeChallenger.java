@@ -20,13 +20,13 @@ public class ModeChallenger extends GameMode {
 
     @Override
     public String getModeName() {
-        return "Mode Challenger";
+        return Mode.MODE_CHALLENGER.getName();
     }
 
     @Override
     public void start() {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le mode Challenger");
+        System.out.println("Bienvenue dans le " + Mode.MODE_CHALLENGER.getName());
         super.start();
     }
 

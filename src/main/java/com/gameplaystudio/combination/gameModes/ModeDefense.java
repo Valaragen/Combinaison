@@ -20,13 +20,13 @@ public class ModeDefense extends GameMode {
 
     @Override
     public String getModeName() {
-        return "Mode Defense";
+        return Mode.MODE_DEFENSE.getName();
     }
 
     @Override
     public void start() {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le mode Défense");
+        System.out.println("Bienvenue dans le " + Mode.MODE_DEFENSE.getName());
         super.start();
     }
 
