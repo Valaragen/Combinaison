@@ -11,6 +11,26 @@ import java.util.regex.Pattern;
  * GameMode class is designed to be the superclass of all Game Modes
  */
 public abstract class GameMode {
+
+    /**
+     * Enum of all available Game modes
+     */
+    protected enum Mode{
+        MODE_DUEL("Mode Duel"),
+        MODE_CHALLENGER("Mode Challenger"),
+        MODE_DEFENSE("Mode Defense");
+
+        private String name;
+
+        Mode(String name){
+            this.name = name;
+        }
+
+        public String getName(){
+            return name;
+        }
+    }
+
     /**
      * Set the logger used for all GameMode child
      */

@@ -21,13 +21,13 @@ public class ModeDuel extends GameMode {
 
     @Override
     public String getModeName() {
-        return "Mode Duel";
+        return Mode.MODE_DUEL.getName();
     }
 
     @Override
     public void start() {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le mode Duel");
+        System.out.println("Bienvenue dans le " + Mode.MODE_DUEL.getName());
         super.start();
     }
 
