@@ -32,33 +32,35 @@ public class ModeChallenger extends GameMode {
 
         boolean isPlaying = true;
         boolean hasWin = false;
-        int nbAttempts = 0;
+        int nbAttempt = 1;
 
         displayIndication();
 
-        while (isPlaying) {//TODO test on windows console
-            Displayer.display("Essai " + (nbAttempts+1) + "/" + Config.maxAttempts);
+        while (isPlaying) {
+            displayAttemptNumber(nbAttempt);
+
             playerGuess = scanner.nextLine();
-            String textToDisplay = "";
+            String resultToDisplay = "";
 
             if (playerGuess.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", playerGuess)) {
-                nbAttempts++;
-                textToDisplay += "Essai " + nbAttempts + "/" + Config.maxAttempts + " | Proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess) + "\n";
-                if (nbAttempts >= Config.maxAttempts) {
+                resultToDisplay += "Proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess) + "\n";
+                if (nbAttempt >= Config.maxAttempts) {
                     isPlaying = false;
                 }
                 if (playerGuess.equals(computerSecretCombination)) {
                     isPlaying = false;
                     hasWin = true;
+                } else {
+                    nbAttempt++;
                 }
             } else {
-                textToDisplay += "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres" + "\n";
+                resultToDisplay += "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres" + "\n";
             }
 
-            Displayer.display(textToDisplay);
+            Displayer.display(resultToDisplay);
         }
 
-        displayGameResult(hasWin, nbAttempts);
+        displayGameResult(hasWin, nbAttempt);
         super.showReplayMenu();
 
     }
@@ -71,15 +73,20 @@ public class ModeChallenger extends GameMode {
     private void displayIndication() {
         String textToDisplay = "";
 
-        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
         textToDisplay += "Tappez une combinsaison à " + Config.combinationLength + " chiffres\n";
         textToDisplay += "'=' -> le chiffre est bon\n";
         textToDisplay += "'+' -> le chiffre à trouver est plus grand\n";
-        textToDisplay += "'-' -> le chiffre à trouver est plus petit\n";
-        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
+        textToDisplay += "'-' -> le chiffre à trouver est plus petit";
 
 
-        Displayer.display(textToDisplay);
+        Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.LINE_SEPARATOR);
+    }
+
+    /**
+     * Display the attempt number and the max attempt number
+     */
+    private void displayAttemptNumber(int nbAttempt) {
+        Displayer.display("Essai " + nbAttempt + "/" + Config.maxAttempts);
     }
 
     /**
@@ -92,17 +99,15 @@ public class ModeChallenger extends GameMode {
     private void displayGameResult(boolean hasWin, int nbAttempts){
         String textToDisplay = "";
 
-        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
         if (hasWin) {
             textToDisplay += "Bravo vous avez trouvé la combinaison !\n";
             textToDisplay += "Vous avez mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : "") + "\n";
         } else {
             textToDisplay += "Dommage vous avez dépassé les " + Config.maxAttempts + " éssais autorisés !\n";
         }
-        textToDisplay += "La combinaison était | " + computerSecretCombination + " |\n";
-        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
+        textToDisplay += "La combinaison était | " + computerSecretCombination + " |";
 
-        Displayer.display(textToDisplay);
+        Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 0, 1);
 
     }
 

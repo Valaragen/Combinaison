@@ -112,13 +112,12 @@ public class CombinationGame {
      * @see Displayer
      */
     private void displayMenu() {
-        StringBuilder menuToDisplay = new StringBuilder();
-        menuToDisplay.append("\n");
-        menuToDisplay.append(Displayer.TAG.LINE_SEPARATOR);
-        menuToDisplay.append("Bienvenue sur le jeu combinaison\n");
-        menuToDisplay.append("Veuillez selectionner le mode de jeu souhaité\n");
-        menuToDisplay.append(Displayer.TAG.LINE_SEPARATOR);
+        String menuTitleToDisplay = "";
+        menuTitleToDisplay += "Bienvenue sur le jeu combinaison\n";
+        menuTitleToDisplay += "Veuillez selectionner le mode de jeu souhaité";
+        Displayer.displaySemiBoxed(menuTitleToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
 
+        StringBuilder menuToDisplay = new StringBuilder();
         int selectionNumber = 1;
         for (GameMode gameMode : gameModes) {
             menuToDisplay.append(selectionNumber).append(". ").append(gameMode.getModeName()).append("\n");

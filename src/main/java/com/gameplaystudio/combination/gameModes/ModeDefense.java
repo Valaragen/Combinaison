@@ -33,7 +33,7 @@ public class ModeDefense extends GameMode {
 
         boolean isPlaying = true;
         boolean hasWin = false;
-        int nbAttempts = 1;
+        int nbAttempt = 1;
 
         computerGuess = super.generateCombination();
 
@@ -43,7 +43,7 @@ public class ModeDefense extends GameMode {
             hasWin = true;
         } else {
             displayIndication(playerSecretCombination);
-            System.out.println("Essai " + nbAttempts + "/" + Config.maxAttempts);
+            System.out.println("Essai " + nbAttempt + "/" + Config.maxAttempts);
             System.out.println("L'ordinateur n'a pas trouvé votre combinaison et attend votre aide");
             System.out.println("Votre combinaison est | " + playerSecretCombination + " |");
             System.out.println("L'ordinateur à proposé | " + computerGuess + " |");
@@ -53,11 +53,11 @@ public class ModeDefense extends GameMode {
             String playerHint = scanner.nextLine();
 
             if (playerHint.length() == Config.combinationLength && Pattern.matches("[=+-]+", playerHint)) {
-                nbAttempts++;
+                nbAttempt++;
                 computerGuess = iaGuessNewCombinationFromHint(computerGuess, playerHint);
                 System.out.println("L'ordinateur propose la combinaison : " + computerGuess);
 
-                if (nbAttempts >= Config.maxAttempts) {
+                if (nbAttempt >= Config.maxAttempts) {
                     isPlaying = false;
                 }
 
@@ -66,7 +66,7 @@ public class ModeDefense extends GameMode {
                     isPlaying = false;
                     hasWin = true;
                 } else if (isPlaying) {
-                    System.out.println("Essai " + nbAttempts + "/" + Config.maxAttempts);
+                    System.out.println("Essai " + nbAttempt + "/" + Config.maxAttempts);
                     System.out.println("L'ordinateur n'a pas trouvé votre combinaison et attend votre aide");
                     System.out.println("Votre combinaison est | " + playerSecretCombination + " |");
                     System.out.println("L'ordinateur à proposé | " + computerGuess + " |");
@@ -83,7 +83,7 @@ public class ModeDefense extends GameMode {
         if (hasWin) {
             System.out.println("L'ordinateur à réussi à trouver votre combinaison secrète!");
             System.out.println("Vos indications ont été éfficaces");
-            System.out.println("L'ordinateur à mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : ""));
+            System.out.println("L'ordinateur à mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : ""));
             System.out.println("La combinaison était  | " + playerSecretCombination + " |");
         } else {
             System.out.println("L'ordinateur n'a pas réussi à trouver votre combinaison secrète !");

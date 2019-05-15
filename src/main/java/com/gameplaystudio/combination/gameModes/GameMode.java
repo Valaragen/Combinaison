@@ -158,11 +158,10 @@ public abstract class GameMode {
 
     private void displayGreeting(){
         String textToDisplay = "";
-        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
-        textToDisplay += "Bienvenue dans le " + getModeName() + "\n";
-        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
 
-        Displayer.display(textToDisplay);
+        textToDisplay += "Bienvenue dans le " + getModeName();
+
+        Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
     }
 
     /**
@@ -173,7 +172,7 @@ public abstract class GameMode {
      * @see #stop()
      * @see #leaveApp()
      */
-    void showReplayMenu() {
+    void showReplayMenu() {//TODO optimise
         boolean validChoice = false;
         while (!validChoice) {
             System.out.println("Souhaitez vous rejouer ?");
