@@ -2,6 +2,7 @@ package com.gameplaystudio.combination.gameModes;
 
 import com.gameplaystudio.combination.CombinationGame;
 import com.gameplaystudio.combination.util.Config;
+import com.gameplaystudio.combination.util.Displayer;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
@@ -122,6 +123,7 @@ public abstract class GameMode {
      * It initialise the attributes attributes through {@link #init()} and isRunning the logic of the game through {@link #logic()}
      */
     public void start() {
+        displayGreeting();
         init();
         while (isRunning) {
             logic();
@@ -152,6 +154,15 @@ public abstract class GameMode {
     private void leaveApp() {
         isRunning = false;
         leavingApp = true;
+    }
+
+    private void displayGreeting(){
+        String textToDisplay = "";
+        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
+        textToDisplay += "Bienvenue dans le " + getModeName() + "\n";
+        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
+
+        Displayer.display(textToDisplay);
     }
 
     /**

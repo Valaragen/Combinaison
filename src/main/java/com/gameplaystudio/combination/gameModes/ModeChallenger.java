@@ -1,6 +1,7 @@
 package com.gameplaystudio.combination.gameModes;
 
 import com.gameplaystudio.combination.util.Config;
+import com.gameplaystudio.combination.util.Displayer;
 
 import java.util.regex.Pattern;
 
@@ -24,13 +25,6 @@ public class ModeChallenger extends GameMode {
     }
 
     @Override
-    public void start() {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le " + Mode.MODE_CHALLENGER.getName());
-        super.start();
-    }
-
-    @Override
     protected void logic() {
 
         computerSecretCombination = super.generateCombination();
@@ -42,12 +36,14 @@ public class ModeChallenger extends GameMode {
 
         displayIndication();
 
-        while (isPlaying) {
+        while (isPlaying) {//TODO test on windows console
+            Displayer.display("Essai " + (nbAttempts+1) + "/" + Config.maxAttempts);
             playerGuess = scanner.nextLine();
+            String textToDisplay = "";
 
             if (playerGuess.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", playerGuess)) {
                 nbAttempts++;
-                System.out.println("Essai " + nbAttempts + "/" + Config.maxAttempts + " | Proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess));
+                textToDisplay += "Essai " + nbAttempts + "/" + Config.maxAttempts + " | Proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess) + "\n";
                 if (nbAttempts >= Config.maxAttempts) {
                     isPlaying = false;
                 }
@@ -56,35 +52,58 @@ public class ModeChallenger extends GameMode {
                     hasWin = true;
                 }
             } else {
-                System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres");
+                textToDisplay += "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres" + "\n";
             }
+
+            Displayer.display(textToDisplay);
         }
 
-        System.out.println("------------------------------------------------------------------");
-
-        if (hasWin) {
-            System.out.println("Bravo vous avez trouvé la combinaison !");
-            System.out.println("Vous avez mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : ""));
-        } else {
-            System.out.println("Dommage vous avez dépassé les " + Config.maxAttempts + " éssais autorisés !");
-        }
-        System.out.println("La combinaison était | " + computerSecretCombination + " |");
-        System.out.println("------------------------------------------------------------------");
-
+        displayGameResult(hasWin, nbAttempts);
         super.showReplayMenu();
 
     }
 
     /**
-     * Show indications about how the game should be played
+     * Display indications about how the game should be played
+     *
+     * @see Displayer
      */
     private void displayIndication() {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Tappez une combinsaison à " + Config.combinationLength + " chiffres");
-        System.out.println("'=' -> le chiffre est bon");
-        System.out.println("'+' -> le chiffre à trouver est plus grand");
-        System.out.println("'-' -> le chiffre à trouver est plus petit");
-        System.out.println("------------------------------------------------------------------");
+        String textToDisplay = "";
+
+        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
+        textToDisplay += "Tappez une combinsaison à " + Config.combinationLength + " chiffres\n";
+        textToDisplay += "'=' -> le chiffre est bon\n";
+        textToDisplay += "'+' -> le chiffre à trouver est plus grand\n";
+        textToDisplay += "'-' -> le chiffre à trouver est plus petit\n";
+        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
+
+
+        Displayer.display(textToDisplay);
+    }
+
+    /**
+     * Display the game results
+     *
+     * @param hasWin boolean set to <code>true</code> if the player wined the game
+     * @param nbAttempts number of try the player has used to find the combination
+     * @see Displayer
+     */
+    private void displayGameResult(boolean hasWin, int nbAttempts){
+        String textToDisplay = "";
+
+        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
+        if (hasWin) {
+            textToDisplay += "Bravo vous avez trouvé la combinaison !\n";
+            textToDisplay += "Vous avez mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : "") + "\n";
+        } else {
+            textToDisplay += "Dommage vous avez dépassé les " + Config.maxAttempts + " éssais autorisés !\n";
+        }
+        textToDisplay += "La combinaison était | " + computerSecretCombination + " |\n";
+        textToDisplay += Displayer.TAG.LINE_SEPARATOR;
+
+        Displayer.display(textToDisplay);
+
     }
 
 

@@ -24,13 +24,6 @@ public class ModeDefense extends GameMode {
     }
 
     @Override
-    public void start() {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le " + Mode.MODE_DEFENSE.getName());
-        super.start();
-    }
-
-    @Override
     protected void logic() {
 
         playerSecretCombination = chooseCombination();

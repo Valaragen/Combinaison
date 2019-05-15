@@ -20,4 +20,5 @@ public class Displayer {
     public static void display(String text){
         System.out.println(text);
     }
+
 }

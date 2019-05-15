@@ -25,13 +25,6 @@ public class ModeDuel extends GameMode {
     }
 
     @Override
-    public void start() {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue dans le " + Mode.MODE_DUEL.getName());
-        super.start();
-    }
-
-    @Override
     protected void logic() {
         computerSecretCombination = super.generateCombination();
         logger.debug("(Combinaison secrète de l'ordinateur : " + computerSecretCombination + ")");

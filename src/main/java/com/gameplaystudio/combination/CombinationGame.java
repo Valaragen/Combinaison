@@ -108,6 +108,8 @@ public class CombinationGame {
 
     /**
      * Display the menu by iterating through {@link #gameModes}
+     *
+     * @see Displayer
      */
     private void displayMenu() {
         StringBuilder menuToDisplay = new StringBuilder();
@@ -119,13 +121,10 @@ public class CombinationGame {
 
         int selectionNumber = 1;
         for (GameMode gameMode : gameModes) {
-            String menuLine = selectionNumber + ". " + gameMode.getModeName() + "\n";
-            menuToDisplay.append(menuLine);
+            menuToDisplay.append(selectionNumber).append(". ").append(gameMode.getModeName()).append("\n");
             selectionNumber++;
         }
-        String leaveAppLine = "\n" + selectionNumber + ". Quitter l'application";
-
-        menuToDisplay.append(leaveAppLine);
+        menuToDisplay.append("\n").append(selectionNumber).append(". Quitter l'application");
 
         Displayer.display(menuToDisplay.toString());
     }
@@ -142,7 +141,7 @@ public class CombinationGame {
      */
     private void chooseMode() {
         String errorMessage =  "Votre sélection n'est pas valide\n" +
-                "Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus";
+                "Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus\n";
         boolean choiceIsValid = false;
         int nbErrorInARow = 0;
 
