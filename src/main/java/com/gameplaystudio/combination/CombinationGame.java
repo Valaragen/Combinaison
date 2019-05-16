@@ -139,8 +139,6 @@ public class CombinationGame {
      * @see #quit()
      */
     private void chooseMode() {
-        String errorMessage =  "Votre sélection n'est pas valide\n" +
-                "Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus\n";
         boolean choiceIsValid = false;
         int nbErrorInARow = 0;
 
@@ -165,7 +163,10 @@ public class CombinationGame {
             }
             if (!choiceIsValid){
                 nbErrorInARow++;
+                String errorMessage =  "Votre sélection n'est pas valide\n" +
+                        "Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus\n";
                 Displayer.display(errorMessage);
+
                 if(nbErrorInARow%3 == 0){
                     displayMenu();
                     nbErrorInARow = 0;

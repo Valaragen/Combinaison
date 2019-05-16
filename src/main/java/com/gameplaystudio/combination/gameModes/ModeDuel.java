@@ -1,6 +1,7 @@
 package com.gameplaystudio.combination.gameModes;
 
 import com.gameplaystudio.combination.util.Config;
+import com.gameplaystudio.combination.util.Displayer;
 
 import java.util.regex.Pattern;
 
@@ -29,10 +30,9 @@ public class ModeDuel extends GameMode {
         computerSecretCombination = super.generateCombination();
         logger.debug("(Combinaison secrète de l'ordinateur : " + computerSecretCombination + ")");
 
-        playerSecretCombination = chooseCombination();
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Très bon choix !");
-        System.out.println("Votre combinaison secrète est | " + playerSecretCombination + " |");
+        String informationToDisplay = "L'ordinateur devra deviner cette combinaison, ne lui faites pas de cadeau ;)\n";
+        informationToDisplay += "De votre coté, vous devrez trouver la combinaison que l'ordinateur a choisi";
+        playerSecretCombination = super.chooseCombination(informationToDisplay);
 
 
         computerGuess = "";
@@ -72,7 +72,7 @@ public class ModeDuel extends GameMode {
         System.out.println("------------------------------------------------------------------");
 
         if (computerHasWin && playerHasWin) {
-            System.out.println("Égalité ! l'ordinateur et vous avez trouvé vos combinaisons respectives");
+            System.out.println("Égalité ! l'ordinateur et vous, avez trouvé vos combinaisons respectives");
             System.out.println("Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : ""));
         } else if (playerHasWin) {
             System.out.println("Bravo, vous avez trouvé la combinaison avant l'ordinateur !");
@@ -105,30 +105,6 @@ public class ModeDuel extends GameMode {
         System.out.println("------------------------------------------------------------------");
     }
 
-    /**
-     * This method ask the player to enter a valid combination<br>
-     * It return the choice of the player when the combination match the requirements<br>
-     *
-     * @return Return the player combination as a string
-     */
-    private String chooseCombination() {
-        boolean validChoice = false;
-        String choice;
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Veuillez définir une combinaison de " + Config.combinationLength + " chiffres");
-        System.out.println("L'ordinateur devra deviner cette combinaison ne lui faites pas de cadeau");
-        System.out.println("De votre coté, vous devrez trouver la combinaison que l'ordinateur a choisi");
-        System.out.println("------------------------------------------------------------------");
-        do {
-            choice = scanner.nextLine();
-            if (Pattern.matches("[0-9]+", choice) && choice.length() == Config.combinationLength) {
-                validChoice = true;
-            } else {
-                System.out.println("Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres");
-            }
-        } while (!validChoice);
-        return choice;
-    }
 
     /**
      * This method take a combination and return a new combination which closer to the combination to find<br>

@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  *
  * @see #logic()
  * @see #computerGuessNewCombinationFromHint(String, String)
- * @see #chooseCombination()
  * @see Config
  */
 public class ModeDefense extends GameMode {
@@ -81,34 +80,6 @@ public class ModeDefense extends GameMode {
     }
 
     /**
-     * This method ask the player to enter a valid combination<br>
-     * It return the choice of the player when the combination match the requirements<br>
-     *
-     * @return Return the player combination as a string
-     */
-    private String chooseCombination() {
-        boolean choiceIsValid = false;
-        String choice;
-
-        String indicationToDisplay = "Veuillez définir une combinaison de " + Config.combinationLength + " chiffres";
-
-        Displayer.displaySemiBoxed(indicationToDisplay, Displayer.TAG.LINE_SEPARATOR);
-
-        do {
-            choice = scanner.nextLine();
-            String resultToDisplay;
-            if (Pattern.matches("^[0-9]+$", choice) && choice.length() == Config.combinationLength) {
-                resultToDisplay = "Très bon choix !";
-                choiceIsValid = true;
-            } else {
-                resultToDisplay = "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres";
-            }
-            Displayer.display(resultToDisplay);
-        } while (!choiceIsValid);
-        return choice;
-    }
-
-    /**
      * Show indications about how the game should be played
      */
     private void displayIndication(String combinationToShow) {
@@ -155,7 +126,7 @@ public class ModeDefense extends GameMode {
         }
 
 
-        Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 0, 1);
+        Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
     }
 
     /**
@@ -163,7 +134,7 @@ public class ModeDefense extends GameMode {
      * The hint is composed of '=','-' or '+' chars<br>
      * = -> the digit will stay the same<br>
      * + -> the digit will increment<br>
-     * - -> the digit will decrement
+     * - -> the digit will decrement<br>
      *
      * @param currentCombination Combination to change as a String
      * @param hint        String of the hint to change the combination

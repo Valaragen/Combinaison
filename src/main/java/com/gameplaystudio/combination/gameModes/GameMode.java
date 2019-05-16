@@ -199,12 +199,12 @@ public abstract class GameMode {
                         break;
                     default:
                         System.out.println("Votre sélection n'est pas valide");
-                        System.out.println("Veuillez choisir un entier compris entre 1 et 3 inclus");
+                        System.out.println("Veuillez choisir un entier compris entre 1 et 3 inclus\n");
                         break;
                 }
             } else {
                 System.out.println("Votre sélection n'est pas valide");
-                System.out.println("Veuillez choisir un entier compris entre 1 et 3 inclus");
+                System.out.println("Veuillez choisir un entier compris entre 1 et 3 inclus\n");
             }
         }
     }
@@ -225,6 +225,47 @@ public abstract class GameMode {
         }
 
         return combinationBuilder.toString();
+    }
+
+    /**
+     * This method ask the player to enter a valid combination based of the length in config file and a regex<br>
+     * It return the choice of the player when the combination match the requirements<br>
+     * The combination length is taken from the config file<br>
+     *
+     * @see Config#combinationLength
+     * @return Return the player combination as a string
+     */
+    String chooseCombination() {
+        return chooseCombination("");
+    }
+
+    /**
+     * This method ask the player to enter a valid combination based of the length in config file and a regex<br>
+     * It return the choice of the player when the combination match the requirements<br>
+     *
+     * @see Config#combinationLength
+     * @param informationToDisplay indications you want to display to inform the player the future utility of the asked combination
+     * @return Return the player combination as a string
+     */
+    String chooseCombination(String informationToDisplay) {
+        boolean choiceIsValid = false;
+        String choice;
+
+        informationToDisplay  = "Veuillez définir une combinaison de " + Config.combinationLength + " chiffres" +(informationToDisplay.isEmpty() ? "" : "\n") + informationToDisplay;
+        Displayer.displaySemiBoxed(informationToDisplay, Displayer.TAG.LINE_SEPARATOR);
+
+        do {
+            choice = scanner.nextLine();
+            String resultToDisplay;
+            if (Pattern.matches("^[0-9]+$", choice) && choice.length() == Config.combinationLength) {
+                resultToDisplay = "Très bon choix !";
+                choiceIsValid = true;
+            } else {
+                resultToDisplay = "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres\n";
+            }
+            Displayer.display(resultToDisplay);
+        } while (!choiceIsValid);
+        return choice;
     }
 
     /**
