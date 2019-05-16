@@ -26,8 +26,8 @@ public class ModeDefense extends GameMode {
     @Override
     protected void logic() {
 
-        playerSecretCombination = chooseCombination();
-        computerGuess = "";
+        String informationToDisplay = "L'ordinateur devra deviner cette combinaison";
+        playerSecretCombination = chooseCombination(informationToDisplay);
 
         String hintForComputer = "";
         boolean computerCanGuess = true;
@@ -36,28 +36,26 @@ public class ModeDefense extends GameMode {
         boolean hasWin = false;
         int nbAttempt = 0;
 
-        if (computerGuess.equals(playerSecretCombination)) {
-            displayAttemptInfo(nbAttempt, playerSecretCombination, computerGuess);
-            isPlaying = false;
-            hasWin = true;
-        } else {
-            displayIndication(playerSecretCombination);
-        }
+        displayIndication(playerSecretCombination);
 
         while (isPlaying) {
+            String complementaryInfoToDisplay = "";
+
             if(computerCanGuess){
                 computerGuess = computerGuessNewCombinationFromHint(computerGuess, hintForComputer);
                 nbAttempt++;
                 computerCanGuess= false;
             }
 
-            displayAttemptInfo(nbAttempt, playerSecretCombination, computerGuess);
+            displayAttemptInfo(nbAttempt);
 
             if (nbAttempt >= Config.maxAttempts) {
                 isPlaying = false;
+                complementaryInfoToDisplay = super.showHint(computerGuess, playerSecretCombination);
             }
 
             if (playerSecretCombination.equals(computerGuess)) {
+                complementaryInfoToDisplay = "==== Bingo !";
                 isPlaying = false;
                 hasWin = true;
             } else if (isPlaying) {
@@ -65,11 +63,12 @@ public class ModeDefense extends GameMode {
                 if (hintForComputer.length() == Config.combinationLength && Pattern.matches("[=+-]+", hintForComputer)) {
                     computerCanGuess = true;
                 } else {
-                    String errorToDisplay = "Votre indice n'est pas valide\n";
-                    errorToDisplay += "Merci d'entrer un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)\n";
-                    Displayer.display(errorToDisplay);
+                    complementaryInfoToDisplay += "Votre indice n'est pas valide\n";
+                    complementaryInfoToDisplay += "Merci d'entrer un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)\n";
                 }
             }
+
+            Displayer.display(complementaryInfoToDisplay);
 
         }
 
@@ -85,7 +84,7 @@ public class ModeDefense extends GameMode {
     private void displayIndication(String combinationToShow) {
         String indicationToDisplay = "";
         indicationToDisplay += "L'ordinateur doit trouver votre combinaison : " + combinationToShow + "\n";
-        indicationToDisplay += "Pour l'aider il va falloir lui donner un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)\n";
+        indicationToDisplay += "Pour l'aider, il va falloir lui donner un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)\n";
         indicationToDisplay += "'=' -> le chiffre est bon\n";
         indicationToDisplay += "'+' -> le chiffre à trouver est plus grand\n";
         indicationToDisplay += "'-' -> le chiffre à trouver est plus petit";
@@ -95,9 +94,8 @@ public class ModeDefense extends GameMode {
     /**
      * Display the attempt number and the max attempt number and some indications
      */
-    private void displayAttemptInfo(int nbAttempt, String playerSecretCombination, String computerGuess) {
-        String textToDisplay = "";
-        textToDisplay += "Essai " + nbAttempt + "/" + Config.maxAttempts + " -> votre combinaison | " + playerSecretCombination + " |\n";
+    private void displayAttemptInfo(int nbAttempt) {
+        String textToDisplay = "Essai " + nbAttempt + "/" + Config.maxAttempts + " -> votre combinaison | " + playerSecretCombination + " |\n";
         textToDisplay += "L'ordinateur à proposé | " + computerGuess + " |";
         Displayer.display(textToDisplay);
     }

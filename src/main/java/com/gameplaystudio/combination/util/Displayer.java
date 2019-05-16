@@ -36,6 +36,14 @@ public class Displayer {
     }
 
     /**
+     * Method used to display text in console command without carriage return at the end
+     * @param text text to display
+     */
+    public static void displayInline(String text) {
+        System.out.print(text);
+    }
+
+    /**
      * Method used to display text with top and bottom separator
      * @param text text to display
      * @param separator Type of separator choosed from {@link TAG}

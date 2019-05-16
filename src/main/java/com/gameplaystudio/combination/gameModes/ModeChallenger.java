@@ -37,13 +37,15 @@ public class ModeChallenger extends GameMode {
         displayIndication();
 
         while (isPlaying) {
-            displayAttemptNumber(nbAttempt);
+            String complementaryInfoToDisplay = "";
 
-            playerGuess = scanner.nextLine();
-            String resultToDisplay = "";
+            displayAttemptInfo(nbAttempt);
 
-            if (playerGuess.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", playerGuess)) {
-                resultToDisplay += "Proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess) + "\n";
+            String playerGuessToVerify = scanner.nextLine();
+
+            if (playerGuessToVerify.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", playerGuessToVerify)) {
+                playerGuess = playerGuessToVerify;
+                complementaryInfoToDisplay += "Réponse : " + super.showHint(computerSecretCombination, playerGuess) + "\n";
                 if (nbAttempt >= Config.maxAttempts) {
                     isPlaying = false;
                 }
@@ -54,10 +56,12 @@ public class ModeChallenger extends GameMode {
                     nbAttempt++;
                 }
             } else {
-                resultToDisplay += "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres" + "\n";
+                complementaryInfoToDisplay += "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres" + "\n";
             }
 
-            Displayer.display(resultToDisplay);
+            if(!complementaryInfoToDisplay.equals("")) {
+                Displayer.display(complementaryInfoToDisplay);
+            }
         }
 
         displayGameResult(hasWin, nbAttempt);
@@ -74,20 +78,28 @@ public class ModeChallenger extends GameMode {
     private void displayIndication() {
         String textToDisplay = "";
 
+        textToDisplay += "L'ordinateur a créé une combinaison secrète que vous devez deviner\n";
+        textToDisplay += "Celui-ci vous donnera des indices pour vous aiguiller\n";
         textToDisplay += "Tappez une combinsaison à " + Config.combinationLength + " chiffres\n";
         textToDisplay += "'=' -> le chiffre est bon\n";
         textToDisplay += "'+' -> le chiffre à trouver est plus grand\n";
         textToDisplay += "'-' -> le chiffre à trouver est plus petit";
 
 
-        Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.LINE_SEPARATOR);
+        Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.LINE_SEPARATOR, 0, 1);
     }
 
     /**
-     * Display the attempt number and the max attempt number
+     * Display the attempt number and the max attempt number<br>
+     * It also display information about the last player guess
      */
-    private void displayAttemptNumber(int nbAttempt) {
-        Displayer.display("Essai " + nbAttempt + "/" + Config.maxAttempts);
+    private void displayAttemptInfo(int nbAttempt) {
+        String textToDisplay = "Essai " + nbAttempt + "/" + Config.maxAttempts + "\n";
+        if (!playerGuess.equals("")) {
+            textToDisplay += "Dernière proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess) + "\n";
+        }
+        textToDisplay += "Nouvelle proposition : ";
+        Displayer.displayInline(textToDisplay);
     }
 
     /**

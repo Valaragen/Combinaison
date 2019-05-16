@@ -142,7 +142,7 @@ public class CombinationGame {
         boolean choiceIsValid = false;
         int nbErrorInARow = 0;
 
-        while (!choiceIsValid){
+        while (!choiceIsValid) {
             String choice = scanner.nextLine();
             //Regex that check if the user choice is an positive int with 1 or 2 digits
             if (Pattern.matches("^[0-9]{1,2}$", choice)) {
@@ -161,13 +161,13 @@ public class CombinationGame {
                     quit();
                 }
             }
-            if (!choiceIsValid){
+            if (!choiceIsValid) {
                 nbErrorInARow++;
-                String errorMessage =  "Votre sélection n'est pas valide\n" +
+                String errorMessage = "Votre sélection n'est pas valide\n" +
                         "Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus\n";
                 Displayer.display(errorMessage);
 
-                if(nbErrorInARow%3 == 0){
+                if (nbErrorInARow % 3 == 0) {
                     displayMenu();
                     nbErrorInARow = 0;
                 }
