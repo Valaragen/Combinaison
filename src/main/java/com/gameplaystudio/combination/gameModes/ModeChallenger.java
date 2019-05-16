@@ -61,6 +61,7 @@ public class ModeChallenger extends GameMode {
         }
 
         displayGameResult(hasWin, nbAttempt);
+
         super.showReplayMenu();
 
     }
@@ -93,22 +94,21 @@ public class ModeChallenger extends GameMode {
      * Display the game results
      *
      * @param hasWin boolean set to <code>true</code> if the player wined the game
-     * @param nbAttempts number of try the player has used to find the combination
+     * @param nbAttempt number of try the player has used to find the combination
      * @see Displayer
      */
-    private void displayGameResult(boolean hasWin, int nbAttempts){
+    private void displayGameResult(boolean hasWin, int nbAttempt){
         String textToDisplay = "";
 
         if (hasWin) {
             textToDisplay += "Bravo vous avez trouvé la combinaison !\n";
-            textToDisplay += "Vous avez mis " + nbAttempts + " éssai" + (nbAttempts > 1 ? "s" : "") + "\n";
+            textToDisplay += "Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
         } else {
-            textToDisplay += "Dommage vous avez dépassé les " + Config.maxAttempts + " éssais autorisés !\n";
+            textToDisplay += "Dommage vous avez utilisé les " + Config.maxAttempts + " éssais autorisés !\n";
         }
         textToDisplay += "La combinaison était | " + computerSecretCombination + " |";
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 0, 1);
-
     }
 
 

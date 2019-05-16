@@ -49,12 +49,12 @@ public class Displayer {
      * Overloaded method of {@link #displaySemiBoxed(String, TAG)} used to add line breaks before and/or after the block
      * @param text text to display
      * @param separator Type of separator choosed from {@link TAG}
-     * @param nbAppendedLineBreak Number of line break appended to the text semi-boxed
-     * @param nbPrependedLineBreak Number of line break prepended to the text semi-boxed block
+     * @param nbAppendedLineBreak Number of line break appended to the block
+     * @param nbPrependedLineBreak Number of line break prepended to the block
      */
     public static void displaySemiBoxed(String text, TAG separator, int nbPrependedLineBreak, int nbAppendedLineBreak){
         if(nbAppendedLineBreak <= 0 && nbPrependedLineBreak<= 0){
-            logger.info("Incorrect usage of Overloaded method displaySemiBoxed : No line break has been added. You should use displaySemiBoxed(String, TAG)");
+            logger.debug("Incorrect usage of method : No line break has been added. You should use displaySemiBoxed(String, TAG)");
         }
         text = "\n".repeat(Math.max(0,nbPrependedLineBreak)) + separator + "\n" + text + "\n" + separator + "\n".repeat(Math.max(0, nbAppendedLineBreak));
         System.out.println(text);
