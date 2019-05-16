@@ -2,6 +2,7 @@ package com.gameplaystudio.combination.gameModes;
 
 import com.gameplaystudio.combination.CombinationGame;
 import com.gameplaystudio.combination.util.Config;
+import com.gameplaystudio.combination.util.Displayer;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
@@ -115,6 +116,10 @@ public abstract class GameMode {
     private void init() {
         Config.updateSettingsFromFile();
         isRunning = true;
+        computerSecretCombination = "";
+        playerSecretCombination = "";
+        playerGuess = "";
+        computerGuess = "";
     }
 
     /**
@@ -122,6 +127,7 @@ public abstract class GameMode {
      * It initialise the attributes attributes through {@link #init()} and isRunning the logic of the game through {@link #logic()}
      */
     public void start() {
+        displayGreeting();
         init();
         while (isRunning) {
             logic();
@@ -154,6 +160,14 @@ public abstract class GameMode {
         leavingApp = true;
     }
 
+    private void displayGreeting(){
+        String textToDisplay = "";
+
+        textToDisplay += "Bienvenue dans le " + getModeName();
+
+        Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
+    }
+
     /**
      * This method show a menu to the player and get his choice<br>
      * The player can replay the current Game Mode, go back to menu or leave the application
@@ -163,38 +177,47 @@ public abstract class GameMode {
      * @see #leaveApp()
      */
     void showReplayMenu() {
-        boolean validChoice = false;
-        while (!validChoice) {
-            System.out.println("Souhaitez vous rejouer ?");
-            System.out.println("1.Rejouer");
-            System.out.println("2.Retourner au menu");
-            System.out.println("3.Quitter l'application");
+        boolean choiceIsValid = false;
+        int nbErrorInARow = 0;
 
+        String menuToDisplay = "Souhaitez vous rejouer ?\n";
+        menuToDisplay += "1.Rejouer\n";
+        menuToDisplay += "2.Retourner au menu\n";
+        menuToDisplay += "3.Quitter l'application";
+
+        Displayer.display(menuToDisplay);
+
+        while (!choiceIsValid) {
             String choice = scanner.nextLine();
 
             //Regex that check if the user choice is an positive int with 1 digit
             if (Pattern.matches("^[0-9]$", choice)) {
                 switch (choice) {
                     case "1":
-                        validChoice = true;
-                        Config.updateSettingsFromFile();
+                        choiceIsValid = true;
+                        init();
                         break;
                     case "2":
-                        validChoice = true;
+                        choiceIsValid = true;
                         stop();
                         break;
                     case "3":
-                        validChoice = true;
+                        choiceIsValid = true;
                         leaveApp();
                         break;
                     default:
-                        System.out.println("Votre sélection n'est pas valide");
-                        System.out.println("Veuillez choisir un entier compris entre 1 et 3 inclus");
                         break;
                 }
-            } else {
-                System.out.println("Votre sélection n'est pas valide");
-                System.out.println("Veuillez choisir un entier compris entre 1 et 3 inclus");
+            }
+            if (!choiceIsValid) {
+                nbErrorInARow++;
+                String errorMessage = "Votre sélection n'est pas valide\n" +
+                        "Veuillez choisir un entier compris entre 1 et 3 inclus\n";
+                Displayer.display(errorMessage);
+                if (nbErrorInARow%3 == 0) {
+                    Displayer.display(menuToDisplay);
+                    nbErrorInARow = 0;
+                }
             }
         }
     }
@@ -215,6 +238,47 @@ public abstract class GameMode {
         }
 
         return combinationBuilder.toString();
+    }
+
+    /**
+     * This method ask the player to enter a valid combination based of the length in config file and a regex<br>
+     * It return the choice of the player when the combination match the requirements<br>
+     * The combination length is taken from the config file<br>
+     *
+     * @see Config#combinationLength
+     * @return Return the player combination as a string
+     */
+    String chooseCombination() {
+        return chooseCombination("");
+    }
+
+    /**
+     * This method ask the player to enter a valid combination based of the length in config file and a regex<br>
+     * It return the choice of the player when the combination match the requirements<br>
+     *
+     * @see Config#combinationLength
+     * @param informationToDisplay indications you want to display to inform the player the future utility of the asked combination
+     * @return Return the player combination as a string
+     */
+    String chooseCombination(String informationToDisplay) {
+        boolean choiceIsValid = false;
+        String choice;
+
+        informationToDisplay  = "Veuillez définir une combinaison de " + Config.combinationLength + " chiffres" +(informationToDisplay.isEmpty() ? "" : "\n") + informationToDisplay;
+        Displayer.displaySemiBoxed(informationToDisplay, Displayer.TAG.LINE_SEPARATOR);
+
+        do {
+            choice = scanner.nextLine();
+            String resultToDisplay;
+            if (Pattern.matches("^[0-9]+$", choice) && choice.length() == Config.combinationLength) {
+                resultToDisplay = "Très bon choix !";
+                choiceIsValid = true;
+            } else {
+                resultToDisplay = "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres\n";
+            }
+            Displayer.display(resultToDisplay);
+        } while (!choiceIsValid);
+        return choice;
     }
 
     /**
