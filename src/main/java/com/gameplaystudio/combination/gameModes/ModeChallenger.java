@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * <i>The number of try and the number of digit in the combination are get from a setting file</i>
  *
  * @see #logic()
- * @see #showHint(String, String)
+ * @see #generateHint(String, String)
  * @see #generateCombination()
  * @see Config
  */
@@ -45,7 +45,7 @@ public class ModeChallenger extends GameMode {
 
             if (playerGuessToVerify.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", playerGuessToVerify)) {
                 playerGuess = playerGuessToVerify;
-                complementaryInfoToDisplay += "Réponse : " + super.showHint(computerSecretCombination, playerGuess) + "\n";
+                complementaryInfoToDisplay += "Réponse : " + super.generateHint(computerSecretCombination, playerGuess) + "\n";
                 if (nbAttempt >= Config.maxAttempts) {
                     isPlaying = false;
                 }
@@ -96,7 +96,7 @@ public class ModeChallenger extends GameMode {
     private void displayAttemptInfo(int nbAttempt) {
         String textToDisplay = "Essai " + nbAttempt + "/" + Config.maxAttempts + "\n";
         if (!playerGuess.equals("")) {
-            textToDisplay += "Dernière proposition : " + playerGuess + " -> Réponse : " + super.showHint(computerSecretCombination, playerGuess) + "\n";
+            textToDisplay += "Dernière proposition : " + playerGuess + " -> Réponse : " + super.generateHint(computerSecretCombination, playerGuess) + "\n";
         }
         textToDisplay += "Nouvelle proposition : ";
         Displayer.displayInline(textToDisplay);

@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * <i>The number of try and the number of digit in the combination are get from a setting file</i>
  *
  * @see #logic()
- * @see #computerGuessNewCombinationFromHint(String, String)
+ * @see GameMode#computerGuessNewCombinationFromHint(String, int)
  * @see Config
  */
 public class ModeDefense extends GameMode {
@@ -42,7 +42,7 @@ public class ModeDefense extends GameMode {
             String complementaryInfoToDisplay = "";
 
             if(computerCanGuess){
-                computerGuess = computerGuessNewCombinationFromHint(computerGuess, hintForComputer);
+                computerGuess = super.computerGuessNewCombinationFromHint(hintForComputer, nbAttempt);
                 nbAttempt++;
                 computerCanGuess= false;
             }
@@ -51,7 +51,7 @@ public class ModeDefense extends GameMode {
 
             if (nbAttempt >= Config.maxAttempts) {
                 isPlaying = false;
-                complementaryInfoToDisplay = super.showHint(computerGuess, playerSecretCombination);
+                complementaryInfoToDisplay = super.generateHint(playerSecretCombination, computerGuess);
             }
 
             if (playerSecretCombination.equals(computerGuess)) {
@@ -127,38 +127,5 @@ public class ModeDefense extends GameMode {
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
     }
 
-    /**
-     * This method use a combination and a hint and return a new combination based of the hint given<br>
-     * The hint is composed of '=','-' or '+' chars<br>
-     * = -> the digit will stay the same<br>
-     * + -> the digit will increment<br>
-     * - -> the digit will decrement<br>
-     *
-     * @param currentCombination Combination to change as a String
-     * @param hint        String of the hint to change the combination
-     * @return Return the new combination as a String
-     */
-    private String computerGuessNewCombinationFromHint(String currentCombination, String hint) { //TODO improve ia
-        if (currentCombination.isEmpty()){
-            return super.generateCombination();
-        }
-        if (currentCombination.length() != hint.length()){
-            logger.debug("The combination and the hint given doesn't have the same length, the can't guess correctly");
-            return super.generateCombination();
-        }
-
-        StringBuilder newCombination = new StringBuilder();
-        for (int i = 0; i < hint.length(); i++) {
-            int currentNumber = currentCombination.charAt(i) - '0';
-            if (hint.charAt(i) == '+' && currentNumber < 9) {
-                currentNumber++;
-            } else if (hint.charAt(i) == '-' && currentNumber > 0) {
-                currentNumber--;
-            }
-            newCombination.append(currentNumber);
-
-        }
-        return newCombination.toString();
-    }
 
 }
