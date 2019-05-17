@@ -287,14 +287,14 @@ public abstract class GameMode {
      * + -> if the digit to find is bigger<br>
      * - -> if the digit to find is smaller
      *
-     * @param str          The combination to test
-     * @param strToCompare The combination to find
+     * @param combinationGuess          The combination to test
+     * @param combinationToFind The combination to find
      * @return Return the hint as a string
      */
-    String showHint(String str, String strToCompare) {
+    String generateHint(String combinationToFind, String combinationGuess) {
         StringBuilder hintBuilder = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            int difference = str.charAt(i) - strToCompare.charAt(i);
+        for (int i = 0; i < combinationGuess.length(); i++) {
+            int difference = combinationToFind.charAt(i) - combinationGuess.charAt(i);
             if (difference == 0) {
                 hintBuilder.append("=");
             } else if (difference < 0) {
@@ -304,6 +304,81 @@ public abstract class GameMode {
             }
         }
         return hintBuilder.toString();
+    }
+
+    /**
+     * This method use a combination and a hint and return a new combination based of the hint given<br>
+     * The hint is composed of '=','-' or '+' chars<br>
+     * = -> the digit will stay the same<br>
+     * + -> the digit will increment<br>
+     * - -> the digit will decrement<br>
+     * <i>If it's the first guess (computerGuess is empty) it return a random combination</i><br>
+     * <i>If no hint is given or  </i>
+     *
+     *
+     * @see #generateCombination()
+     * @see #computerGuess
+     *
+     * @param hint        String of the hint to change the combination
+     * @return Return the new combination as a String
+     */
+    String computerGuessNewCombinationFromHint(String hint, int nbAttempt) { //TODO improve ia
+        if (computerGuess.equals("")){
+            return generateCombination();
+        }
+
+        if (computerGuess.length() != hint.length()){
+            logger.debug("The combination and the hint given doesn't have the same length, the computer can't guess correctly");
+            return generateCombination();
+        }
+
+
+        StringBuilder newCombination = new StringBuilder();
+        for (int i = 0; i < hint.length(); i++) {
+            int step = 5 - nbAttempt;
+            if (step <= 0) {
+                step = 1;
+            }
+            int currentNumber = computerGuess.charAt(i) - '0';
+            if (hint.charAt(i) == '+') {
+
+                if (nbAttempt == 2){
+                    if(currentNumber == 0){
+                        step += 2;
+                    } else if (currentNumber == 1){
+                        step += 1;
+                    }
+                }
+                if(currentNumber + step > 9){
+                    step = 1;
+                }
+                currentNumber += step;
+                if (currentNumber > 9){
+                    currentNumber = 9;
+                }
+
+            } else if (hint.charAt(i) == '-') {
+
+                if (nbAttempt == 2){
+                    if(currentNumber == 9){
+                        step += 2;
+                    } else if(currentNumber == 8){
+                        step += 1;
+                    }
+                }
+                if(currentNumber - step < 0){
+                    step = 1;
+                }
+                currentNumber -= step;
+                if(currentNumber < 0){
+                    currentNumber = 0;
+                }
+
+            }
+            newCombination.append(currentNumber);
+
+        }
+        return newCombination.toString();
     }
 
 
