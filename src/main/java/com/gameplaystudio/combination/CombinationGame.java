@@ -5,6 +5,7 @@ import com.gameplaystudio.combination.gameModes.ModeChallenger;
 import com.gameplaystudio.combination.gameModes.ModeDefense;
 import com.gameplaystudio.combination.gameModes.ModeDuel;
 import com.gameplaystudio.combination.util.Config;
+import com.gameplaystudio.combination.util.Displayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,9 +13,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * <p>Class that run all the processes in order to play a <i>GameMode</i></p>
+ * <p>Class that isRunning all the processes in order to play a <i>GameMode</i></p>
  *
- * <p>To run the game you just need to initialise a CombinationGame object and use {@link #start()}</p>
+ * <p>To isRunning the game you just need to initialise a CombinationGame object and use {@link #start()}</p>
  *
  * @author Valaragen
  * @version 1.0
@@ -30,7 +31,7 @@ public class CombinationGame {
     /**
      * Scanner object used to get user inputs
      */
-    private Scanner sc = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     /**
      * <p>This attribute represent the running state of the application<br>
@@ -42,7 +43,7 @@ public class CombinationGame {
      * @see #start()
      * @see #quit()
      */
-    private boolean run;
+    private boolean isRunning;
 
     /**
      * List that contains all the playable {@link GameMode}<br>
@@ -62,13 +63,13 @@ public class CombinationGame {
      * in order to reinitialise the game just by using this method or at each game start</b></p>
      *
      * @see Config#updateSettingsFromFile()
-     * @see #run
+     * @see #isRunning
      * @see #gameModes
      * @see #start()
      */
     private void init() {
         Config.updateSettingsFromFile();
-        run = true;
+        isRunning = true;
         gameModes.clear();
         gameModes.add(new ModeChallenger());
         gameModes.add(new ModeDefense());
@@ -77,20 +78,18 @@ public class CombinationGame {
 
     /**
      * Method used to start the program<br>
-     * It initialise the attributes attributes through {@link #init()} and run the logic of the game through {@link #logic()}
+     * It initialise the attributes attributes through {@link #init()} and isRunning the logic of the game through {@link #logic()}
      */
     public void start() {
         init();
-        while (run) {
-            logger.trace("Enter the logic method");
+        while (isRunning) {
             logic();
-            logger.trace("Leave CombinationGame logic");
         }
     }
 
     /**
      * This method contains the core of the game<br>
-     * It is executed while {@link #run} value is true
+     * It is executed while {@link #isRunning} value is true
      *
      * @see #quit()
      */
@@ -100,64 +99,79 @@ public class CombinationGame {
     }
 
     /**
-     * Method that set {@link #run} to false in order to leave the application
+     * Method that set {@link #isRunning} to false in order to leave the application
      */
     private void quit() {
-        run = false;
+        isRunning = false;
     }
 
 
     /**
      * Display the menu by iterating through {@link #gameModes}
+     *
+     * @see Displayer
      */
     private void displayMenu() {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Bienvenue sur le jeu combinaison");
-        System.out.println("Veuillez selectionner le mode de jeu souhaité");
-        System.out.println("------------------------------------------------------------------\n");
+        String menuTitleToDisplay = "";
+        menuTitleToDisplay += "Bienvenue sur le jeu combinaison\n";
+        menuTitleToDisplay += "Veuillez selectionner le mode de jeu souhaité";
+        Displayer.displaySemiBoxed(menuTitleToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
 
+        StringBuilder menuToDisplay = new StringBuilder();
         int selectionNumber = 1;
         for (GameMode gameMode : gameModes) {
-            System.out.println(selectionNumber + ". " + gameMode.getModeName());
+            menuToDisplay.append(selectionNumber).append(". ").append(gameMode.getModeName()).append("\n");
             selectionNumber++;
         }
+        menuToDisplay.append("\n").append(selectionNumber).append(". Quitter l'application");
 
-        System.out.println("\n" + selectionNumber + ". Quitter l'application");
+        Displayer.display(menuToDisplay.toString());
     }
 
     /**
      * Get the choice of the user and apply it
      * Start the according GameMode or leave the application
      * Display indications when the selection is not valid
-     * It also set run to false if player want to leave the application from a GameMode
+     * It also set isRunning to false if player want to leave the application from a GameMode
      *
      * @see GameMode#start()
-     * @see GameMode#getLeaveApp()
+     * @see GameMode#isLeavingApp()
      * @see #quit()
      */
     private void chooseMode() {
-        String choice = sc.nextLine();
+        boolean choiceIsValid = false;
+        int nbErrorInARow = 0;
 
-        //Regex that check if the user choice is an positive int with 1 or 2 digits
-        if (Pattern.matches("^[0-9]{1,2}$", choice)) {
-            int intChoice = Integer.parseInt(choice);
+        while (!choiceIsValid) {
+            String choice = scanner.nextLine();
+            //Regex that check if the user choice is an positive int with 1 or 2 digits
+            if (Pattern.matches("^[0-9]{1,2}$", choice)) {
+                int choiceAsInt = Integer.parseInt(choice);
 
-            if (intChoice > 0 && intChoice <= gameModes.size()) {
-                GameMode selectedGameMode = gameModes.get(intChoice - 1);
-                selectedGameMode.start();
+                if (choiceAsInt > 0 && choiceAsInt <= gameModes.size()) {
+                    choiceIsValid = true;
+                    GameMode selectedGameMode = gameModes.get(choiceAsInt - 1);
+                    selectedGameMode.start();
 
-                if (selectedGameMode.getLeaveApp()) {
+                    if (selectedGameMode.isLeavingApp()) {
+                        quit();
+                    }
+                } else if (choiceAsInt == gameModes.size() + 1) {
+                    choiceIsValid = true;
                     quit();
                 }
-            } else if (intChoice == gameModes.size() + 1) {
-                quit();
-            } else {
-                System.out.println("Votre sélection n'est pas valide");
-                System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus");
             }
-        } else {
-            System.out.println("Votre sélection n'est pas valide");
-            System.out.println("Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus");
+            if (!choiceIsValid) {
+                nbErrorInARow++;
+                String errorMessage = "Votre sélection n'est pas valide\n" +
+                        "Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus\n";
+                Displayer.display(errorMessage);
+
+                if (nbErrorInARow % 3 == 0) {
+                    displayMenu();
+                    nbErrorInARow = 0;
+                }
+            }
         }
 
 
