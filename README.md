@@ -10,6 +10,7 @@ Mécanisme de recherche de combinaison à X chiffres pour Escape Game - Java - I
 2. Extrayez le contenu du dossier .zip dans un autre dossiez
 3. Depuis votre console de commande, placez vous à la racine du dossier dézippé
 4. Executez la commande `java -jar combination.jar`
+> Attention il vous faut une version de [java SE Development Kit 12 ou superieur](https://www.oracle.com/technetwork/java/javase/downloads/index.html) pour executer l'application
 
 ## Comment changer les paramètres ?
 1. Ouvrez le fichier config.properties avec l'éditeur de texte de votre choix
