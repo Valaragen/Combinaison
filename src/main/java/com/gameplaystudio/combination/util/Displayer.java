@@ -64,8 +64,18 @@ public class Displayer {
         if(nbAppendedLineBreak <= 0 && nbPrependedLineBreak<= 0){
             logger.debug("Incorrect usage of method : No line break has been added. You should use displaySemiBoxed(String, TAG)");
         }
-        text = "\n".repeat(Math.max(0,nbPrependedLineBreak)) + separator + "\n" + text + "\n" + separator + "\n".repeat(Math.max(0, nbAppendedLineBreak));
-        System.out.println(text);
+
+        text = separator + "\n" + text + "\n" + separator;
+
+        StringBuilder textBuilder = new StringBuilder(text);
+        for (int i = 0; i < nbPrependedLineBreak; i++) {
+            textBuilder.insert(0, "\n");
+        }
+        for (int i = 0; i < nbAppendedLineBreak; i++) {
+            textBuilder.append("\n");
+        }
+
+        System.out.println(textBuilder.toString());
     }
 
 }
