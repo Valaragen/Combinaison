@@ -59,7 +59,7 @@ public class ModeChallenger extends GameMode {
                 complementaryInfoToDisplay += "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres" + "\n";
             }
 
-            if(!complementaryInfoToDisplay.equals("")) {
+            if (!complementaryInfoToDisplay.equals("")) {
                 Displayer.display(complementaryInfoToDisplay);
             }
         }
@@ -76,14 +76,12 @@ public class ModeChallenger extends GameMode {
      * @see Displayer
      */
     private void displayIndication() {
-        String textToDisplay = "";
-
-        textToDisplay += "L'ordinateur a créé une combinaison secrète que vous devez deviner\n";
-        textToDisplay += "Celui-ci vous donnera des indices pour vous aiguiller\n";
-        textToDisplay += "Tappez une combinsaison à " + Config.combinationLength + " chiffres\n";
-        textToDisplay += "'=' -> le chiffre est bon\n";
-        textToDisplay += "'+' -> le chiffre à trouver est plus grand\n";
-        textToDisplay += "'-' -> le chiffre à trouver est plus petit";
+        String textToDisplay = "L'ordinateur a créé une combinaison secrète que vous devez deviner\n"
+                + "Celui-ci vous donnera des indices pour vous aiguiller\n"
+                + "Tappez une combinsaison à " + Config.combinationLength + " chiffres\n"
+                + "'=' -> le chiffre est bon\n"
+                + "'+' -> le chiffre à trouver est plus grand\n"
+                + "'-' -> le chiffre à trouver est plus petit";
 
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.LINE_SEPARATOR, 0, 1);
@@ -105,17 +103,19 @@ public class ModeChallenger extends GameMode {
     /**
      * Display the game results
      *
-     * @param hasWin boolean set to <code>true</code> if the player wined the game
+     * @param hasWin    boolean set to <code>true</code> if the player wined the game
      * @param nbAttempt number of try the player has used to find the combination
      * @see Displayer
      */
-    private void displayGameResult(boolean hasWin, int nbAttempt){
+    private void displayGameResult(boolean hasWin, int nbAttempt) {
         String textToDisplay = "";
 
         if (hasWin) {
-            textToDisplay += "Bravo vous avez trouvé la combinaison !\n";
-            textToDisplay += "Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
+            logger.info("Player win");
+            textToDisplay += "Bravo vous avez trouvé la combinaison !\n"
+                    + "Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
         } else {
+            logger.info("Player loose");
             textToDisplay += "Dommage vous avez utilisé les " + Config.maxAttempts + " éssais autorisés !\n";
         }
         textToDisplay += "La combinaison était | " + computerSecretCombination + " |";

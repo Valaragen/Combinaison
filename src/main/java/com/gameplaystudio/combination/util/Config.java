@@ -1,8 +1,7 @@
 package com.gameplaystudio.combination.util;
 
 import com.gameplaystudio.combination.util.exceptions.InvalidSettingsInFile;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.log4j.Level;
 
 import java.io.*;
 import java.util.Properties;
@@ -95,11 +94,11 @@ public final class Config {
 
             if (temp_devMode != devMode) {
                 if (temp_devMode) {
-                    Configurator.setLevel(logger.getName(), Level.DEBUG);
+                    logger.setLevel(Level.DEBUG);
                     logger.info("Dev mode has been enabled");
                 } else {
                     logger.info("Dev mode has been disabled");
-                    Configurator.setLevel(logger.getName(), Level.WARN);
+                    logger.setLevel(Level.WARN);
                 }
                 devMode = temp_devMode;
             }

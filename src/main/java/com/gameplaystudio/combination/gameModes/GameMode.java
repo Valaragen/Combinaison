@@ -3,7 +3,7 @@ package com.gameplaystudio.combination.gameModes;
 import com.gameplaystudio.combination.CombinationGame;
 import com.gameplaystudio.combination.util.Config;
 import com.gameplaystudio.combination.util.Displayer;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -13,30 +13,36 @@ import java.util.regex.Pattern;
  */
 public abstract class GameMode {
 
-    /**
-     * Enum of all available Game modes
-     */
-    protected enum Mode{
-        MODE_DUEL("Mode Duel"),
-        MODE_CHALLENGER("Mode Challenger"),
-        MODE_DEFENSE("Mode Defense");
-
-        private String name;
-
-        Mode(String name){
-            this.name = name;
-        }
-
-        public String getName(){
-            return name;
-        }
-    }
-
+    private static final String REPLAY_MENU_TO_DISPLAY = "Souhaitez vous rejouer ?\n"
+            + "1.Rejouer\n"
+            + "2.Retourner au menu\n"
+            + "3.Quitter l'application";
+    private static final String REPLAY_ERROR_MESSAGE = "Votre sélection n'est pas valide\n" +
+            "Veuillez choisir un entier compris entre 1 et 3 inclus\n";
     /**
      * Set the logger used for all GameMode child
      */
     final Logger logger = CombinationGame.logger;
-
+    /**
+     * Scanner object used to get user inputs
+     */
+    Scanner scanner = new Scanner(System.in);
+    /**
+     * The secret combination of the computer, the player has to find it
+     */
+    String computerSecretCombination;
+    /**
+     * The secret combination of the player, the computer has to find it
+     */
+    String playerSecretCombination;
+    /**
+     * The player guess about the computer combination
+     */
+    String playerGuess;
+    /**
+     * The computer guess about the player combination
+     */
+    String computerGuess;
     /**
      * <p>This attribute represent the running state of the Game Mode<br>
      * It must be initialised to true at the start or the Game Mode will not start properly</p>
@@ -49,37 +55,10 @@ public abstract class GameMode {
      * @see GameMode
      */
     private boolean isRunning;
-
     /**
      * Boolean that represent the will to leave the app
      */
     private boolean leavingApp = false;
-
-    /**
-     * Scanner object used to get user inputs
-     */
-    Scanner scanner = new Scanner(System.in);
-
-    /**
-     * The secret combination of the computer, the player has to find it
-     */
-    String computerSecretCombination;
-
-    /**
-     * The secret combination of the player, the computer has to find it
-     */
-    String playerSecretCombination;
-
-    /**
-     * The player guess about the computer combination
-     */
-    String playerGuess;
-
-    /**
-     * The computer guess about the player combination
-     */
-    String computerGuess;
-
 
     /**
      * Getter for the name of the GameMode<br>
@@ -127,11 +106,13 @@ public abstract class GameMode {
      * It initialise the attributes attributes through {@link #init()} and isRunning the logic of the game through {@link #logic()}
      */
     public void start() {
+        logger.info("Start " + getModeName());
         displayGreeting();
         init();
         while (isRunning) {
             logic();
         }
+        logger.info("Leave " + getModeName());
     }
 
     /**
@@ -160,10 +141,8 @@ public abstract class GameMode {
         leavingApp = true;
     }
 
-    private void displayGreeting(){
-        String textToDisplay = "";
-
-        textToDisplay += "Bienvenue dans le " + getModeName();
+    private void displayGreeting() {
+        String textToDisplay = "Bienvenue dans le " + getModeName();
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
     }
@@ -180,42 +159,35 @@ public abstract class GameMode {
         boolean choiceIsValid = false;
         int nbErrorInARow = 0;
 
-        String menuToDisplay = "Souhaitez vous rejouer ?\n";
-        menuToDisplay += "1.Rejouer\n";
-        menuToDisplay += "2.Retourner au menu\n";
-        menuToDisplay += "3.Quitter l'application";
-
-        Displayer.display(menuToDisplay);
+        Displayer.display(REPLAY_MENU_TO_DISPLAY);
 
         while (!choiceIsValid) {
+
             String choice = scanner.nextLine();
 
             //Regex that check if the user choice is an positive int with 1 digit
             if (Pattern.matches("^[0-9]$", choice)) {
+                choiceIsValid = true;
                 switch (choice) {
                     case "1":
-                        choiceIsValid = true;
+                        logger.info("variables's re-initialisation");
                         init();
                         break;
                     case "2":
-                        choiceIsValid = true;
                         stop();
                         break;
                     case "3":
-                        choiceIsValid = true;
                         leaveApp();
                         break;
                     default:
+                        choiceIsValid = false;
                         break;
                 }
-            }
-            if (!choiceIsValid) {
+            } else {
                 nbErrorInARow++;
-                String errorMessage = "Votre sélection n'est pas valide\n" +
-                        "Veuillez choisir un entier compris entre 1 et 3 inclus\n";
-                Displayer.display(errorMessage);
-                if (nbErrorInARow%3 == 0) {
-                    Displayer.display(menuToDisplay);
+                Displayer.display(REPLAY_ERROR_MESSAGE);
+                if (nbErrorInARow % 3 == 0) {
+                    Displayer.display(REPLAY_MENU_TO_DISPLAY);
                     nbErrorInARow = 0;
                 }
             }
@@ -245,8 +217,8 @@ public abstract class GameMode {
      * It return the choice of the player when the combination match the requirements<br>
      * The combination length is taken from the config file<br>
      *
-     * @see Config#combinationLength
      * @return Return the player combination as a string
+     * @see Config#combinationLength
      */
     String chooseCombination() {
         return chooseCombination("");
@@ -256,15 +228,15 @@ public abstract class GameMode {
      * This method ask the player to enter a valid combination based of the length in config file and a regex<br>
      * It return the choice of the player when the combination match the requirements<br>
      *
-     * @see Config#combinationLength
      * @param informationToDisplay indications you want to display to inform the player the future utility of the asked combination
      * @return Return the player combination as a string
+     * @see Config#combinationLength
      */
     String chooseCombination(String informationToDisplay) {
         boolean choiceIsValid = false;
         String choice;
 
-        informationToDisplay  = "Veuillez définir une combinaison de " + Config.combinationLength + " chiffres" +(informationToDisplay.isEmpty() ? "" : "\n") + informationToDisplay;
+        informationToDisplay = "Veuillez définir une combinaison de " + Config.combinationLength + " chiffres" + (informationToDisplay.isEmpty() ? "" : "\n") + informationToDisplay;
         Displayer.displaySemiBoxed(informationToDisplay, Displayer.TAG.LINE_SEPARATOR);
 
         do {
@@ -287,7 +259,7 @@ public abstract class GameMode {
      * + -> if the digit to find is bigger<br>
      * - -> if the digit to find is smaller
      *
-     * @param combinationGuess          The combination to test
+     * @param combinationGuess  The combination to test
      * @param combinationToFind The combination to find
      * @return Return the hint as a string
      */
@@ -315,19 +287,17 @@ public abstract class GameMode {
      * <i>If it's the first guess (computerGuess is empty) it return a random combination</i><br>
      * <i>If no hint is given or  </i>
      *
-     *
+     * @param hint String of the hint to change the combination
+     * @return Return the new combination as a String
      * @see #generateCombination()
      * @see #computerGuess
-     *
-     * @param hint        String of the hint to change the combination
-     * @return Return the new combination as a String
      */
-    String computerGuessNewCombinationFromHint(String hint, int nbAttempt) { //TODO improve ia
-        if (computerGuess.equals("")){
+    String computerGuessNewCombinationFromHint(String hint, int nbAttempt) {
+        if (computerGuess.equals("")) {
             return generateCombination();
         }
 
-        if (computerGuess.length() != hint.length()){
+        if (computerGuess.length() != hint.length()) {
             logger.debug("The combination and the hint given doesn't have the same length, the computer can't guess correctly");
             return generateCombination();
         }
@@ -342,35 +312,35 @@ public abstract class GameMode {
             int currentNumber = computerGuess.charAt(i) - '0';
             if (hint.charAt(i) == '+') {
 
-                if (nbAttempt == 2){
-                    if(currentNumber == 0){
+                if (nbAttempt == 2) {
+                    if (currentNumber == 0) {
                         step += 2;
-                    } else if (currentNumber == 1){
+                    } else if (currentNumber == 1) {
                         step += 1;
                     }
                 }
-                if(currentNumber + step > 9){
+                if (currentNumber + step > 9) {
                     step = 1;
                 }
                 currentNumber += step;
-                if (currentNumber > 9){
+                if (currentNumber > 9) {
                     currentNumber = 9;
                 }
 
             } else if (hint.charAt(i) == '-') {
 
-                if (nbAttempt == 2){
-                    if(currentNumber == 9){
+                if (nbAttempt == 2) {
+                    if (currentNumber == 9) {
                         step += 2;
-                    } else if(currentNumber == 8){
+                    } else if (currentNumber == 8) {
                         step += 1;
                     }
                 }
-                if(currentNumber - step < 0){
+                if (currentNumber - step < 0) {
                     step = 1;
                 }
                 currentNumber -= step;
-                if(currentNumber < 0){
+                if (currentNumber < 0) {
                     currentNumber = 0;
                 }
 
@@ -379,6 +349,25 @@ public abstract class GameMode {
 
         }
         return newCombination.toString();
+    }
+
+    /**
+     * Enum of all available Game modes
+     */
+    protected enum Mode {
+        MODE_DUEL("Mode Duel"),
+        MODE_CHALLENGER("Mode Challenger"),
+        MODE_DEFENSE("Mode Defense");
+
+        private String name;
+
+        Mode(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
 

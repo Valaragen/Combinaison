@@ -41,10 +41,10 @@ public class ModeDefense extends GameMode {
         while (isPlaying) {
             String complementaryInfoToDisplay = "";
 
-            if(computerCanGuess){
+            if (computerCanGuess) {
                 computerGuess = super.computerGuessNewCombinationFromHint(hintForComputer, nbAttempt);
                 nbAttempt++;
-                computerCanGuess= false;
+                computerCanGuess = false;
             }
 
             displayAttemptInfo(nbAttempt);
@@ -63,8 +63,8 @@ public class ModeDefense extends GameMode {
                 if (hintForComputer.length() == Config.combinationLength && Pattern.matches("[=+-]+", hintForComputer)) {
                     computerCanGuess = true;
                 } else {
-                    complementaryInfoToDisplay += "Votre indice n'est pas valide\n";
-                    complementaryInfoToDisplay += "Merci d'entrer un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)\n";
+                    complementaryInfoToDisplay += "Votre indice n'est pas valide\n"
+                            + "Merci d'entrer un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)\n";
                 }
             }
 
@@ -83,11 +83,11 @@ public class ModeDefense extends GameMode {
      */
     private void displayIndication(String combinationToShow) {
         String indicationToDisplay = "";
-        indicationToDisplay += "L'ordinateur doit trouver votre combinaison : " + combinationToShow + "\n";
-        indicationToDisplay += "Pour l'aider, il va falloir lui donner un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)\n";
-        indicationToDisplay += "'=' -> le chiffre est bon\n";
-        indicationToDisplay += "'+' -> le chiffre à trouver est plus grand\n";
-        indicationToDisplay += "'-' -> le chiffre à trouver est plus petit";
+        indicationToDisplay += "L'ordinateur doit trouver votre combinaison : " + combinationToShow + "\n"
+                + "Pour l'aider, il va falloir lui donner un indice constitué de " + Config.combinationLength + " caractères (+ ou - ou =)\n"
+                + "'=' -> le chiffre est bon\n"
+                + "'+' -> le chiffre à trouver est plus grand\n"
+                + "'-' -> le chiffre à trouver est plus petit";
         Displayer.displaySemiBoxed(indicationToDisplay, Displayer.TAG.LINE_SEPARATOR, 1, 1);
     }
 
@@ -95,8 +95,8 @@ public class ModeDefense extends GameMode {
      * Display the attempt number and the max attempt number and some indications
      */
     private void displayAttemptInfo(int nbAttempt) {
-        String textToDisplay = "Essai " + nbAttempt + "/" + Config.maxAttempts + " -> votre combinaison | " + playerSecretCombination + " |\n";
-        textToDisplay += "L'ordinateur à proposé | " + computerGuess + " |";
+        String textToDisplay = "Essai " + nbAttempt + "/" + Config.maxAttempts + " -> votre combinaison | " + playerSecretCombination + " |\n"
+                + "L'ordinateur à proposé | " + computerGuess + " |";
         Displayer.display(textToDisplay);
     }
 
@@ -104,23 +104,25 @@ public class ModeDefense extends GameMode {
     /**
      * Display the game results
      *
-     * @param hasWin boolean set to <code>true</code> if the player wined the game
+     * @param hasWin    boolean set to <code>true</code> if the player wined the game
      * @param nbAttempt number of try the player has used to find the combination
      * @see Displayer
      */
-    private void displayGameResult(boolean hasWin, int nbAttempt){
+    private void displayGameResult(boolean hasWin, int nbAttempt) {
         String textToDisplay = "";
 
         if (hasWin) {
-            textToDisplay += "L'ordinateur à réussi à trouver votre combinaison secrète!\n";
-            textToDisplay += "Vos indications ont été éfficaces\n";
-            textToDisplay += "L'ordinateur à mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") +"\n";
-            textToDisplay += "La combinaison était  | " + playerSecretCombination + " |";
+            logger.info("Player win");
+            textToDisplay += "L'ordinateur à réussi à trouver votre combinaison secrète!\n"
+                    + "Vos indications ont été éfficaces\n"
+                    + "L'ordinateur à mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n"
+                    + "La combinaison était  | " + playerSecretCombination + " |";
         } else {
-            textToDisplay += "L'ordinateur n'a pas réussi à trouver votre combinaison secrète !\n";
-            textToDisplay += "L'ordinateur a utilisé les " + Config.maxAttempts + " éssais autorisés !\n";
-            textToDisplay += "La combinaison était | " + playerSecretCombination + " |\n";
-            textToDisplay += "La dernière proposition de l'ordinateur était | " + computerGuess + " |";
+            logger.info("Player loose");
+            textToDisplay += "L'ordinateur n'a pas réussi à trouver votre combinaison secrète !\n"
+                    + "L'ordinateur a utilisé les " + Config.maxAttempts + " éssais autorisés !\n"
+                    + "La combinaison était | " + playerSecretCombination + " |\n"
+                    + "La dernière proposition de l'ordinateur était | " + computerGuess + " |";
         }
 
 

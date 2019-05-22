@@ -30,8 +30,8 @@ public class ModeDuel extends GameMode {
         computerSecretCombination = super.generateCombination();
         logger.debug("(Combinaison secrète de l'ordinateur : " + computerSecretCombination + ")");
 
-        String informationToDisplay = "L'ordinateur devra deviner cette combinaison, ne lui faites pas de cadeau ;)\n";
-        informationToDisplay += "De votre coté, vous devrez trouver la combinaison que l'ordinateur a choisi";
+        String informationToDisplay = "L'ordinateur devra deviner cette combinaison, ne lui faites pas de cadeau ;)\n"
+                + "De votre coté, vous devrez trouver la combinaison que l'ordinateur a choisi";
         playerSecretCombination = super.chooseCombination(informationToDisplay);
 
 
@@ -42,7 +42,7 @@ public class ModeDuel extends GameMode {
 
         displayIndication();
 
-        while (isPLaying) { // TODO Cacher la combinaison secrete pour la machine - improve ia
+        while (isPLaying) {
             String complementaryInfoToDisplay = "";
 
             displayAttemptInfo(nbAttempt);
@@ -63,7 +63,7 @@ public class ModeDuel extends GameMode {
                 if (computerGuess.equals(playerSecretCombination)) {
                     isPLaying = false;
                     computerHasWin = true;
-                } else if(isPLaying){
+                } else if (isPLaying) {
                     nbAttempt++;
                 }
             } else {
@@ -83,12 +83,11 @@ public class ModeDuel extends GameMode {
      * Show indications about how the game should be played
      */
     private void displayIndication() {
-        String textToDisplay = "Devinez la combinaison secrète de l'ordinateur avant qu'il ne trouve la vôtre !\n";
-
-        textToDisplay += "Tappez une combinsaison à " + Config.combinationLength + " chiffres\n";
-        textToDisplay += "'=' -> le chiffre est bon\n";
-        textToDisplay += "'+' -> le chiffre à trouver est plus grand\n";
-        textToDisplay += "'-' -> le chiffre à trouver est plus petit";
+        String textToDisplay = "Devinez la combinaison secrète de l'ordinateur avant qu'il ne trouve la vôtre !\n"
+                + "Tappez une combinsaison à " + Config.combinationLength + " chiffres\n"
+                + "'=' -> le chiffre est bon\n"
+                + "'+' -> le chiffre à trouver est plus grand\n"
+                + "'-' -> le chiffre à trouver est plus petit";
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.LINE_SEPARATOR, 1, 1);
     }
@@ -100,28 +99,31 @@ public class ModeDuel extends GameMode {
     private void displayAttemptInfo(int nbAttempt) {
         String textToDisplay = "Essai " + nbAttempt + "\n";
         if (!playerGuess.equals("")) {
-            textToDisplay += " || Votre dernière proposition : " + playerGuess + " -> Réponse : " + super.generateHint(computerSecretCombination, playerGuess) + "\n";
-            textToDisplay += " || Dernière proposition de l'ordinateur : " + computerGuess + " -> Réponse : " + super.generateHint(playerSecretCombination, computerGuess) + "\n";
+            textToDisplay += " || Votre dernière proposition : " + playerGuess + " -> Réponse : " + super.generateHint(computerSecretCombination, playerGuess) + "\n"
+                    + " || Dernière proposition de l'ordinateur : " + computerGuess + " -> Réponse : " + super.generateHint(playerSecretCombination, computerGuess) + "\n";
         }
         textToDisplay += "Nouvelle proposition : ";
         Displayer.displayInline(textToDisplay);
     }
 
-    private void displayGameResult(boolean playerHasWin, boolean computerHasWin, int nbAttempt){
+    private void displayGameResult(boolean playerHasWin, boolean computerHasWin, int nbAttempt) {
         String textToDisplay = "";
         if (computerHasWin && playerHasWin) {
-            textToDisplay += "Égalité ! l'ordinateur et vous, avez trouvé vos combinaisons respectives\n";
-            textToDisplay += "Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
+            logger.info("Draw");
+            textToDisplay += "Égalité ! l'ordinateur et vous, avez trouvé vos combinaisons respectives\n"
+                    + "Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
         } else if (playerHasWin) {
-            textToDisplay += "Bravo, vous avez trouvé la combinaison avant l'ordinateur !\n";
-            textToDisplay += "Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
+            logger.info("Player win");
+            textToDisplay += "Bravo, vous avez trouvé la combinaison avant l'ordinateur !\n"
+                    + "Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
         } else if (computerHasWin) {
-            textToDisplay += "Dommage, l'ordinateur a trouvé la combinaison avant vous...\n";
-            textToDisplay += "L'ordinateur a mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
+            logger.info("Machine win");
+            textToDisplay += "Dommage, l'ordinateur a trouvé la combinaison avant vous...\n"
+                    + "L'ordinateur a mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
         }
 
-        textToDisplay += "La combinaison que vous deviez trouver était  | " + computerSecretCombination + " |\n";
-        textToDisplay += "La combinaison que l'ordinateur devait trouver était  | " + playerSecretCombination + " |";
+        textToDisplay += "La combinaison que vous deviez trouver était  | " + computerSecretCombination + " |\n"
+                + "La combinaison que l'ordinateur devait trouver était  | " + playerSecretCombination + " |";
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 0, 1);
     }

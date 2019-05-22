@@ -6,10 +6,11 @@ import com.gameplaystudio.combination.gameModes.ModeDefense;
 import com.gameplaystudio.combination.gameModes.ModeDuel;
 import com.gameplaystudio.combination.util.Config;
 import com.gameplaystudio.combination.util.Displayer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
@@ -26,7 +27,8 @@ public class CombinationGame {
     /**
      * Logger object from the log4j library
      */
-    public static final Logger logger = LogManager.getLogger(CombinationGame.class);
+    public static final Logger logger = Logger.getLogger(CombinationGame.class);
+    private static final String MENU_TITLE_TO_DISPLAY = "Bienvenue sur le jeu combinaison\n" + "Veuillez selectionner le mode de jeu souhaité";
 
     /**
      * Scanner object used to get user inputs
@@ -81,10 +83,12 @@ public class CombinationGame {
      * It initialise the attributes attributes through {@link #init()} and isRunning the logic of the game through {@link #logic()}
      */
     public void start() {
+        logger.info("Starting the game");
         init();
         while (isRunning) {
             logic();
         }
+        logger.info("Leaving the game");
     }
 
     /**
@@ -112,10 +116,7 @@ public class CombinationGame {
      * @see Displayer
      */
     private void displayMenu() {
-        String menuTitleToDisplay = "";
-        menuTitleToDisplay += "Bienvenue sur le jeu combinaison\n";
-        menuTitleToDisplay += "Veuillez selectionner le mode de jeu souhaité";
-        Displayer.displaySemiBoxed(menuTitleToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
+        Displayer.displaySemiBoxed(MENU_TITLE_TO_DISPLAY, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
 
         StringBuilder menuToDisplay = new StringBuilder();
         int selectionNumber = 1;
