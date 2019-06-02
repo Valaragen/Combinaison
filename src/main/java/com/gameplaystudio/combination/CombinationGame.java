@@ -28,7 +28,12 @@ public class CombinationGame {
      * Logger object from the log4j library
      */
     public static final Logger logger = Logger.getLogger(CombinationGame.class);
-    private static final String MENU_TITLE_TO_DISPLAY = "Bienvenue sur le jeu combinaison\n" + "Veuillez selectionner le mode de jeu souhaité";
+    private static final String MENU_TITLE_TO_DISPLAY = "Bienvenue sur le jeu combinaison" + Displayer.CARRIAGE_RETURN + "Veuillez selectionner le mode de jeu souhaité";
+    private static final String LEAVE_THE_APPLICATION = ". Quitter l'application";
+    private static final String CHOOSE_MODE_ERROR_MESSAGE = "Votre sélection n'est pas valide" + Displayer.CARRIAGE_RETURN
+            + "Veuillez choisir un entier compris entre ";
+    private static final String AND = " et ";
+    private static final String INCLUDED = " inclus" + Displayer.CARRIAGE_RETURN;
 
     /**
      * Scanner object used to get user inputs
@@ -121,10 +126,10 @@ public class CombinationGame {
         StringBuilder menuToDisplay = new StringBuilder();
         int selectionNumber = 1;
         for (GameMode gameMode : gameModes) {
-            menuToDisplay.append(selectionNumber).append(". ").append(gameMode.getModeName()).append("\n");
+            menuToDisplay.append(selectionNumber).append(". ").append(gameMode.getModeName()).append(Displayer.CARRIAGE_RETURN);
             selectionNumber++;
         }
-        menuToDisplay.append("\n").append(selectionNumber).append(". Quitter l'application");
+        menuToDisplay.append("\n").append(selectionNumber).append(LEAVE_THE_APPLICATION);
 
         Displayer.display(menuToDisplay.toString());
     }
@@ -164,8 +169,7 @@ public class CombinationGame {
             }
             if (!choiceIsValid) {
                 nbErrorInARow++;
-                String errorMessage = "Votre sélection n'est pas valide\n" +
-                        "Veuillez choisir un entier compris entre " + 1 + " et " + (gameModes.size() + 1) + " inclus\n";
+                String errorMessage = CHOOSE_MODE_ERROR_MESSAGE + 1 + AND + (gameModes.size() + 1) + INCLUDED;
                 Displayer.display(errorMessage);
 
                 if (nbErrorInARow % 3 == 0) {

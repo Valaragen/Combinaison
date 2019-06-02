@@ -6,7 +6,7 @@ import static com.gameplaystudio.combination.CombinationGame.logger;
  * Class used to format and display text in console command
  */
 public class Displayer {
-
+    public static final String CARRIAGE_RETURN = "\n";
     /**
      * Enumeration of special tags used to add generic formatting elements to a String
      */
@@ -49,7 +49,7 @@ public class Displayer {
      * @param separator Type of separator choosed from {@link TAG}
      */
     public static void displaySemiBoxed(String text, TAG separator){
-        text = separator + "\n" + text + "\n" + separator;
+        text = separator + CARRIAGE_RETURN + text + CARRIAGE_RETURN + separator;
         System.out.println(text);
     }
 
@@ -65,14 +65,14 @@ public class Displayer {
             logger.debug("Incorrect usage of method : No line break has been added. You should use displaySemiBoxed(String, TAG)");
         }
 
-        text = separator + "\n" + text + "\n" + separator;
+        text = separator + CARRIAGE_RETURN + text + CARRIAGE_RETURN + separator;
 
         StringBuilder textBuilder = new StringBuilder(text);
         for (int i = 0; i < nbPrependedLineBreak; i++) {
-            textBuilder.insert(0, "\n");
+            textBuilder.insert(0, CARRIAGE_RETURN);
         }
         for (int i = 0; i < nbAppendedLineBreak; i++) {
-            textBuilder.append("\n");
+            textBuilder.append(CARRIAGE_RETURN);
         }
 
         System.out.println(textBuilder.toString());

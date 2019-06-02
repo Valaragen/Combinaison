@@ -5,8 +5,7 @@ import com.gameplaystudio.combination.CombinationGame;
 public class gameLauncher {
 
     public static void main(String[] args) {
-        CombinationGame combinationGame = new CombinationGame();
-        combinationGame.start();
+        new CombinationGame().start();
     }
 
 }
