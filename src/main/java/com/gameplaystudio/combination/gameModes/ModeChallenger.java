@@ -124,7 +124,7 @@ public class ModeChallenger extends GameMode {
             logger.info("Player loose");
             textToDisplay += PLAYER_LOOSE_TEXT + Config.maxAttempts + ALLOWED_TRIES;
         }
-        textToDisplay += THE_COMBINATION_WAS + SLASH_SEPARATOR + computerSecretCombination + SLASH_SEPARATOR;
+        textToDisplay += THE_COMBINATION_WAS + SINGLE_PIPE_SEPARATOR + computerSecretCombination + SINGLE_PIPE_SEPARATOR;
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 0, 1);
     }
