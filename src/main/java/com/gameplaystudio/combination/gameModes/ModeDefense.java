@@ -37,6 +37,8 @@ public class ModeDefense extends GameMode {
     private static final String COMPUTER_USED = "L'ordinateur à mis ";
     private static final String COMPUTER_USED_THE = "L'ordinateur a utilisé les ";
     private static final String THE_LAST_COMPUTER_GUESS_WAS = "La dernière proposition de l'ordinateur était";
+    private static final String PLAYER_IS_CHEATING_TEXT = "Votre indice est valide cependant il ne donne pas les bonnes indications à l'ordinateur, veuillez réesayer" + Displayer.CARRIAGE_RETURN;
+    private static final String PLAYER_IS_CHEATING_HELP_TEXT = "AIDE : L'indice attendu est";
 
 
     @Override
@@ -55,6 +57,7 @@ public class ModeDefense extends GameMode {
         boolean isPlaying = true;
         boolean hasWin = false;
         int nbAttempt = 0;
+        int nbCheatInARow = 0;
 
         displayIndication(playerSecretCombination);
 
@@ -81,7 +84,17 @@ public class ModeDefense extends GameMode {
             } else if (isPlaying) {
                 hintForComputer = scanner.nextLine();
                 if (hintForComputer.length() == Config.combinationLength && Pattern.matches("[=+-]+", hintForComputer)) {
-                    computerCanGuess = true;
+                    if(!isPlayerCheating(hintForComputer)) {
+                        computerCanGuess = true;
+                        nbCheatInARow = 0;
+                    } else {
+                        complementaryInfoToDisplay += PLAYER_IS_CHEATING_TEXT;
+                        nbCheatInARow++;
+                        if (nbCheatInARow % 3 == 0) {
+                            complementaryInfoToDisplay += PLAYER_IS_CHEATING_HELP_TEXT + DOUBLE_PIPE_SEPARATOR + super.generateHint(playerSecretCombination, computerGuess) + DOUBLE_PIPE_SEPARATOR + Displayer.CARRIAGE_RETURN;
+                            nbCheatInARow = 0;
+                        }
+                    }
                 } else {
                     complementaryInfoToDisplay += CHOOSE_HINT_ERROR_MESSAGE + Config.combinationLength + CHARACTERS_INDICATION + Displayer.CARRIAGE_RETURN;
                 }
@@ -115,6 +128,14 @@ public class ModeDefense extends GameMode {
                 + COMPUTER_GESSED + SINGLE_PIPE_SEPARATOR + computerGuess + SINGLE_PIPE_SEPARATOR + Displayer.CARRIAGE_RETURN
                 + YOUR_HINT;
         Displayer.displayInline(textToDisplay);
+    }
+
+    private boolean isPlayerCheating(String hintForComputer) {
+        boolean isPlayerCheating = false;
+        if (!hintForComputer.equals(super.generateHint(playerSecretCombination, computerGuess))){
+            isPlayerCheating = true;
+        }
+        return isPlayerCheating;
     }
 
     /**
