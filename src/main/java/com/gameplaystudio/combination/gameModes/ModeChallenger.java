@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 /**
  * Sub-class of {@link GameMode}<br>
- * In this Game Mode a combination is generated<br>
+ * In this Game MODE a combination is generated<br>
  * The player has a limited number of tries to find the generated combination<br>
  * After each try the player receive an hint
  * <i>The number of try and the number of digit in the combination are get from a setting file</i>
@@ -19,9 +19,20 @@ import java.util.regex.Pattern;
  */
 public class ModeChallenger extends GameMode {
 
+    private static final String LAST_PROPOSITION = "Dernière proposition : ";
+    private static final String PLAYER_WIN_TEXT = "Bravo vous avez trouvé la combinaison !" + Displayer.CARRIAGE_RETURN;
+    private static final String PLAYER_LOOSE_TEXT = "Dommage vous avez utilisé les ";
+    private static final String HOW_TO_PLAY_INDICATION_PART1 = "L'ordinateur a créé une combinaison secrète que vous devez deviner" + Displayer.CARRIAGE_RETURN
+            + "Celui-ci vous donnera des indices pour vous aiguiller" + Displayer.CARRIAGE_RETURN
+            + "Tappez une combinsaison à ";
+    private static final String HOW_TO_PLAY_INDICATIONS_PART2 = DIGITS + Displayer.CARRIAGE_RETURN
+            + "'=' -> le chiffre est bon" + Displayer.CARRIAGE_RETURN
+            + "'+' -> le chiffre à trouver est plus grand" + Displayer.CARRIAGE_RETURN
+            + "'-' -> le chiffre à trouver est plus petit";
+
     @Override
     public String getModeName() {
-        return Mode.MODE_CHALLENGER.getName();
+        return MODE.MODE_CHALLENGER.getName();
     }
 
     @Override
@@ -45,7 +56,7 @@ public class ModeChallenger extends GameMode {
 
             if (playerGuessToVerify.length() == Config.combinationLength && Pattern.matches("^[0-9]+$", playerGuessToVerify)) {
                 playerGuess = playerGuessToVerify;
-                complementaryInfoToDisplay += "Réponse : " + super.generateHint(computerSecretCombination, playerGuess) + "\n";
+                complementaryInfoToDisplay += ANSWER + super.generateHint(computerSecretCombination, playerGuess) + Displayer.CARRIAGE_RETURN;
                 if (nbAttempt >= Config.maxAttempts) {
                     isPlaying = false;
                 }
@@ -56,7 +67,7 @@ public class ModeChallenger extends GameMode {
                     nbAttempt++;
                 }
             } else {
-                complementaryInfoToDisplay += "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres" + "\n";
+                complementaryInfoToDisplay += CHOOSE_COMBINATION_ERROR_MESSAGE + Config.combinationLength + DIGITS + Displayer.CARRIAGE_RETURN;
             }
 
             if (!complementaryInfoToDisplay.equals("")) {
@@ -76,12 +87,7 @@ public class ModeChallenger extends GameMode {
      * @see Displayer
      */
     private void displayIndication() {
-        String textToDisplay = "L'ordinateur a créé une combinaison secrète que vous devez deviner\n"
-                + "Celui-ci vous donnera des indices pour vous aiguiller\n"
-                + "Tappez une combinsaison à " + Config.combinationLength + " chiffres\n"
-                + "'=' -> le chiffre est bon\n"
-                + "'+' -> le chiffre à trouver est plus grand\n"
-                + "'-' -> le chiffre à trouver est plus petit";
+        String textToDisplay = HOW_TO_PLAY_INDICATION_PART1 + Config.combinationLength + HOW_TO_PLAY_INDICATIONS_PART2;
 
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.LINE_SEPARATOR, 0, 1);
@@ -92,11 +98,11 @@ public class ModeChallenger extends GameMode {
      * It also display information about the last player guess
      */
     private void displayAttemptInfo(int nbAttempt) {
-        String textToDisplay = "Essai " + nbAttempt + "/" + Config.maxAttempts + "\n";
+        String textToDisplay = ATTEMPT + nbAttempt + SLASH_SEPARATOR + Config.maxAttempts + Displayer.CARRIAGE_RETURN;
         if (!playerGuess.equals("")) {
-            textToDisplay += "Dernière proposition : " + playerGuess + " -> Réponse : " + super.generateHint(computerSecretCombination, playerGuess) + "\n";
+            textToDisplay += LAST_PROPOSITION + playerGuess + RIGHTWARD_ARROW + ANSWER + super.generateHint(computerSecretCombination, playerGuess) + Displayer.CARRIAGE_RETURN;
         }
-        textToDisplay += "Nouvelle proposition : ";
+        textToDisplay += NEW_PROPOSITION;
         Displayer.displayInline(textToDisplay);
     }
 
@@ -112,13 +118,13 @@ public class ModeChallenger extends GameMode {
 
         if (hasWin) {
             logger.info("Player win");
-            textToDisplay += "Bravo vous avez trouvé la combinaison !\n"
-                    + "Vous avez mis " + nbAttempt + " éssai" + (nbAttempt > 1 ? "s" : "") + "\n";
+            textToDisplay += PLAYER_WIN_TEXT
+                    + YOU_USED + nbAttempt + (nbAttempt > 1 ? TRIES : TRY) + Displayer.CARRIAGE_RETURN;
         } else {
             logger.info("Player loose");
-            textToDisplay += "Dommage vous avez utilisé les " + Config.maxAttempts + " éssais autorisés !\n";
+            textToDisplay += PLAYER_LOOSE_TEXT + Config.maxAttempts + ALLOWED_TRIES;
         }
-        textToDisplay += "La combinaison était | " + computerSecretCombination + " |";
+        textToDisplay += THE_COMBINATION_WAS + SLASH_SEPARATOR + computerSecretCombination + SLASH_SEPARATOR;
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 0, 1);
     }

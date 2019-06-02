@@ -13,12 +13,47 @@ import java.util.regex.Pattern;
  */
 public abstract class GameMode {
 
-    private static final String REPLAY_MENU_TO_DISPLAY = "Souhaitez vous rejouer ?\n"
-            + "1.Rejouer\n"
-            + "2.Retourner au menu\n"
+    /**
+     * Enum of all available Game modes
+     */
+    protected enum MODE {
+        MODE_DUEL("Mode Duel"),
+        MODE_CHALLENGER("Mode Challenger"),
+        MODE_DEFENSE("Mode Defense");
+        private String name;
+        MODE(String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
+    }
+
+    private static final String CHOOSE_COMBINATION_INDICATION_TO_DISPLAY = "Veuillez définir une combinaison de ";
+    private static final String GOOD_CHOICE = "Très bon choix !";
+    private static final String WELCOME_TEXT = "Bienvenue dans le ";
+    private static final String REPLAY_MENU_TO_DISPLAY = "Souhaitez vous rejouer ?" + Displayer.CARRIAGE_RETURN
+            + "1.Rejouer" + Displayer.CARRIAGE_RETURN
+            + "2.Retourner au menu" + Displayer.CARRIAGE_RETURN
             + "3.Quitter l'application";
-    private static final String REPLAY_ERROR_MESSAGE = "Votre sélection n'est pas valide\n" +
-            "Veuillez choisir un entier compris entre 1 et 3 inclus\n";
+    private static final String REPLAY_ERROR_MESSAGE = "Votre sélection n'est pas valide" + Displayer.CARRIAGE_RETURN
+            + "Veuillez choisir un entier compris entre 1 et 3 inclus" + Displayer.CARRIAGE_RETURN;
+
+    static final String THE_COMBINATION_WAS = "La combinaison était";
+    static final String CHOOSE_COMBINATION_ERROR_MESSAGE = "Votre combinaison n'est pas valide, merci d'entrer une combinaison de ";
+    static final String DIGITS = " chiffres";
+    static final String ALLOWED_TRIES = " éssais autorisés !" + Displayer.CARRIAGE_RETURN;
+    static final String YOU_USED = "Vous avez mis ";
+    static final String NEW_PROPOSITION = "Nouvelle proposition : ";
+    static final String ANSWER = "Réponse : ";
+    static final String ATTEMPT = "Essai ";
+    static final String DOUBLE_PIPE_SEPARATOR = " || ";
+    static final String SINGLE_PIPE_SEPARATOR = " | ";
+    static final String SLASH_SEPARATOR = "/";
+    static final String RIGHTWARD_ARROW = " -> ";
+    static final String TRY = " éssai";
+    static final String TRIES = " éssais";
+
     /**
      * Set the logger used for all GameMode child
      */
@@ -44,10 +79,10 @@ public abstract class GameMode {
      */
     String computerGuess;
     /**
-     * <p>This attribute represent the running state of the Game Mode<br>
-     * It must be initialised to true at the start or the Game Mode will not start properly</p>
+     * <p>This attribute represent the running state of the Game MODE<br>
+     * It must be initialised to true at the start or the Game MODE will not start properly</p>
      *
-     * <p>When it's set to false the Game Mode should stop running</p>
+     * <p>When it's set to false the Game MODE should stop running</p>
      *
      * @see #init()
      * @see #start()
@@ -55,6 +90,7 @@ public abstract class GameMode {
      * @see GameMode
      */
     private boolean isRunning;
+
     /**
      * Boolean that represent the will to leave the app
      */
@@ -62,10 +98,10 @@ public abstract class GameMode {
 
     /**
      * Getter for the name of the GameMode<br>
-     * It return a string that represent the name of the Game Mode<br>
+     * It return a string that represent the name of the Game MODE<br>
      * <i>This method must be override in every class that extends GameMode</i>
      *
-     * @return Return the name of the Game Mode as a String
+     * @return Return the name of the Game MODE as a String
      * @see GameMode
      */
     public abstract String getModeName();
@@ -116,7 +152,7 @@ public abstract class GameMode {
     }
 
     /**
-     * This method contains the core of the Game Mode<br>
+     * This method contains the core of the Game MODE<br>
      * It is executed while {@link #isRunning} value is true
      * <i>This method must be override in every class that extends GameMode</i>
      *
@@ -142,14 +178,14 @@ public abstract class GameMode {
     }
 
     private void displayGreeting() {
-        String textToDisplay = "Bienvenue dans le " + getModeName();
+        String textToDisplay = WELCOME_TEXT + getModeName();
 
         Displayer.displaySemiBoxed(textToDisplay, Displayer.TAG.EQUAL_SEPARATOR, 1, 1);
     }
 
     /**
      * This method show a menu to the player and get his choice<br>
-     * The player can replay the current Game Mode, go back to menu or leave the application
+     * The player can replay the current Game MODE, go back to menu or leave the application
      *
      * @see #logic()
      * @see #stop()
@@ -236,17 +272,17 @@ public abstract class GameMode {
         boolean choiceIsValid = false;
         String choice;
 
-        informationToDisplay = "Veuillez définir une combinaison de " + Config.combinationLength + " chiffres" + (informationToDisplay.isEmpty() ? "" : "\n") + informationToDisplay;
+        informationToDisplay = CHOOSE_COMBINATION_INDICATION_TO_DISPLAY + Config.combinationLength + DIGITS + (informationToDisplay.isEmpty() ? "" : Displayer.CARRIAGE_RETURN) + informationToDisplay;
         Displayer.displaySemiBoxed(informationToDisplay, Displayer.TAG.LINE_SEPARATOR);
 
         do {
             choice = scanner.nextLine();
             String resultToDisplay;
             if (Pattern.matches("^[0-9]+$", choice) && choice.length() == Config.combinationLength) {
-                resultToDisplay = "Très bon choix !";
+                resultToDisplay = GOOD_CHOICE;
                 choiceIsValid = true;
             } else {
-                resultToDisplay = "Votre combinaison n'est pas valide, merci d'entrer une combinaison de " + Config.combinationLength + " chiffres\n";
+                resultToDisplay = CHOOSE_COMBINATION_ERROR_MESSAGE + Config.combinationLength + DIGITS + Displayer.CARRIAGE_RETURN;
             }
             Displayer.display(resultToDisplay);
         } while (!choiceIsValid);
@@ -349,25 +385,6 @@ public abstract class GameMode {
 
         }
         return newCombination.toString();
-    }
-
-    /**
-     * Enum of all available Game modes
-     */
-    protected enum Mode {
-        MODE_DUEL("Mode Duel"),
-        MODE_CHALLENGER("Mode Challenger"),
-        MODE_DEFENSE("Mode Defense");
-
-        private String name;
-
-        Mode(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
     }
 
 
