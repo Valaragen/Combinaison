@@ -32,8 +32,8 @@ public class CombinationGame {
     private static final String LEAVE_THE_APPLICATION = ". Quitter l'application";
     private static final String CHOOSE_MODE_ERROR_MESSAGE = "Votre sélection n'est pas valide" + Displayer.CARRIAGE_RETURN
             + "Veuillez choisir un entier compris entre ";
-    private static final String AND = " et ";
-    private static final String INCLUDED = " inclus" + Displayer.CARRIAGE_RETURN;
+    private static final String SPACE_AND_SPACE = " et ";
+    private static final String SPACE_INCLUDED = " inclus" + Displayer.CARRIAGE_RETURN;
 
     /**
      * Scanner object used to get user inputs
@@ -169,7 +169,7 @@ public class CombinationGame {
             }
             if (!choiceIsValid) {
                 nbErrorInARow++;
-                String errorMessage = CHOOSE_MODE_ERROR_MESSAGE + 1 + AND + (gameModes.size() + 1) + INCLUDED;
+                String errorMessage = CHOOSE_MODE_ERROR_MESSAGE + 1 + SPACE_AND_SPACE + (gameModes.size() + 1) + SPACE_INCLUDED;
                 Displayer.display(errorMessage);
 
                 if (nbErrorInARow % 3 == 0) {

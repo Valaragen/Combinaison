@@ -45,7 +45,7 @@ public class ModeDuel extends GameMode {
     @Override
     protected void logic() {
         computerSecretCombination = super.generateCombination();
-        logger.debug("(Combinaison secrète de l'ordinateur : " + computerSecretCombination + ")");
+        logger.debug("(Combinaison secrete de l'ordinateur : " + computerSecretCombination + ")");
 
 
         playerSecretCombination = super.chooseCombination(COMPLEMENTARY_INFORMATION_ABOUT_THE_COMBINATION_TO_CHOOSE);
