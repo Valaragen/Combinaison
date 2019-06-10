@@ -132,7 +132,11 @@ public final class Config {
 
                 maxAttempts = 5;
                 combinationLength = 4;
-                devMode = false;
+                if (devMode) {
+                    logger.info("Dev mode has been disabled");
+                    logger.setLevel(Level.WARN);
+                    devMode = false;
+                }
 
                 logger.warn(configFileName + " has been reset");
 
