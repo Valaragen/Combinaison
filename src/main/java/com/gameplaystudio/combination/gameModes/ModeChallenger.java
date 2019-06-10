@@ -38,7 +38,6 @@ public class ModeChallenger extends GameMode {
     @Override
     protected void logic() {
         computerSecretCombination = super.generateCombination();
-        logger.debug("(Combinaison secrete : " + computerSecretCombination + ")");
 
 
         boolean isPlaying = true;
@@ -46,6 +45,7 @@ public class ModeChallenger extends GameMode {
         int nbAttempt = 1;
 
         displayIndication();
+        logger.debug("(Combinaison secrete : " + computerSecretCombination + ")");
 
         while (isPlaying) {
             String complementaryInfoToDisplay = "";
