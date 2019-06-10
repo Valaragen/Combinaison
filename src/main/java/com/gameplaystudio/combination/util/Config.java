@@ -130,6 +130,10 @@ public final class Config {
 
                 prop.load(input);
 
+                maxAttempts = 5;
+                combinationLength = 4;
+                devMode = false;
+
                 logger.warn(configFileName + " has been reset");
 
             } catch (IOException io) {
