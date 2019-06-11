@@ -12,6 +12,29 @@ import java.util.regex.Pattern;
  * GameMode class is designed to be the superclass of all Game Modes
  */
 public abstract class GameMode {
+    private static final String CHOOSE_COMBINATION_INDICATION_TO_DISPLAY = "Veuillez définir une combinaison de ";
+    private static final String GOOD_CHOICE = "Très bon choix !";
+    private static final String WELCOME_TEXT = "Bienvenue dans le ";
+    private static final String REPLAY_MENU_TO_DISPLAY = "Souhaitez vous rejouer ?" + Displayer.CARRIAGE_RETURN
+            + "1.Rejouer" + Displayer.CARRIAGE_RETURN
+            + "2.Retourner au menu" + Displayer.CARRIAGE_RETURN
+            + "3.Quitter l'application";
+    private static final String REPLAY_ERROR_MESSAGE = "Votre sélection n'est pas valide" + Displayer.CARRIAGE_RETURN
+            + "Veuillez choisir un entier compris entre 1 et 3 inclus" + Displayer.CARRIAGE_RETURN;
+    static final String THE_COMBINATION_WAS = "La combinaison était";
+    static final String CHOOSE_COMBINATION_ERROR_MESSAGE = "Votre combinaison n'est pas valide, merci d'entrer une combinaison de ";
+    static final String DIGITS = " chiffres";
+    static final String ALLOWED_TRIES = " éssais autorisés !" + Displayer.CARRIAGE_RETURN;
+    static final String YOU_USED = "Vous avez mis ";
+    static final String NEW_PROPOSITION = "Nouvelle proposition : ";
+    static final String ANSWER = "Réponse : ";
+    static final String ATTEMPT = "Essai ";
+    static final String DOUBLE_PIPE_SEPARATOR = " || ";
+    static final String SINGLE_PIPE_SEPARATOR = " | ";
+    static final String SLASH_SEPARATOR = "/";
+    static final String RIGHTWARD_ARROW = " -> ";
+    static final String TRY = " éssai";
+    static final String TRIES = " éssais";
 
     /**
      * Enum of all available Game modes
@@ -28,31 +51,6 @@ public abstract class GameMode {
             return name;
         }
     }
-
-    private static final String CHOOSE_COMBINATION_INDICATION_TO_DISPLAY = "Veuillez définir une combinaison de ";
-    private static final String GOOD_CHOICE = "Très bon choix !";
-    private static final String WELCOME_TEXT = "Bienvenue dans le ";
-    private static final String REPLAY_MENU_TO_DISPLAY = "Souhaitez vous rejouer ?" + Displayer.CARRIAGE_RETURN
-            + "1.Rejouer" + Displayer.CARRIAGE_RETURN
-            + "2.Retourner au menu" + Displayer.CARRIAGE_RETURN
-            + "3.Quitter l'application";
-    private static final String REPLAY_ERROR_MESSAGE = "Votre sélection n'est pas valide" + Displayer.CARRIAGE_RETURN
-            + "Veuillez choisir un entier compris entre 1 et 3 inclus" + Displayer.CARRIAGE_RETURN;
-
-    static final String THE_COMBINATION_WAS = "La combinaison était";
-    static final String CHOOSE_COMBINATION_ERROR_MESSAGE = "Votre combinaison n'est pas valide, merci d'entrer une combinaison de ";
-    static final String DIGITS = " chiffres";
-    static final String ALLOWED_TRIES = " éssais autorisés !" + Displayer.CARRIAGE_RETURN;
-    static final String YOU_USED = "Vous avez mis ";
-    static final String NEW_PROPOSITION = "Nouvelle proposition : ";
-    static final String ANSWER = "Réponse : ";
-    static final String ATTEMPT = "Essai ";
-    static final String DOUBLE_PIPE_SEPARATOR = " || ";
-    static final String SINGLE_PIPE_SEPARATOR = " | ";
-    static final String SLASH_SEPARATOR = "/";
-    static final String RIGHTWARD_ARROW = " -> ";
-    static final String TRY = " éssai";
-    static final String TRIES = " éssais";
 
     /**
      * Set the logger used for all GameMode child

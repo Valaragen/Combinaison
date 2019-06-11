@@ -70,6 +70,7 @@ public class ModeDefense extends GameMode {
                 computerCanGuess = false;
             }
 
+            logger.debug("(Solution : " + super.generateHint(playerSecretCombination, computerGuess) + ")");
             displayAttemptInfo(nbAttempt);
 
             if (nbAttempt >= Config.maxAttempts) {
