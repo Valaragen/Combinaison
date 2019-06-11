@@ -31,6 +31,7 @@ public final class Config {
      * @see #updateSettingsFromFile()
      */
     public static int maxAttempts = 5;
+
     /**
      * Attribute used to set the number of digit a combinations will have in all Game Modes<br>
      * It's set to 4 by default<br>
@@ -39,6 +40,7 @@ public final class Config {
      * @see #updateSettingsFromFile()
      */
     public static int combinationLength = 4;
+
     /**
      * Boolean used to toggle the developer mode<br>
      * It's set to <code>false</code> by default
@@ -46,7 +48,13 @@ public final class Config {
      *
      * @see #updateSettingsFromFile()
      */
-    private static boolean devMode = false;
+    private static boolean configDevMode = false;
+
+    /**
+     * Boolean used to force the developer mode<br>
+     * This attribute is only editable through the code by a developer
+     */
+    public static boolean forceDevMode = false;
 
     /**
      * Private constructor to block instantiation
@@ -92,7 +100,7 @@ public final class Config {
                 throw new InvalidSettingsInFile();
             }
 
-            if (temp_devMode != devMode) {
+            if (!forceDevMode && temp_devMode != configDevMode) {
                 if (temp_devMode) {
                     logger.setLevel(Level.DEBUG);
                     logger.info("Dev mode has been enabled");
@@ -100,7 +108,12 @@ public final class Config {
                     logger.info("Dev mode has been disabled");
                     logger.setLevel(Level.WARN);
                 }
-                devMode = temp_devMode;
+                configDevMode = temp_devMode;
+            } else if (forceDevMode){
+                if (logger.getLevel() != Level.DEBUG){
+                    logger.setLevel(Level.DEBUG);
+                }
+                logger.info("Dev mode is enabled from command line");
             }
 
             logger.info("Settings has been updated from " + configFileName);
@@ -111,7 +124,7 @@ public final class Config {
                 logger.warn("Creating " + path + " with default parameters");
             } else {
                 logger.warn(configFileName + " contains incorrect parameters");
-                logger.warn("Combination length min:" + combinationLengthMin + " max:" + combinationLengthMax + " nbTryAllowed min:" + nbAllowedTryMin + " devMode = true or false");
+                logger.warn("Combination length min:" + combinationLengthMin + " max:" + combinationLengthMax + " nbTryAllowed min:" + nbAllowedTryMin + " configDevMode = true or false");
             }
 
             try {
@@ -132,10 +145,10 @@ public final class Config {
 
                 maxAttempts = 5;
                 combinationLength = 4;
-                if (devMode) {
+                if (configDevMode) {
                     logger.info("Dev mode has been disabled");
                     logger.setLevel(Level.WARN);
-                    devMode = false;
+                    configDevMode = false;
                 }
 
                 logger.warn(configFileName + " has been reset");
@@ -148,7 +161,7 @@ public final class Config {
             logger.fatal("An unhandled exception has occurred");
             io.printStackTrace();
         }
-        logger.debug("maxAttempts : " + maxAttempts + " | combinationLength : " + combinationLength + " | devMode : " + devMode);
+        logger.debug("Config.properties values -> maxAttempts : " + maxAttempts + " | combinationLength : " + combinationLength + " | DevMode : " + configDevMode);
 
     }
 }
